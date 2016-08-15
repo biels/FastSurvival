@@ -318,7 +318,7 @@ public class MobListener implements Listener {
 				if (i != null){
 					if (i.getType() == Material.STICK){
 						damaged.setVelocity(new Vector(0,Utils.NombreEntre(1, 2) * 0.8,0));
-						damaged.getWorld().playSound(damaged.getLocation(), Sound.MAGMACUBE_JUMP, 4F, 0.9F);
+						damaged.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_MAGMACUBE_JUMP, 4F, 0.9F);
 					}else{
 
 					}

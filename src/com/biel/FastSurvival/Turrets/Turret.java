@@ -127,7 +127,7 @@ public class Turret{
 
 		arrow.setVelocity(dir.multiply(3.4));
 
-		world.playSound(spawnpoint, Sound.IRONGOLEM_HIT, 0.15F, 0.3F);
+		world.playSound(spawnpoint, Sound.ENTITY_IRONGOLEM_HURT, 0.15F, 0.3F);
 	}
 	public boolean canSee(Block a, Block b)	{
 		if(a.getWorld() != b.getWorld()) return false;
@@ -177,7 +177,7 @@ public class Turret{
 						i= i + espai;
 
 					}
-					world.playSound(centerLoc, Sound.GLASS, 1, 1F);
+					world.playSound(centerLoc, Sound.BLOCK_GLASS_BREAK, 1, 1F);
 				}
 			},temps * i1);
 			i1 = i1 + 1;
@@ -472,7 +472,7 @@ public class Turret{
 		hp = hp - damage;
 
 		int i = Utils.NombreEntre(2, damage + 3);
-		world.playSound(loceffect, Sound.HURT_FLESH, 3F, 1F);
+		world.playSound(loceffect, Sound.ENTITY_PLAYER_HURT, 3F, 1F);
 		while (i >= 0){
 			world.playEffect(loceffect, Effect.SMOKE, Utils.NombreEntre(0, 8));
 			i = i - 1;

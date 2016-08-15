@@ -69,7 +69,7 @@ public class KnowledgeFocuserItem extends SpecialItem{
 			}
 			Utils.healDamageable(p, amount);
 			if (missingHp > 1){
-				p.getWorld().playSound(p.getEyeLocation(), Sound.LEVEL_UP, 1.5F, 4F);
+				p.getWorld().playSound(p.getEyeLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.5F, 4F);
 			}
 			
 		}

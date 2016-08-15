@@ -72,7 +72,7 @@ public class RawDmgDeflectorItem extends SpecialItem{
 			//Log
 			double newValue = d.getValue() + 1;
 			if (newValue == d.getMaxValue()){
-				p.playSound(p.getEyeLocation(), Sound.ANVIL_LAND, 0.5F, 2.2F);
+				p.playSound(p.getEyeLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 2.2F);
 			}
 			if(newValue > d.getMaxValue()){
 				newValue = 0;
@@ -83,7 +83,7 @@ public class RawDmgDeflectorItem extends SpecialItem{
 				
 				evt.setCancelled(true);
 				//Play loaded effect
-				p.playSound(p.getEyeLocation(), Sound.IRONGOLEM_THROW, 0.5F, 4F);
+				p.playSound(p.getEyeLocation(), Sound.ENTITY_IRONGOLEM_ATTACK, 0.5F, 4F);
 			}
 			d.setValue(newValue);
 

@@ -12,7 +12,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Slime;
 import org.bukkit.generator.BlockPopulator;
@@ -61,10 +60,10 @@ public class CloudPopulator extends BlockPopulator {
         int ycomp = world.getHighestBlockYAt(l1);
         Biome b = l1.getBlock().getBiome();
         Boolean snow = false;
-		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.BEACH || b == Biome.TAIGA) || b == Biome.ICE_PLAINS || b == Biome.SUNFLOWER_PLAINS){
+		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.BEACHES || b == Biome.TAIGA) || b == Biome.ICE_FLATS){
         	return;
         }
-		if (b == Biome.COLD_TAIGA || b == Biome.ICE_PLAINS){
+		if (b == Biome.TAIGA_COLD || b == Biome.ICE_FLATS){
 			snow = true;
 		}
 		Location lp = new Location(world, centerX  + offX, ycomp, centerZ);

@@ -107,33 +107,33 @@ public class CustomBowsListener implements Listener {
 		World world = arr.getWorld();
 		switch(type){
 		case ENDER:
-			world.playSound(pLoc, Sound.ENDERMAN_TELEPORT, 4 * f, 1);
+			world.playSound(pLoc, Sound.ENTITY_ENDERMEN_TELEPORT, 4 * f, 1);
 			break;
 		case EXPLOSIVE:
-			world.playSound(pLoc, Sound.FUSE, 5 * f, 2);
+			world.playSound(pLoc, Sound.ENTITY_GENERIC_EXPLODE, 5 * f, 2);
 			break;
 		case MAGNETIC:
-			world.playSound(pLoc, Sound.IRONGOLEM_HIT, 5 * f, 1.4F);
+			world.playSound(pLoc, Sound.ENTITY_IRONGOLEM_HURT, 5 * f, 1.4F);
 			break;
 		case TORCH:
-			world.playSound(pLoc, Sound.ITEM_PICKUP, 7 * f, 1.2F);
+			world.playSound(pLoc, Sound.ENTITY_ITEM_PICKUP, 7 * f, 1.2F);
 			break;
 		case BOUNCY:
-			world.playSound(pLoc, Sound.SLIME_ATTACK, 7 * f, 1.2F);
+			world.playSound(pLoc, Sound.ENTITY_SLIME_ATTACK, 7 * f, 1.2F);
 			break;
 		case ICY:
 			break;
 		case WATER:
-			world.playSound(pLoc, Sound.SPLASH, 7 * f, 1.2F);
+			world.playSound(pLoc, Sound.ENTITY_GENERIC_SPLASH, 7 * f, 1.2F);
 			break;
 		case WITHER:
-			world.playSound(pLoc, Sound.WITHER_SHOOT, 7 * f, 1.2F);
+			world.playSound(pLoc, Sound.ENTITY_WITHER_SHOOT, 7 * f, 1.2F);
 			break;
 		case ELECTRIC:
 			break;
 		case MULTI:
 			multiShot(arr, p, type, f);
-			p.getWorld().playSound(p.getLocation(), Sound.DOOR_CLOSE, (float)  f, 1F);
+			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 1f, 1F);
 			
 			break;
 		default:
@@ -180,7 +180,7 @@ public class CustomBowsListener implements Listener {
 		World world = l.getWorld();
 		switch(type){
 		case ENDER:
-			FastSurvival.getWorld().playSound(l, Sound.GLASS, 10 * f, 1);
+			FastSurvival.getWorld().playSound(l, Sound.BLOCK_GLASS_BREAK, 10 * f, 1);
 			FastSurvival.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 4 , (int) (28 * f));
 			break;
 		case EXPLOSIVE:
@@ -369,7 +369,7 @@ public class CustomBowsListener implements Listener {
 				ExplAcc = (float) (ExplAcc + (1.5 * f));
 				damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), ExplAcc));
 				FastSurvival.getWorld().playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
-				FastSurvival.getWorld().playSound(damaged.getLocation(), Sound.CREEPER_DEATH, 7 * f, 1.4F);
+				FastSurvival.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.4F);
 				
 				//world.createExplosion(damaged.getLocation(), fExplosion);
 			}		
@@ -464,7 +464,7 @@ public class CustomBowsListener implements Listener {
 				int time = (int) (20 * 6 * f);
 				damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, time * 2, 0));
 				if (damaged instanceof Player){
-					((Player)damaged).playSound(damager.getLocation(), Sound.BURP, 1, 0.5F);
+					((Player)damaged).playSound(damager.getLocation(), Sound.ENTITY_PLAYER_BURP, 1, 0.5F);
 					time = time / 2;
 				}
 				ArrayList <BlockFace> faces = new ArrayList <BlockFace>();
