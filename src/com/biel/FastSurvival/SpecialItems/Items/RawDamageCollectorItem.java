@@ -74,7 +74,7 @@ public class RawDamageCollectorItem extends SpecialItem {
 			if(newValue > d.getMaxValue()){
 				newValue = d.getMaxValue();
 				//Play loaded effect
-				p.playSound(p.getEyeLocation(), Sound.ANVIL_LAND, 0.5F, 4F);
+				p.playSound(p.getEyeLocation(), Sound.BLOCK_ANVIL_LAND, 0.5F, 4F);
 			}
 			d.setValue(newValue);
 			
@@ -90,7 +90,7 @@ public class RawDamageCollectorItem extends SpecialItem {
 					evt.setDamage(dmg + d.getValue());			
 					d.setValue(0D);
 					//Play loaded effect
-					p.playSound(p.getEyeLocation(), Sound.IRONGOLEM_THROW, 0.5F, 4F);
+					p.playSound(p.getEyeLocation(), Sound.ENTITY_IRONGOLEM_ATTACK, 0.5F, 4F);
 				}
 			}
 			

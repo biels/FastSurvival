@@ -101,17 +101,17 @@ public class BowRecipeGenerator {
 		r.shape(" W ", "LBL", "RVR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_BARDING);
+        r.setIngredient('V', Material.IRON_FENCE);
         r.setIngredient('W', Material.RAW_FISH);
         r.setIngredient('L', Material.LAPIS_BLOCK);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void multiRecipe(){
 		ShapedRecipe r = new ShapedRecipe(Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.DARK_PURPLE + Utils.L("BOW_NAME_MULTITARGET"), ChatColor.WHITE + Utils.L("BOW_DESC_MULTITARGET"), getID(BowType.MULTI)));
-		r.shape("AAA", "DBD", "RVR");
+		r.shape("AAA", " B ", "RVR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_BARDING);
+        r.setIngredient('V', Material.IRON_FENCE);
         r.setIngredient('A', Material.ARROW);
         r.setIngredient('D', Material.DISPENSER);
         Bukkit.getServer().addRecipe(r);
@@ -121,7 +121,7 @@ public class BowRecipeGenerator {
 		r.shape(" D ", "VBV", "RLR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_BARDING);
+        r.setIngredient('V', Material.IRON_FENCE);
         r.setIngredient('D', Material.DIAMOND);
         r.setIngredient('L', Material.DIAMOND_BLOCK);
         Bukkit.getServer().addRecipe(r);

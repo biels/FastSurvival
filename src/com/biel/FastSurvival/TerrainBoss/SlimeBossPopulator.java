@@ -12,7 +12,6 @@ import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Slime;
 import org.bukkit.generator.BlockPopulator;
@@ -112,22 +111,22 @@ public class SlimeBossPopulator extends BlockPopulator {
                 int floor = random.nextInt(spawnerChance); // spawner rate
                 Block block = world.getBlockAt(x, minY, z);
                 if(block.getTypeId()!=0)
-                if (floor < 12) {
-                    block.setType(Material.MOB_SPAWNER);
-                    CreatureSpawner spawner = (CreatureSpawner) block.getState();
-                    if (floor <= 2) {
-                        spawner.setCreatureType(CreatureType.ZOMBIE);
-                    } else if (floor >= 3 && floor <= 7) {
-                        spawner.setCreatureType(CreatureType.SPIDER);
-                    } else if (floor >= 8 && floor <= 10) {
-                        spawner.setCreatureType(CreatureType.SKELETON);
+                	if (floor < 12) {
+                        block.setType(Material.MOB_SPAWNER);
+                        CreatureSpawner spawner = (CreatureSpawner) block.getState();
+                        if (floor <= 2) {
+                            spawner.setSpawnedType(EntityType.ZOMBIE);
+                        } else if (floor >= 3 && floor <= 7) {
+                        	spawner.setSpawnedType(EntityType.SPIDER);
+                        } else if (floor >= 8 && floor <= 10) {
+                        	spawner.setSpawnedType(EntityType.SKELETON);
+                        } else {
+                        	spawner.setSpawnedType(EntityType.GHAST);
+                        }
                     } else {
-                        spawner.setCreatureType(CreatureType.GHAST);
+                    	if(block.getTypeId()!=0)
+                        block.setType(matFloor);
                     }
-                } else {
-                	if(block.getTypeId()!=0)
-                    block.setType(matFloor);
-                }
                 if(world.getBlockTypeIdAt(x, maxY, z)!=0)
                 world.getBlockAt(x, maxY, z).setType(matWalls);
             }

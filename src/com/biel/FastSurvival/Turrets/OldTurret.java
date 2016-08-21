@@ -490,7 +490,7 @@ public class OldTurret implements Listener, Serializable {
 
 				hpEscut = maxHpEscut;
 				if (CheckArmor()){
-					getWorld().playSound(location, Sound.PISTON_EXTEND, 3F, 1F);
+					getWorld().playSound(location, Sound.BLOCK_PISTON_EXTEND, 3F, 1F);
 				}
 
 			}
@@ -641,7 +641,7 @@ public class OldTurret implements Listener, Serializable {
 
 					arrow.setVelocity(dir.multiply(3.4));
 
-					world.playSound(spawnpoint, Sound.IRONGOLEM_HIT, 1, 0.3F);
+					world.playSound(spawnpoint, Sound.ENTITY_IRONGOLEM_HURT, 1, 0.3F);
 					Learn(xpPerTir);
 					tirs = tirs + 1;
 					tirsquim = tirsquim + 1;
@@ -720,7 +720,7 @@ public class OldTurret implements Listener, Serializable {
 								i= i + espai;
 
 							}
-							world.playSound(centerLoc, Sound.GLASS, 1, 1F);
+							world.playSound(centerLoc, Sound.BLOCK_GLASS_BREAK, 1, 1F);
 						}
 					},temps * i1);
 					i1 = i1 + 1;
@@ -761,17 +761,17 @@ public class OldTurret implements Listener, Serializable {
 			hpEscut = hpEscut - damage;
 			Boolean armorSate = CheckArmor();
 			if (armorSate == false){
-				world.playSound(loceffect, Sound.ZOMBIE_WOODBREAK, 3F, 1F);
+				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 3F, 1F);
 				resetArmorCD();
 			}else{
-				world.playSound(loceffect, Sound.ZOMBIE_WOOD, 3F, 1F);
+				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 3F, 1F);
 			}
 
 		}else{
 			hp = hp - damage;
 
 			int i = Utils.NombreEntre(2, damage + 3);
-			world.playSound(loceffect, Sound.HURT_FLESH, 3F, 1F);
+			world.playSound(loceffect, Sound.ENTITY_PLAYER_HURT, 3F, 1F);
 			while (i >= 0){
 				world.playEffect(loceffect, Effect.SMOKE, Utils.NombreEntre(0, 8));
 				i = i - 1;

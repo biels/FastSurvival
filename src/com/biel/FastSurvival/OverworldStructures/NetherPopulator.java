@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.EntityType;
 import org.bukkit.generator.BlockPopulator;
 
 public class NetherPopulator extends BlockPopulator {
@@ -106,13 +106,13 @@ public class NetherPopulator extends BlockPopulator {
                     block.setType(Material.MOB_SPAWNER);
                     CreatureSpawner spawner = (CreatureSpawner) block.getState();
                     if (floor <= 2) {
-                        spawner.setCreatureType(CreatureType.ZOMBIE);
+                        spawner.setSpawnedType(EntityType.ZOMBIE);
                     } else if (floor >= 3 && floor <= 7) {
-                        spawner.setCreatureType(CreatureType.SPIDER);
+                    	spawner.setSpawnedType(EntityType.SPIDER);
                     } else if (floor >= 8 && floor <= 10) {
-                        spawner.setCreatureType(CreatureType.SKELETON);
+                    	spawner.setSpawnedType(EntityType.SKELETON);
                     } else {
-                        spawner.setCreatureType(CreatureType.GHAST);
+                    	spawner.setSpawnedType(EntityType.GHAST);
                     }
                 } else {
                 	if(block.getTypeId()!=0)

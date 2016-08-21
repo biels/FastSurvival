@@ -382,7 +382,7 @@ public class RecallUtils {
 					pitch = (float) (pitch - (0.8F * (recallProgress - 0.8) * (recallProgress - 0.8)));
 					pitch = (float) (max * dp - (decay * (recallProgress - dp)));
 				}
-				ply.getWorld().playSound(ply.getLocation(), Sound.NOTE_BASS, 3F, pitch);
+				ply.getWorld().playSound(ply.getLocation(), Sound.BLOCK_NOTE_BASS, 3F, pitch);
 				//------------------
 				boolean moved = !plyloc.equalsIgnoreCase(Utils.writeHumanReadableLocation(ply.getLocation(), false));
 				boolean damaged = ply.getHealth() != ply.getMaxHealth();
