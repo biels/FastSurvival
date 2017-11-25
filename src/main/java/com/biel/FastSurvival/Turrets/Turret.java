@@ -28,9 +28,7 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
-import com.avaje.ebeaninternal.server.subclass.GetterSetterMethods;
 import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Turrets.OldTurret.TipusMillora;
 import com.biel.FastSurvival.Utils.Utils;
 
 public class Turret{

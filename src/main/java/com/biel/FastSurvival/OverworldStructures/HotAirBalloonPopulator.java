@@ -124,7 +124,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(1)){c = DyeColor.GREEN;}
 			if (Utils.Possibilitat(1)){c = DyeColor.GRAY;}
 		}
-		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), Material.WOOL, c.getData());
+		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), Material.WOOL, c.getDyeData());
 		//BUtils.fillBlocks(BUtils.locListToBlock(c2), Material.WOOL, DyeColor.BLACK.getData());
 	}
 	public void generateEngine(Location center){

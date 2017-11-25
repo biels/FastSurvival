@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 archivesBaseName = 'FastSurvival'
-version = '1.0-SNAPSHOT'
+version = '3.0'
 
 repositories {
     mavenCentral()
@@ -15,4 +15,5 @@ repositories {
 //}
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
 }
