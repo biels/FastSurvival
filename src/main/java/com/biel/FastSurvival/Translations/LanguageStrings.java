@@ -1,4 +1,4 @@
-package Translations;
+package com.biel.FastSurvival.Translations;
 
 import java.io.File;
 

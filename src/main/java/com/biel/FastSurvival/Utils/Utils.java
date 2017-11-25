@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.biel.FastSurvival.Translations.LanguageStrings;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.GameMode;
@@ -41,7 +42,6 @@ import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
 import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
 
-import Translations.LanguageStrings;
 
 public class Utils {
 	public static String L(String code){

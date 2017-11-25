@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+archivesBaseName = 'FastSurvival'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+//def defaultEncoding = 'UTF-8'
+//compileJava {
+//    options.encoding = defaultEncoding
+//}
+//compileTestJava {
+//    options.encoding = defaultEncoding
+//}
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
