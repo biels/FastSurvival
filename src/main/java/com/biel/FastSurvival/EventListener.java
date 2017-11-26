@@ -2,6 +2,7 @@ package com.biel.FastSurvival;
 
 import java.util.ArrayList;
 
+import com.biel.FastSurvival.Dimensions.Moon.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Difficulty;
@@ -52,10 +53,6 @@ import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.Bows.BowUtils.BowType;
 import com.biel.FastSurvival.Bows.CustomBowsListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
-import com.biel.FastSurvival.Dimensions.Moon.EarthMagicTreePopulator;
-import com.biel.FastSurvival.Dimensions.Moon.ElectricBossPopulator;
-import com.biel.FastSurvival.Dimensions.Moon.MoonMagicTreePopulator;
-import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.OverworldStructures.GraveyardPopulator;
 import com.biel.FastSurvival.OverworldStructures.HotAirBalloonPopulator;
 import com.biel.FastSurvival.OverworldStructures.LogPopulator;
@@ -80,10 +77,12 @@ public class EventListener implements Listener {
 			world.getPopulators().add(new GraveyardPopulator());
 			world.getPopulators().add(new EarthMagicTreePopulator());
 			world.getPopulators().add(new HotAirBalloonPopulator());
+			world.getPopulators().add(new ClaySpiralPopulator());
 			world.setMonsterSpawnLimit(80);
 		}
 
 		if (MoonUtils.IsMoon(world)){
+			world.getPopulators().add(new ClaySpiralPopulator());
 			world.getPopulators().add(new ElectricBossPopulator());
 			world.setMonsterSpawnLimit(180);
 			world.setGameRuleValue("doDaylightCycle", "false");
@@ -109,7 +108,7 @@ public class EventListener implements Listener {
 			if (blk.getType() == Material.SPONGE){
 				evt.setCancelled(true);
 				evt.getBlock().setType(Material.AIR);
-				p.getWorld().dropItemNaturally(evt.getBlock().getLocation(), Utils.setItemNameAndLore(new ItemStack(Material.SPONGE), "Accés al cel", "Fragment per crear el Knock Up"));
+				p.getWorld().dropItemNaturally(evt.getBlock().getLocation(), Utils.setItemNameAndLore(new ItemStack(Material.SPONGE), "Accï¿½s al cel", "Fragment per crear el Knock Up"));
 			}
 			if (blk.getType() == Material.GRAVEL){
 				if (Utils.Possibilitat(35)){
@@ -278,7 +277,7 @@ public class EventListener implements Listener {
 						continue;
 					}
 					if (p.getFoodLevel() < 5){
-						if (Utils.Possibilitat(30)){p.sendMessage("Necessites més menjar per l'efecte automàtic.");}
+						if (Utils.Possibilitat(30)){p.sendMessage("Necessites mï¿½s menjar per l'efecte automï¿½tic.");}
 						continue;
 					}
 					//Bukkit.broadcastMessage("done");

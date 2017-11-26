@@ -113,7 +113,7 @@ public class BowRecipeGenerator {
         r.setIngredient('R', Material.REDSTONE);
         r.setIngredient('V', Material.IRON_FENCE);
         r.setIngredient('A', Material.ARROW);
-        r.setIngredient('D', Material.DISPENSER);
+        //r.setIngredient('D', Material.DISPENSER);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void electricRecipe(){
