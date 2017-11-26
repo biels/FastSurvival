@@ -121,7 +121,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("moon")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per això! Construeix un teletransportador per fer-ho legalment en supervivència!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aixï¿½! Construeix un teletransportador per fer-ho legalment en supervivï¿½ncia!");return true;}
 				if (MoonUtils.IsInMoon(p)){
 					MoonUtils.teleportPlayerToEarth(p);
 					getLogger().info("Teleported to earth!");
@@ -136,7 +136,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("sky")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per això! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en supervivència!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aixï¿½! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en supervivï¿½ncia!");return true;}
 				if (SkyUtils.IsInSky(p)){
 					SkyUtils.teleportPlayerToEarth(p);
 					getLogger().info("Teleported to earth!");
@@ -151,7 +151,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("e")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aixï¿½!");return true;}
 				Inventory i = p.getInventory();
 				ItemStack itemStacke = new ItemStack(Material.BOW);
 				itemStacke.addEnchantment(Enchantment.ARROW_DAMAGE, 3);
@@ -179,7 +179,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("t")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aixï¿½!");return true;}
 				Inventory i = p.getInventory();
 				int count = 0;
 				while (count < 2){
@@ -195,7 +195,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("moonmats")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aixï¿½!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(new ItemStack(Material.IRON_BLOCK, 8));
 				i.addItem(new ItemStack(Material.IRON_FENCE, 4));
@@ -209,7 +209,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("recall")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aixï¿½!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(RecallUtils.getRecallItem(null));
 
@@ -220,7 +220,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("wand")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aixï¿½!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(BuilderWandUtils.getWandItem());
 
@@ -233,7 +233,7 @@ public final class FastSurvival extends JavaPlugin {
 			if (sender instanceof Player){
 				Player p = (Player) sender;
 				
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer això!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aixï¿½!");return true;}
 				ArrayList<SpecialItem> registeredSpecialItems = SpecialItemsUtils.getRegisteredSpecialItems();
 				Inventory i;
 				if(args.length == 0){
@@ -325,7 +325,7 @@ public final class FastSurvival extends JavaPlugin {
 		if (!f.exists()){
 			//Default settings
 			GestorPropietats g = new GestorPropietats(f.getAbsolutePath());
-			g.EstablirPropietat("LanguageFileName", "CAT");
+			g.EstablirPropietat("LanguageFileName", "EN");
 		}
 
 		return new GestorPropietats(f.getAbsolutePath());
