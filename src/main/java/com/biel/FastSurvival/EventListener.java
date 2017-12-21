@@ -77,11 +77,11 @@ public class EventListener implements Listener {
 			world.getPopulators().add(new GraveyardPopulator());
 			world.getPopulators().add(new EarthMagicTreePopulator());
 			world.getPopulators().add(new HotAirBalloonPopulator());
-			world.setMonsterSpawnLimit(80);
-		}
+            world.getPopulators().add(new ClaySpiralPopulator());
+            world.setMonsterSpawnLimit(80);
+        }
 
-		if (MoonUtils.IsMoon(world)){
-			world.getPopulators().add(new ClaySpiralPopulator());
+        if (MoonUtils.IsMoon(world)){
 			world.getPopulators().add(new ElectricBossPopulator());
 			world.setMonsterSpawnLimit(180);
 			world.setGameRuleValue("doDaylightCycle", "false");
@@ -107,7 +107,7 @@ public class EventListener implements Listener {
 			if (blk.getType() == Material.SPONGE){
 				evt.setCancelled(true);
 				evt.getBlock().setType(Material.AIR);
-				p.getWorld().dropItemNaturally(evt.getBlock().getLocation(), Utils.setItemNameAndLore(new ItemStack(Material.SPONGE), "Acc�s al cel", "Fragment per crear el Knock Up"));
+				p.getWorld().dropItemNaturally(evt.getBlock().getLocation(), Utils.setItemNameAndLore(new ItemStack(Material.SPONGE), "Fragment of sky launcher", "Fragment to crete the Knock Up current"));
 			}
 			if (blk.getType() == Material.GRAVEL){
 				if (Utils.Possibilitat(35)){
@@ -149,10 +149,10 @@ public class EventListener implements Listener {
 				p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_FENCE, 6));
 				if (Utils.Possibilitat(1)){
 					p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.DIAMOND));
-					p.setFireTicks(20 * 24);
+					//p.setFireTicks(20 * 24);
 				}
 				if (Utils.Possibilitat(85)){
-					p.setFireTicks(20 * 5);
+					//p.setFireTicks(20 * 5);
 					p.damage(1);
 					CreatureSpawner spawner = (CreatureSpawner) blk.getState();
 					EntityType spawnedType = spawner.getSpawnedType();
@@ -276,7 +276,7 @@ public class EventListener implements Listener {
 						continue;
 					}
 					if (p.getFoodLevel() < 5){
-						if (Utils.Possibilitat(30)){p.sendMessage("Necessites m�s menjar per l'efecte autom�tic.");}
+						if (Utils.Possibilitat(30)){p.sendMessage("You need more food for automatic tool effect");}
 						continue;
 					}
 					//Bukkit.broadcastMessage("done");
