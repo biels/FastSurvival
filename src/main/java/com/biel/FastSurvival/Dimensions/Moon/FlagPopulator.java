@@ -22,7 +22,7 @@ public class FlagPopulator extends BlockPopulator {
     private static final int FLAG_HEIGHT = 3;
 
     public void populate(World world, Random random, Chunk source) {
-        if (random.nextInt(200) > FLAG_CHANCE) return;
+        if (random.nextInt(192) > FLAG_CHANCE) return;
         int centerX = (source.getX() << 4) + random.nextInt(16);
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
         int centerY = world.getHighestBlockYAt(centerX, centerZ);

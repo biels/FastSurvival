@@ -218,25 +218,25 @@ public class TurretListener implements Listener{
 	}
 	@EventHandler
 	public void Craft(PrepareItemCraftEvent evt){
-		ItemStack result = evt.getRecipe().getResult();
-		ItemStack i = result;
-		if(result.hasItemMeta()){
-			ItemMeta itemMeta = result.getItemMeta();
-			if (itemMeta.hasDisplayName()){
-				String name = itemMeta.getDisplayName();
-				if (name.equalsIgnoreCase("Crafted turret")){
-					if (itemMeta.hasLore()){
-						List<String> lore = itemMeta.getLore();
-						if(lore.size() == 1){
-							String strTier = lore.get(0);
-							int tier = Integer.parseInt(strTier);
-							evt.getInventory().setResult(TurretUtils.createNewItemStack(tier));
-						}
-					}
-				}
-			}
-
-		}
+//		ItemStack result = evt.getRecipe().getResult();
+//		ItemStack i = result;
+//		if(result.hasItemMeta()){
+//			ItemMeta itemMeta = result.getItemMeta();
+//			if (itemMeta.hasDisplayName()){
+//				String name = itemMeta.getDisplayName();
+//				if (name.equalsIgnoreCase("Crafted turret")){
+//					if (itemMeta.hasLore()){
+//						List<String> lore = itemMeta.getLore();
+//						if(lore.size() == 1){
+//							String strTier = lore.get(0);
+//							int tier = Integer.parseInt(strTier);
+//							evt.getInventory().setResult(TurretUtils.createNewItemStack(tier));
+//						}
+//					}
+//				}
+//			}
+//
+//		}
 	}
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent evt) {

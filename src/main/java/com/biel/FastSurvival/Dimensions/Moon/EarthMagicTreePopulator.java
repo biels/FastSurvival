@@ -33,7 +33,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void populate(World world, Random random, Chunk source) {
-		if (!(random.nextInt(1000) <= TREE_CHANCE)) {return;} //495
+		if (!(random.nextInt(2000) <= TREE_CHANCE)) {return;} //495
 		int centerX = (source.getX() << 4) + random.nextInt(16);
 		int centerZ = (source.getZ() << 4) + random.nextInt(16);
 		int centerY = world.getHighestBlockYAt(centerX, centerZ);

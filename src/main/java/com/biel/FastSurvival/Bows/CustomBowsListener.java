@@ -390,7 +390,7 @@ public class CustomBowsListener implements Listener {
 			break;
 		case BOUNCY:
 			if(true){ 
-				ArrayList<LivingEntity> nearbyEnemies = Utils.getNearbyEnemies(damaged, 10 + (f * 6), true);
+				ArrayList<LivingEntity> nearbyEnemies = Utils.getNearbyEnemies(damaged, 12 + (f * 6), true);
 				ArrayList<UUID> bouncedEnemies = new ArrayList<UUID>();
 				nearbyEnemies.remove(damager);
 				int initialtimes = (int) (30 + (f * 3));
@@ -418,7 +418,7 @@ public class CustomBowsListener implements Listener {
 				}
 				dmg = (double) (10 * f);
 					//First obj
-					dmg = (dmg * 0.8)/(6/(initialtimes - times + 1));
+					dmg = (dmg * 0.8)*(6/(initialtimes - times + 1));
 
 				if (damaged instanceof Player && dmg > 7){
 					dmg = 6.2;

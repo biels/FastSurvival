@@ -77,7 +77,6 @@ public class EventListener implements Listener {
 			world.getPopulators().add(new GraveyardPopulator());
 			world.getPopulators().add(new EarthMagicTreePopulator());
 			world.getPopulators().add(new HotAirBalloonPopulator());
-			world.getPopulators().add(new ClaySpiralPopulator());
 			world.setMonsterSpawnLimit(80);
 		}
 
