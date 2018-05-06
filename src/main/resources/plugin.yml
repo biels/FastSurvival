@@ -1,6 +1,6 @@
 name: FastSurvival
 main: com.biel.FastSurvival.FastSurvival
-version: 3.1
+version: 3.2
 load: STARTUP
 depend: [BKCommonLib]
 commands:
