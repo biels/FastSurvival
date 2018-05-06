@@ -326,6 +326,7 @@ public final class FastSurvival extends JavaPlugin {
 			//Default settings
 			GestorPropietats g = new GestorPropietats(f.getAbsolutePath());
 			g.EstablirPropietat("LanguageFileName", "EN");
+			g.EstablirPropietat("AutomaticToolsRequireRedstone", false);
 		}
 
 		return new GestorPropietats(f.getAbsolutePath());

@@ -24,7 +24,7 @@ public class ToolRecipeGenerator {
 		ms.addAll(getFromKb("_SPADE"));
 		ms.add(Material.WOOD_SWORD);
 		for (Material m : ms){
-			ShapelessRecipe sr= new ShapelessRecipe(Utils.setItemLore(new ItemStack(m), ChatColor.YELLOW + "Automàtic"));
+			ShapelessRecipe sr= new ShapelessRecipe(Utils.setItemLore(new ItemStack(m), ChatColor.YELLOW + "Automatic"));
 			//ShapelessRecipe sr= new ShapelessRecipe(new ItemStack(m));
 
 			sr.addIngredient(1, m);

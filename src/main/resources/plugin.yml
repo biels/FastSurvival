@@ -37,7 +37,7 @@ commands:
      aliases: [portal, materials, m]
      usage: OOPSh!
    t:
-     description: Torres
+     description: Turrets
      aliases: [turrets, torres]
      usage: OOPSh!
    moon:
