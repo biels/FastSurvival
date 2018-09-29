@@ -22,7 +22,7 @@ public class MoonCraterPopulator extends BlockPopulator {
     private static final int BIG_CRATER_CHANCE = 10; // Out of 100
 
     public void populate(World world, Random random, Chunk source) {
-        if (random.nextInt(100) <= CRATER_CHANCE) {
+        if (random.nextInt(115) <= CRATER_CHANCE) {
             int centerX = (source.getX() << 4) + random.nextInt(16);
             int centerZ = (source.getZ() << 4) + random.nextInt(16);
             int centerY = world.getHighestBlockYAt(centerX, centerZ);

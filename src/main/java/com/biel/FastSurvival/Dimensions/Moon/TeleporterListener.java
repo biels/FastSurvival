@@ -29,7 +29,7 @@ public class TeleporterListener implements Listener {
 			ArrayList<Player> pls = Utils.getNearbyPlayers(p, 32);
 			pls.add(p);
 			double energy = detectMoonPortal(b.getLocation());
-			double Maxenergy = 730 + pls.size() * 200;
+			double Maxenergy = 730 + pls.size() * 210;
 			double ratio = energy / Maxenergy;
 			//if(energy != 0){
 				//Teleport
@@ -106,7 +106,7 @@ public class TeleporterListener implements Listener {
 		e = e + tTorchOff * 1;
 		if (wButtons != 0){e = e + (wButtons * 2 + 15) + 10;};
 		if (iPlate != 0){e = e + (iPlate * 5 + 12);};
-		if (iBars != 0){e = e + (iBars * 5);};
+		if (iBars != 0){e = e + Math.max(iBars * 5, 40);};
 		if (glowBlocks == 1){e = e + 50;}
 		if (nFence != 0){e = e + 5 * nFence - (tTorch * 2);}
 		//if (oFurnance != 0){e = e + 25 + 2 * oFurnance;}

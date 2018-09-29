@@ -108,8 +108,11 @@ public class KingSkeletonBossUtils {
 					spawnMobsOnTree(c, EntityType.MAGMA_CUBE, 3 + bonus);
 					break;
 				case MINEFIELD:
-					Location l = sk.getTarget().getLocation().add(Vector.getRandom().normalize().multiply(0.2));
+					LivingEntity target = sk.getTarget();
+					if(target == null) break;
+					Location l = target.getLocation().add(Vector.getRandom().normalize().multiply(0.2));
 					sk.getWorld().createExplosion(l.getX(), l.getY(), l.getZ(), 3F + (bonus / 8) , true, false);
+					target.setVelocity(Utils.CrearVector(sk.getLocation(), l).add(new Vector(0, 1, 0)).normalize());
 					break;
 				case SKELETON:
 					spawnMobsOnTree(c, EntityType.SKELETON, 5 + bonus);
@@ -199,7 +202,7 @@ public class KingSkeletonBossUtils {
 				return t;
 			}
 		}
-		Bukkit.broadcastMessage("Habilitat no vàlida.");
+		Bukkit.broadcastMessage("Habilitat no vï¿½lida.");
 		return null;
 	}
 	public static ArrayList<Location> getValidCircleLocations(Location center, Double radius, int num){

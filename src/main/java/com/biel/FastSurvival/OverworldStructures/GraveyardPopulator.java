@@ -20,10 +20,9 @@ import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Utils;
 
 public class GraveyardPopulator extends BlockPopulator {
-	private static final int GRAVEYARD_CHANCE = 2; // Out of 150 (1.25%)
 	@Override
 	public void populate(World world, Random random, Chunk source) {
-		if (!(random.nextInt(164) <= GRAVEYARD_CHANCE)) {return;}
+		if (!(random.nextInt(180) <= 1)) {return;}
 		int centerX = (source.getX() << 4) + random.nextInt(16);
 		int centerZ = (source.getZ() << 4) + random.nextInt(16);
 		int centerY = world.getHighestBlockYAt(centerX, centerZ);

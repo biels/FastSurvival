@@ -43,13 +43,13 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		center.getBlock().setType(Material.WORKBENCH);
 		
 		//Chest
-		ArrayList<BlockFace> Edgefaces = new ArrayList<BlockFace>();
-		Edgefaces.add(BlockFace.NORTH_EAST);
-		Edgefaces.add(BlockFace.NORTH_WEST);
-		Edgefaces.add(BlockFace.SOUTH_EAST);
-		Edgefaces.add(BlockFace.SOUTH_WEST);
+		ArrayList<BlockFace> edgeFaces = new ArrayList<BlockFace>();
+		edgeFaces.add(BlockFace.NORTH_EAST);
+		edgeFaces.add(BlockFace.NORTH_WEST);
+		edgeFaces.add(BlockFace.SOUTH_EAST);
+		edgeFaces.add(BlockFace.SOUTH_WEST);
 		
-		Block cbl = center.getBlock().getRelative(BlockFace.UP).getRelative(Edgefaces.get(Utils.NombreEntre(0, Edgefaces.size() - 1)));
+		Block cbl = center.getBlock().getRelative(BlockFace.UP).getRelative(edgeFaces.get(Utils.NombreEntre(0, edgeFaces.size() - 1)));
 		cbl.setType(Material.CHEST);
 		Utils.fillChestRandomly(cbl, getItemsForLevel());
 		//---
@@ -153,6 +153,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.RAW_BEEF, Utils.NombreEntre(1,  25)));}
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_BLOCK, Utils.NombreEntre(1,  5)));}
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_LAMP_OFF, Utils.NombreEntre(1,  5)));}
+		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.PAPER, Utils.NombreEntre(1,  2)));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.BAKED_POTATO, Utils.NombreEntre(1,  18)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CARROT, Utils.NombreEntre(1,  3)));}
 		if (Utils.Possibilitat(9)){new ItemStack(SpecialItemsUtils.getRandomSpecialItem(1));}

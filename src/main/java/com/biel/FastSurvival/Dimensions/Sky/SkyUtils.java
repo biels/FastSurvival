@@ -46,7 +46,8 @@ public class SkyUtils {
 		wc.type(WorldType.NORMAL);
 		wc.environment(Environment.NORMAL);
 		
-		wc.generator(new BasicChunkGenerator());
+		wc.generator(new SkyChunkGenerator());
+		//wc.generator(new BasicChunkGenerator());
 		Bukkit.getServer().createWorld(wc);
 	}
 	public static Boolean IsSky(World w){

@@ -34,7 +34,7 @@ public class MoonUtils {
 
 		WorldCreator wc = new WorldCreator("Moon");
 		wc.type(WorldType.NORMAL);
-		wc.environment(Environment.NORMAL);
+		wc.environment(Environment.THE_END);
 
 		wc.generator(new MoonChunkGenerator());
 		Bukkit.getServer().createWorld(wc);

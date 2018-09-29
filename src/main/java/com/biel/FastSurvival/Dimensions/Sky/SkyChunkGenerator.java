@@ -28,7 +28,7 @@ public class SkyChunkGenerator extends ChunkGenerator {
     private int getHeight(World world, double x, double y, int variance) {
         NoiseGenerator gen = getGenerator(world);
 
-        double result = gen.noise(x, y);
+        double result = gen.noise(x / 3, y / 3);
         result *= variance;
         return NoiseGenerator.floor(result);
     }
@@ -38,8 +38,8 @@ public class SkyChunkGenerator extends ChunkGenerator {
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2)+52;
-                for (int y = 50; y < height; y++) {
+                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 4)+50;
+                for (int y = 46; y < height; y++) {
                     result[(x * 16 + z) * 128 + y] = (byte)Material.SNOW_BLOCK.getId();
                 }
             }

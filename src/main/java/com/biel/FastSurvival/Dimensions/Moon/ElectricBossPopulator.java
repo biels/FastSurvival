@@ -34,7 +34,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 	public enum LevelType{SKELETON, ZOMBIE, MAGIC, SPIDER, ICY, SILVERFISH, ABYSS, BONUS}
 
 	public void populate(World world, Random random, Chunk source) {
-		if (random.nextInt(175) <= BOSS_CHANCE) {
+		if (random.nextInt(500) <= 1) { // 1 in every 14 square chnks
 
 			int BLOCKS_PER_LEVEL = 5;
 			int MAX_LEVELS = Utils.NombreEntre(7, 9);

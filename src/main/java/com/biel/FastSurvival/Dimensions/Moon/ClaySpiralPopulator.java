@@ -19,7 +19,7 @@ public class ClaySpiralPopulator extends BlockPopulator {
 
     @Override
     public void populate(World world, Random random, Chunk chunk) {
-        if (!(random.nextInt(285) <= 1)) return;
+        if (!(random.nextInt(1000) <= 1)) return;
         this.world = world;
         this.random = random;
         this.chunk = chunk;

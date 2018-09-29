@@ -33,7 +33,7 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void populate(World world, Random random, Chunk source) {
-		if (!(random.nextInt(495) <= TREE_CHANCE)) {return;}
+		if (!(random.nextInt(600) <= TREE_CHANCE)) {return;}
 		int centerX = (source.getX() << 4) + random.nextInt(16);
 		int centerZ = (source.getZ() << 4) + random.nextInt(16);
 		int centerY = world.getHighestBlockYAt(centerX, centerZ);

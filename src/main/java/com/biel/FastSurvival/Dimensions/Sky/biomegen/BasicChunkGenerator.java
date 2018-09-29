@@ -43,7 +43,7 @@ public class BasicChunkGenerator extends ChunkGenerator {
 		for (int x=0; x<16; x++) {
 			
 			for (int z=0; z<16; z++) {
-				if (z % 4 != 0){continue;}
+//				if (z % 4 != 0){continue;}
 				int realX = x + chunkX * 16;
 	 			int realZ = z + chunkZ * 16;
 				
@@ -77,9 +77,9 @@ public class BasicChunkGenerator extends ChunkGenerator {
 
 
 							} else {
-								if(Utils.Possibilitat(15)){
-									setBlock(x,y,z,chunk,Material.ICE);
-								}
+								//if(Utils.Possibilitat(15)){
+									//setBlock(x,y,z,chunk,Material.ICE);
+								//}
 								
 							}
 						}
@@ -112,7 +112,7 @@ public class BasicChunkGenerator extends ChunkGenerator {
 		switch (biome) {
 		case DESERT: return Material.SANDSTONE;
 		case OCEAN: return Material.ICE;
-		case PLAINS: return Material.DIRT;
+		case PLAINS: return Material.GOLD_BLOCK;
 		case SWAMPLAND: return Material.MYCEL;
 		case EXTREME_HILLS: return Material.STONE;
 		default: return Material.SNOW_BLOCK;
