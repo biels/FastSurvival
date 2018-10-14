@@ -1,6 +1,7 @@
 package com.biel.FastSurvival.Bows;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -127,13 +128,13 @@ public class CustomBowsListener implements Listener {
 			world.playSound(pLoc, Sound.ENTITY_GENERIC_SPLASH, 7 * f, 1.2F);
 			break;
 		case WITHER:
-			world.playSound(pLoc, Sound.ENTITY_WITHER_SHOOT, 7 * f, 1.2F);
+			world.playSound(pLoc, Sound.ENTITY_WITHER_SHOOT, 0.8F * f, 1.2F);
 			break;
 		case ELECTRIC:
 			break;
 		case MULTI:
 			multiShot(arr, p, type, f);
-			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 1f, 1F);
+			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 0.8f, 1F);
 			
 			break;
 		default:
@@ -233,16 +234,17 @@ public class CustomBowsListener implements Listener {
 			break;
 		case ELECTRIC:
 			arr.remove();
-			ultraStrike(l, f, p);
+			ultraStrike(l, f, p, 1);
 			final Location lf = l;
 			final float ff = f *  2.3F;
 			final UUID id = p.getUniqueId();
 			Task myTask = new Task(FastSurvival.getPlugin()) {
 			    @Override
 			    public void run() {
-			    	ultraStrike(lf, ff, null);
+			    	ultraStrike(lf, ff, p, 0.9F);
 			    	LivingEntity entityFromUUID = (LivingEntity)Utils.getEntityFromUUID(id, lf.getWorld());
 					for(LivingEntity ent : Utils.getNearbyEnemies(entityFromUUID, lf, ff * 16, false)){
+						if(ent instanceof FallingBlock) return;;
 						int time = (int) (5 * 20 + ff * 3);
 						ent.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, time, 0));
 						ent.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, time, 0));
@@ -251,11 +253,14 @@ public class CustomBowsListener implements Listener {
 						
 						ent.damage(5, entityFromUUID);;
 						ent.setFallDistance(0);
-						ent.setVelocity(Vector.getRandom().multiply(1.1));
+						Vector vel = Utils.CrearVector(l, ent.getEyeLocation()).normalize().multiply(1.2);
+						vel.setY(0.5);
+						ent.setVelocity(vel);
 					}
 			    }
-			}.start(2 * 10);
+			}.start(7);
 			for(LivingEntity ent : Utils.getNearbyEnemies(p, l, f * 10, false)){
+				if(ent instanceof FallingBlock) return;;
 				int time = (int) (10 * 20 + f * 3);
 				ent.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, time, 0));
 				ent.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, time, 0));
@@ -264,7 +269,9 @@ public class CustomBowsListener implements Listener {
 				
 				ent.damage(7, p);
 				ent.setFireTicks(20 * 2);
-				ent.setVelocity(Vector.getRandom().normalize());
+				Vector vel = Utils.CrearVector(l, ent.getEyeLocation()).normalize().multiply(2.1);
+				vel.setY(0.5);
+				ent.setVelocity(vel);
 			}
 			
 			world.strikeLightningEffect(l);
@@ -278,7 +285,7 @@ public class CustomBowsListener implements Listener {
 		
 		}
 	}
-	private void ultraStrike(Location l, float f, LivingEntity p) {
+	private void ultraStrike(Location l, float f, LivingEntity p, float height) {
 		World world = l.getWorld();
 		Location location = world.getHighestBlockAt(l.getBlockX(), l.getBlockZ()).getLocation();
 		ArrayList<Block> finalLocs = new ArrayList<Block>();
@@ -289,13 +296,14 @@ public class CustomBowsListener implements Listener {
 				if (b.getPistonMoveReaction() == PistonMoveReaction.BREAK || TurretUtils.getTurretAt(b.getLocation()) != null){
 					b = b.getRelative(BlockFace.DOWN); 
 				}
+				if(b.getPistonMoveReaction() == PistonMoveReaction.BLOCK || b.getPistonMoveReaction() == PistonMoveReaction.IGNORE) continue;
 				finalLocs.add(b);
-				
-				
 			}
 			for (Block b : finalLocs) {
-				
+
 				//b.setType(Material.DIAMOND_BLOCK);
+				if (b.getType() == Material.BEDROCK){continue;};
+				if (b.getPistonMoveReaction() == PistonMoveReaction.BLOCK || b.getPistonMoveReaction() == PistonMoveReaction.IGNORE){continue;};
 				if (b.getType() == Material.WOOD){b.setType(Material.COBBLESTONE); continue;};
 				if (b.getType() == Material.LOG){b.setType(Material.STONE); continue;};
 				if(b.getType() != Material.AIR){
@@ -307,21 +315,17 @@ public class CustomBowsListener implements Listener {
 						}
 					}
 					
-					float x = (float) -1 + (float) (Math.random() * ((1 - -1) + 0));
-					float y = (float) -2 + (float) (Math.random() * ((2 - -2) + 0));
-					float z = (float) -1 + (float) (Math.random() * ((1 - -1) + 0));
-
 					@SuppressWarnings("deprecation")
 					FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(
-							b.getLocation().add(new Vector(0, 1.5 ,0)), b.getType(), b.getData());
-					fallingBlock.setDropItem(false);
-					Vector vr = new Vector(x, y, z);
+							b.getLocation().add(new Vector(0.5, 1.5 ,0.5)), b.getType(), b.getData());
+					fallingBlock.setDropItem(true);
+					fallingBlock.setHurtEntities(true);
 					//fallingBlock.setVelocity(Utils.CrearVector(l, location).setY(0).add(vr));
-					fallingBlock.setVelocity(new Vector (0, 1, 0));
+					fallingBlock.setVelocity(new Vector (0, height, 0));
 					b.setType(Material.AIR);
 				}
 			}
-			world.strikeLightningEffect(location);
+			//world.strikeLightningEffect(location);
 		} catch (Exception e) {
 			
 		}
@@ -463,6 +467,7 @@ public class CustomBowsListener implements Listener {
 				}
 				int time = (int) (20 * 6 * f);
 				damaged.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, time * 2, 0));
+				damaged.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, time, 0));
 				if (damaged instanceof Player){
 					((Player)damaged).playSound(damager.getLocation(), Sound.ENTITY_PLAYER_BURP, 1, 0.5F);
 					time = time / 2;
@@ -488,7 +493,7 @@ public class CustomBowsListener implements Listener {
 				damaged.teleport(tpL);
 				Block gblock = damaged.getLocation().add(0, 2, 0).getBlock();
 				//if (gblock.getPistonMoveReaction() == PistonMoveReaction.BREAK){
-					gblock.setType(Material.GOLD_BLOCK);
+					gblock.setType(Material.PACKED_ICE);
 					Utils.BreakBlockLater(gblock, time, false);
 				//}
 				
@@ -511,11 +516,27 @@ public class CustomBowsListener implements Listener {
 					lvl = 1;
 				}
 				damaged.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, t, lvl, false));
-				damager.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, t / 4, 0, false));
-				damaged.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, t / 3, 0, false));
+				damager.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, t, 0, false));
 			}
 			break;
 		case ELECTRIC:
+			Vector line = Utils.CrearVector(damager.getEyeLocation(), damaged.getEyeLocation());
+			line.setY(0);
+			line.normalize();
+			line.multiply(16 + f * 16);
+			line.setY(0);
+			Location destination = damaged.getLocation().add(line).add(0, 2, 0);
+			Block destinationBlock = destination.getBlock();
+			List<Block> blocks = Utils.getCuboidAround(destination, 1, 0, 1).getBlocks();
+			blocks.add(destinationBlock.getRelative(BlockFace.UP));
+			if(!blocks.stream().allMatch(b -> b.getPistonMoveReaction() == PistonMoveReaction.BREAK || b.getType() == Material.AIR))break;
+			damaged.teleport(destination);
+			Vector newLine = Utils.CrearVector(damager.getEyeLocation(), damaged.getLocation().clone().add(0.5, 0, 0.5));
+			List<Vector> lineVects = Utils.getLine(damager.getLocation().clone().add(0.5, 1, 0.5).toVector(), newLine.clone().normalize(), (int) newLine.length());
+			lineVects.forEach(v -> {
+				world.playEffect(v.toLocation(world), Effect.CLOUD, 4);
+				world.playEffect(v.toLocation(world), Effect.CLOUD, 3);
+			});
 			break;
 		case MULTI:
 			break;
