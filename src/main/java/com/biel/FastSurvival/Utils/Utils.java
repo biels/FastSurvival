@@ -1,6 +1,7 @@
 package com.biel.FastSurvival.Utils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.biel.FastSurvival.Translations.LanguageStrings;
 import org.bukkit.Bukkit;
@@ -30,9 +31,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.nbt.CommonTag;
-import com.bergerkiller.bukkit.common.nbt.CommonTagCompound;
-import com.bergerkiller.bukkit.common.utils.NBTUtil;
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
 import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
@@ -553,7 +551,7 @@ public class Utils {
         if (chest == null) {
             return;
         }
-        if (chest.getType() != Material.CHEST) {
+        if (chest.getType() != Material.CHEST && chest.getType() != Material.TRAPPED_CHEST) {
             return;
         }
         Chest ch = (Chest) chest.getState();
@@ -731,4 +729,48 @@ public class Utils {
         }
         return list;
     }
+
+    public static List<Vector> getLine(Vector origin, Vector direction, int length){
+        ArrayList<Vector> l = new ArrayList<>();
+        Vector current = origin.clone();
+        for (int i = 0; i < length; i++) {
+            l.add(current.clone());
+            current.add(direction);
+        }
+        return l;
+    }
+    public static List<Vector> get2dRectangleAround(Vector center, Vector up, Vector front, int xw, int zw){
+        ArrayList<Vector> l = new ArrayList<>();
+        up = up.normalize();
+        front = front.normalize();
+        //Vector corner = center.clone().add(new Vector(-1 * xw / 2, 0, -1 * zw / 2));
+        Vector direction = front.clone().crossProduct(up).normalize().multiply(-1);
+        Vector corner = center.clone().add(front.clone().multiply(-1 * zw / 2)).add(direction.clone().multiply(-1 * xw/2));
+        Vector current = corner.clone();
+        for (int i = 0; i < 4; i++) {
+            int w = i % 2 == 0 ? xw : zw;
+            for (int j = 0; j < w; j++) {
+                current.add(direction);
+                l.add(current.clone());
+            }
+            direction = direction.crossProduct(up);
+        }
+        return l.stream().distinct().collect(Collectors.toList());
+    }
+    public static Vector rotateVectorCC(Vector vec, Vector axis, double theta) {
+        double x = vec.getX();
+        double y = vec.getY();
+        double z = vec.getZ();
+        double u = axis.getX();
+        double v = axis.getY();
+        double w = axis.getZ();
+        double xPrime = u * (u * x + v * y + w * z) * (1.0D - Math.cos(theta)) + x * Math.cos(theta) + (-w * y + v * z) * Math.sin(theta);
+        double yPrime = v * (u * x + v * y + w * z) * (1.0D - Math.cos(theta)) + y * Math.cos(theta) + (w * x - u * z) * Math.sin(theta);
+        double zPrime = w * (u * x + v * y + w * z) * (1.0D - Math.cos(theta)) + z * Math.cos(theta) + (-v * x + u * y) * Math.sin(theta);
+        return new Vector(xPrime, yPrime, zPrime);
+    }
+    public static ItemStack getWitherSkull(){
+        return new ItemStack(Material.SKULL_ITEM, 1, (byte) 1);
+    }
+
 }

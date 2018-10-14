@@ -3,9 +3,9 @@ package com.biel.FastSurvival;
 import java.util.ArrayList;
 
 import com.biel.FastSurvival.Dimensions.Moon.*;
+import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.OverworldStructures.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Difficulty;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -18,44 +18,24 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Vine;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.controller.EntityController;
-import com.bergerkiller.bukkit.common.entity.CommonEntity;
-import com.bergerkiller.bukkit.common.entity.type.CommonItem;
-import com.bergerkiller.bukkit.common.entity.type.CommonLivingEntity;
-import com.bergerkiller.bukkit.common.entity.type.CommonPlayer;
-import com.bergerkiller.bukkit.common.events.EntityAddEvent;
-import com.biel.FastSurvival.Bows.BowRecipeGenerator;
-import com.biel.FastSurvival.Bows.BowUtils;
-import com.biel.FastSurvival.Bows.BowUtils.BowType;
-import com.biel.FastSurvival.Bows.CustomBowsListener;
-import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
-import com.biel.FastSurvival.TerrainBoss.SlimeBossPopulator;
-import com.biel.FastSurvival.Turrets.OldTurret;
 import com.biel.FastSurvival.Utils.Utils;
 import com.biel.FastSurvival.Utils.WGUtils;
 
@@ -86,6 +66,9 @@ public class EventListener implements Listener {
             world.setGameRuleValue("doFireTick", "false");
             world.setDifficulty(Difficulty.NORMAL);
             world.setTime(15000);
+        }
+        if(Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)){
+            world.getPopulators().add(new ChestCorePopulator());
         }
     }
 
@@ -430,6 +413,7 @@ public class EventListener implements Listener {
         if (msg.length() > 0) {
             p.sendMessage(msg);
         }
+        p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
