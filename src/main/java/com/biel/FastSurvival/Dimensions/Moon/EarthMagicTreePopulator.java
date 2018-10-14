@@ -41,7 +41,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
 		//No sobreposar
 		Material ct = bCenter.getType();
-		if ((ct == Material.LEAVES || ct == Material.LEAVES_2)){Bukkit.broadcastMessage("Material: " + ct.name());return;}
+		if ((ct == Material.LEAVES || ct == Material.LEAVES_2)){return;}
 		int radius = 2; //Utils.NombreEntre(2, 5);
 		Cuboid sc = generateCenterCuboid(center, 41, radius);
 		for (Block b: sc.getBlocks()){

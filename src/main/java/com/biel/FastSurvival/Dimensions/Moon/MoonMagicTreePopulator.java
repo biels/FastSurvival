@@ -40,7 +40,7 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 		Location center = new Location(world, centerX, centerY, centerZ);
 		Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
 		//No sobreposar
-		if (bCenter.getType() != Material.STAINED_CLAY){Bukkit.broadcastMessage("Material: " + bCenter.getType().name());return;}
+		if (bCenter.getType() != Material.STAINED_CLAY){return;}
 		int radius = 2; //Utils.NombreEntre(2, 5);
 		Cuboid sc = generateCenterCuboid(center, 41, radius);
 		for (Block b: sc.getBlocks()){
