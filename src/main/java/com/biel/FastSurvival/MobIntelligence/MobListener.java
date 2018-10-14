@@ -102,7 +102,7 @@ public class MobListener implements Listener {
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
 				fet = true;
 			}
-			if (Utils.Possibilitat(7) && fet == false){
+			if (Utils.Possibilitat(8) && fet == false){
 				i = BowRecipeGenerator.getBow(BowType.ICY);
 				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.AQUA));
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 1));
@@ -516,7 +516,7 @@ public class MobListener implements Listener {
 						evt.getDrops().add(new ItemStack(Material.MAGMA_CREAM, 1));
 					break;
 				case ELECTRIC:
-					if (Utils.Possibilitat(52))
+					if (Utils.Possibilitat(30))
 						evt.getDrops().add(SpecialItemsUtils.getRandomSpecialItem(1));
 					if (Utils.Possibilitat(10))
 						evt.getDrops().add(new ItemStack(Material.DIAMOND, 1));
