@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.NetherStructures;
 
+import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
@@ -17,18 +18,20 @@ public class ChestCorePopulator extends BlockPopulator {
     NoiseGenerator ng;
     boolean first = false;
     int number = 0;
+    int attempts = 0;
     @Override
     public void populate(World world, Random random, Chunk source) {
-        if(source.getX() % 2 != 0 && source.getZ() % 2 == 0){
+//        Debug logic
+        //attempts++;
+        if((source.getX() + source.getZ()) % 2 == 0){
             return;
         }
-        if (!(random.nextInt(27) <= 1)) {
+        if (!(random.nextInt(30) <= 1)) {
             return;
         }
         ng = new SimplexNoiseGenerator(world.getSeed());
         int centerX = (source.getX() << 4) + random.nextInt(16);
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
-        int centerY = world.getHighestBlockYAt(centerX, centerZ);
         int xw = Utils.NombreEntre(11, 16);
         int zw = Utils.NombreEntre(18, 24);
         Location center = getFreeLocationAt(new Location(world, centerX, 0, centerZ));
@@ -49,6 +52,7 @@ public class ChestCorePopulator extends BlockPopulator {
         Vector up = new Vector(0, 1, 0);
         Vector front = new Vector(0, 0, 1);
         int num = Utils.NombreEntre(3,5);
+        if(Utils.Possibilitat(1)) num = 7;
         List<Vector> locs = new ArrayList<>();
         List<Vector> glocs = new ArrayList<>();
         for (int i = 0; i < num; i++) {
@@ -58,6 +62,7 @@ public class ChestCorePopulator extends BlockPopulator {
             up = Utils.rotateVectorCC(up.clone(), front.clone(), Math.PI / num);
         }
         int numRoots = Utils.NombreEntre(3, 6);
+        if(Utils.Possibilitat(1)) numRoots = 8;
         List<Vector> lowerVectors = locs.stream().filter(v -> v.getY() >= center.getY()).collect(Collectors.toList());
         List<Vector> vectorsWithinDistance = getVectorsWithinDistance(lowerVectors, center.toVector(), 10);
         Collections.shuffle(vectorsWithinDistance);
@@ -73,7 +78,7 @@ public class ChestCorePopulator extends BlockPopulator {
         List<Vector> base = Utils.getCuboidAround(center, 1, 0, 1).getBlocks().stream().map(b -> b.getLocation().toVector()).collect(Collectors.toList());
         locs.addAll(base);
         locs.forEach(v -> {
-            if (Utils.Possibilitat(1, 200)) return;
+            if (Utils.Possibilitat(1, 400)) return;
             if (Utils.Possibilitat(1, 150)) v.setY(v.getY() + -1);
             Material material = Material.NETHERRACK;
             if (Utils.Possibilitat(10)) material = Material.QUARTZ_ORE;
@@ -86,12 +91,13 @@ public class ChestCorePopulator extends BlockPopulator {
         });
         if (Utils.Possibilitat(38)) center.getBlock().setType(Material.TNT);
         generateChest(center);
-        if(number < 15)Bukkit.getOnlinePlayers().forEach(p -> {
-            p.teleport(center);
-            first = true;
-        });
-        number++;
-        Bukkit.broadcastMessage(number + "ena Pilotassa generada " + center.toVector().toBlockVector().toString());
+//        Debug logic
+//        if(number < 40)Bukkit.getOnlinePlayers().forEach(p -> {
+//            p.teleport(center);
+//            first = true;
+//        });
+//        number++;
+//        Bukkit.broadcastMessage(number + " D: " + number*100/(double)attempts);
     }
 
     void generateChest(Location center) {
@@ -117,8 +123,14 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.REDSTONE, 3));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.EXP_BOTTLE, 3));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.REDSTONE, 2));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.COCOA, 2));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.FLINT, 2));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.QUARTZ_BLOCK, 2));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 10));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 20));
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
+        if (Utils.Possibilitat(1)) it.add(SpecialItemsUtils.getRandomSpecialItem(1));
         if (Utils.Possibilitat(4)) it.add(Utils.getWitherSkull());
         Utils.fillChestRandomly(chest, it);
     }

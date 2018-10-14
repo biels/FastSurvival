@@ -413,7 +413,7 @@ public class EventListener implements Listener {
         if (msg.length() > 0) {
             p.sendMessage(msg);
         }
-        p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
+        //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
