@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.biel.FastSurvival.Dimensions.Moon.*;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
+import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
 import com.biel.FastSurvival.OverworldStructures.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -55,6 +56,7 @@ public class EventListener implements Listener {
             world.getPopulators().add(new EarthMagicTreePopulator());
             world.getPopulators().add(new HotAirBalloonPopulator());
             //world.getPopulators().add(new TreasurePopulator());
+            world.getPopulators().add(new NetherHutPopulator());
             world.setMonsterSpawnLimit(80);
         }
 
