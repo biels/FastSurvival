@@ -22,7 +22,7 @@ public class ChestCorePopulator extends BlockPopulator {
 //        Debug logic
         //attempts++;
         FindNetherStructureLocation findNetherStructureLocation = new FindNetherStructureLocation(world, random, source, false)
-                .invoke(Utils.NombreEntre(11, 16), Utils.NombreEntre(18, 24), 8);
+                .invoke(Utils.NombreEntre(11, 16), Utils.NombreEntre(18, 24), 8, true, 12);
         if (findNetherStructureLocation.notValid()) return;
         int xw = findNetherStructureLocation.getXw();
         int zw = findNetherStructureLocation.getZw();
@@ -100,6 +100,7 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.GOLD_SPADE));
         if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.BLAZE_POWDER));
         if (Utils.Possibilitat(5)) it.add(new ItemStack(Material.GHAST_TEAR));
+        if (Utils.Possibilitat(3)) it.add(new ItemStack(Material.DIAMOND_PICKAXE));
         if (Utils.Possibilitat(5)) it.add(new ItemStack(Material.MAGMA_CREAM));
         if (Utils.Possibilitat(5)) it.add(new ItemStack(Material.BEETROOT_SOUP));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.BAKED_POTATO));
@@ -112,10 +113,12 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.QUARTZ_BLOCK, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 10));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 20));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 20));
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(1)) it.add(SpecialItemsUtils.getRandomSpecialItem(1));
         if (Utils.Possibilitat(4)) it.add(Utils.getWitherSkull());
+        if (Utils.Possibilitat(1, 500)) it.add(new ItemStack(Material.ELYTRA));
         Utils.fillChestRandomly(chest, it);
     }
     public static Location getFreeLocationAt(Location loc){

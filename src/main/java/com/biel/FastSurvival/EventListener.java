@@ -56,7 +56,6 @@ public class EventListener implements Listener {
             world.getPopulators().add(new EarthMagicTreePopulator());
             world.getPopulators().add(new HotAirBalloonPopulator());
             //world.getPopulators().add(new TreasurePopulator());
-            world.getPopulators().add(new NetherHutPopulator());
             world.setMonsterSpawnLimit(80);
         }
 
@@ -71,6 +70,8 @@ public class EventListener implements Listener {
         }
         if(Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)){
             world.getPopulators().add(new ChestCorePopulator());
+            world.getPopulators().add(new NetherHutPopulator());
+
         }
     }
 

@@ -45,7 +45,7 @@ public class FindNetherStructureLocation {
         return center;
     }
 
-    public FindNetherStructureLocation invoke(int xw, int zw, int minFilledCount) {
+    public FindNetherStructureLocation invoke(int xw, int zw, int minFilledCount, boolean liftCenter, int chance) {
         if(debug){
             if (!(random.nextInt(60) <= 1)) {notValid = true; return this;}
             int centerX = (source.getX() << 4) + random.nextInt(16);
@@ -60,7 +60,7 @@ public class FindNetherStructureLocation {
             notValid = true;
             return this;
         }
-        if (!(random.nextInt(30) <= 1)) {
+        if (!(random.nextInt(chance) <= 1)) {
             notValid = true;
             return this;
         }
@@ -73,8 +73,10 @@ public class FindNetherStructureLocation {
             notValid = true;
             return this;
         }
-        Vector offset = new Vector(0.5, (this.xw / 2.0) + 0.5, 0.5);
+        Vector offset = new Vector(0.5, 0.5, 0.5);
         center.add(offset);
+        Vector liftOffset = new Vector(0, (this.xw / 2.0) , 0);
+        if(liftCenter)center.add(liftOffset);
         Location ensureAir = center.clone().add(0, this.xw + 1, 0);
         if(ensureAir.getBlock().getType() != Material.AIR) {
             notValid = true;
