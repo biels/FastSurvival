@@ -18,7 +18,7 @@ public class GoldenBersekSwordItem extends RawBersekDamageBoosterItem {
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.GOLD_SWORD;
+		return Material.LEGACY_GOLD_SWORD;
 	}
 	@Override
 	public int getTier() {

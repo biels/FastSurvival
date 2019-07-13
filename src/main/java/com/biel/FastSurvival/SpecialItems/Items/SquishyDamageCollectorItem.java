@@ -18,7 +18,7 @@ public class SquishyDamageCollectorItem extends RawDamageCollectorItem {
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.STAINED_GLASS;
+		return Material.LEGACY_STAINED_GLASS;
 	}
 	@Override
 	public Byte getData() {

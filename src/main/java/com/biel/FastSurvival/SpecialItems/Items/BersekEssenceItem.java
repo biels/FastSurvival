@@ -18,7 +18,7 @@ public class BersekEssenceItem extends RawBersekDamageBoosterItem {
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.INK_SACK;
+		return Material.LEGACY_INK_SACK;
 	}
 	@Override
 	public Byte getData() {

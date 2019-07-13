@@ -18,7 +18,7 @@ import com.biel.FastSurvival.FastSurvival;
 public class RecallListener implements Listener {
 //Link
 //Teleport
-//Exemple - Material.WATCH
+//Exemple - Material.LEGACY_WATCH
 	/* Recall - Linked
 	 * X: 605, Y: 72, Z: 562
 	 * Cast: 5s, Idle: 12s

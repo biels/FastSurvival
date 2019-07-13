@@ -2,10 +2,7 @@ package com.biel.FastSurvival.Dimensions.Moon;
 
 import java.util.Random;
 
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
@@ -29,8 +26,9 @@ public class MoonCraterPopulator extends BlockPopulator {
             Vector center = new BlockVector(centerX, centerY, centerZ);
             Location lcenter = new Location(world, centerX, centerY, centerZ);
             Block bCenter = center.toLocation(world).getBlock().getRelative(BlockFace.DOWN);
+            bCenter.setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
     		//No sobreposar
-    		if (bCenter.getType() != Material.STAINED_CLAY){return;}
+    		if (bCenter.getType() != Material.LEGACY_STAINED_CLAY){return;}
 
             //--
             int radius = 0;
@@ -47,7 +45,7 @@ public class MoonCraterPopulator extends BlockPopulator {
                         Vector position = center.clone().add(new Vector(x, y, z));
 
                         if (center.distance(position) <= radius + 0.5) {
-                            world.getBlockAt(position.toLocation(world)).setType(Material.AIR);
+                            world.getBlockAt(position.toLocation(world)).setBlockData(Material.BEDROCK.createBlockData(), false);
                         }
                     }
                 }
@@ -82,7 +80,8 @@ public class MoonCraterPopulator extends BlockPopulator {
                         Material mf = m;
                         if (Utils.Possibilitat(c)){mf = Material.STONE;}
                         if (center.distance(position) <= radius + 0.5) {
-                        	world.getBlockAt(position.toLocation(world)).setType(mf);
+
+                        	world.getBlockAt(position.toLocation(world)).setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
                         }
                     }
                 }

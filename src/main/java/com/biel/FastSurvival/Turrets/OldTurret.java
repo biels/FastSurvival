@@ -339,10 +339,10 @@ public class OldTurret implements Listener, Serializable {
 			loc.getBlock().setType(mat);
 			TurretBlocks.add(loc.clone());
 			loc.setY(loc.getY() + 1);
-			loc.getBlock().setType(Material.NETHER_FENCE);
+			loc.getBlock().setType(Material.LEGACY_NETHER_FENCE);
 			TurretBlocks.add(loc.clone());
 			loc.setY(loc.getY() + 1);
-			loc.getBlock().setType(Material.REDSTONE_TORCH_ON);
+			loc.getBlock().setType(Material.LEGACY_REDSTONE_TORCH_ON);
 			TurretBlocks.add(loc.clone());
 			resetArmorCD();
 			built = true;
@@ -444,7 +444,7 @@ public class OldTurret implements Listener, Serializable {
 				if (block.getType() != Material.AIR && block.getPistonMoveReaction() != PistonMoveReaction.BREAK){
 					continue;
 				}
-				block.setType(Material.WALL_SIGN);
+				block.setType(Material.LEGACY_WALL_SIGN);
 				Sign sign = (Sign)block.getState();
 				if (creador != null){
 					sign.setLine(1,creador.getName());
@@ -455,7 +455,7 @@ public class OldTurret implements Listener, Serializable {
 
 				sign.update();
 
-				block.setData(dirs.get(faces.indexOf(face)));
+//				block.setData(dirs.get(faces.indexOf(face)));
 				ArmorBlocks.add(block.getLocation());
 			}
 			h = h - 1;
@@ -641,7 +641,7 @@ public class OldTurret implements Listener, Serializable {
 
 					arrow.setVelocity(dir.multiply(3.4));
 
-					world.playSound(spawnpoint, Sound.ENTITY_IRONGOLEM_HURT, 1, 0.3F);
+					world.playSound(spawnpoint, Sound.ENTITY_IRON_GOLEM_HURT, 1, 0.3F);
 					Learn(xpPerTir);
 					tirs = tirs + 1;
 					tirsquim = tirsquim + 1;
@@ -761,10 +761,10 @@ public class OldTurret implements Listener, Serializable {
 			hpEscut = hpEscut - damage;
 			Boolean armorSate = CheckArmor();
 			if (armorSate == false){
-				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_BREAK_DOOR_WOOD, 3F, 1F);
+				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 3F, 1F);
 				resetArmorCD();
 			}else{
-				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_ATTACK_DOOR_WOOD, 3F, 1F);
+				world.playSound(loceffect, Sound.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 3F, 1F);
 			}
 
 		}else{
@@ -824,7 +824,7 @@ public class OldTurret implements Listener, Serializable {
 				while(iterator.hasNext()) {
 					hitBlock = iterator.next();
 					// hitBlock.breakNaturally();
-					if(hitBlock.getTypeId()!=0) //Check all non-solid blockid's here.
+					if(hitBlock.getType().getId()!=0) //Check all non-solid blockid's here.
 					{ break;}
 				}
 				//land.getBlock().setType(Material.IRON_BLOCK);
@@ -929,7 +929,7 @@ public class OldTurret implements Listener, Serializable {
 		}
 		if (evt.getAction() == Action.RIGHT_CLICK_BLOCK){
 			if (containsTurretBlock){
-				if (plyr.getItemInHand().getType() == Material.EXP_BOTTLE){
+				if (plyr.getItemInHand().getType() == Material.LEGACY_EXP_BOTTLE){
 					Learn(1000);
 					evt.setCancelled(true);
 					return;
@@ -963,14 +963,14 @@ public class OldTurret implements Listener, Serializable {
 				case DIAMOND_PICKAXE:
 					dmg = 4;
 					break;
-				case DIAMOND_SPADE:
+				case LEGACY_DIAMOND_SPADE:
 					dmg = 3;
 					break;
 				case DIAMOND_SWORD:
 					dmg = 7;
 					break;
 
-				case GOLD_AXE:
+				case LEGACY_GOLD_AXE:
 					dmg = 6;
 					break;
 				case IRON_SWORD:
@@ -979,7 +979,7 @@ public class OldTurret implements Listener, Serializable {
 				case STONE_SWORD:
 					dmg = 4;
 					break;
-				case WOOD_SWORD:
+				case LEGACY_WOOD_SWORD:
 					dmg = 3;
 					break;
 				default:
@@ -995,50 +995,51 @@ public class OldTurret implements Listener, Serializable {
 	@EventHandler
 	public void inventoryclick(InventoryClickEvent evt){
 		//Bukkit.broadcastMessage(evt.getAction().name());
-		if (evt.getInventory().getName().equals(invString)){
-			if (evt.getRawSlot() < 9 && evt.getRawSlot() > -1){ // the top inv rawslots are numbered 0 to 53 starting top left, -999 is returned if u click outside the inv view screen
-				ItemStack itemclicked = evt.getCurrentItem();
-				ItemStack cursor = evt.getCursor();
-				evt.setCancelled(true);
-
-
-				if (cursor.getTypeId() == 0){ //if player has no item on the cursor
-					Player plyr = (Player) evt.getWhoClicked();
-					World world = plugin.getServer().getWorlds().get(0);
-
-					Location lastTurret;
-					if (isAdmin){
-						lastTurret = plyr.getLocation();
-					}else{
-						lastTurret = plugin.pTemp.ObtenirLocation("LastTurretOpen" + plyr.getName());
-					}
-
-					if (ContainsTurretBlock(lastTurret) || isAdmin){
-						//do your stuff here
-						Millora mill = Millores.get(evt.getRawSlot());
-
-						if (mill.possibleUpgrade()){
-							if (evt.getAction() == InventoryAction.PICKUP_ALL){
-								mill.lvlUp();
-
-							}
-							if (evt.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
-								mill.upgradeMaximum();
-
-							}
-							if (anyUpgradePossible() == false){
-								plyr.closeInventory();
-							}else{
-								openOrRefreshInventory(plyr);
-							}
-
-						}
-
-					}
-
-				}
-			}
-		}
+		// TODO Disabled for inv.getName() not available
+//		if (evt.getInventory().getName().equals(invString)){
+//			if (evt.getRawSlot() < 9 && evt.getRawSlot() > -1){ // the top inv rawslots are numbered 0 to 53 starting top left, -999 is returned if u click outside the inv view screen
+//				ItemStack itemclicked = evt.getCurrentItem();
+//				ItemStack cursor = evt.getCursor();
+//				evt.setCancelled(true);
+//
+//
+//				if (cursor.getType().getId() == 0){ //if player has no item on the cursor
+//					Player plyr = (Player) evt.getWhoClicked();
+//					World world = plugin.getServer().getWorlds().get(0);
+//
+//					Location lastTurret;
+//					if (isAdmin){
+//						lastTurret = plyr.getLocation();
+//					}else{
+//						lastTurret = plugin.pTemp.ObtenirLocation("LastTurretOpen" + plyr.getName());
+//					}
+//
+//					if (ContainsTurretBlock(lastTurret) || isAdmin){
+//						//do your stuff here
+//						Millora mill = Millores.get(evt.getRawSlot());
+//
+//						if (mill.possibleUpgrade()){
+//							if (evt.getAction() == InventoryAction.PICKUP_ALL){
+//								mill.lvlUp();
+//
+//							}
+//							if (evt.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY){
+//								mill.upgradeMaximum();
+//
+//							}
+//							if (anyUpgradePossible() == false){
+//								plyr.closeInventory();
+//							}else{
+//								openOrRefreshInventory(plyr);
+//							}
+//
+//						}
+//
+//					}
+//
+//				}
+//			}
+//		}
 
 	}
 
@@ -1084,12 +1085,12 @@ public class OldTurret implements Listener, Serializable {
 			break;
 			case QUÍMICA:  name = "Química";
 			Description = "Habilitats amb pocions";
-			material = Material.BREWING_STAND_ITEM;
+			material = Material.LEGACY_BREWING_STAND_ITEM;
 			Cost = 500;
 			break;
 			case MECÀNICA:  name = "Mecànica avançada";
 			Description = "Habilitats especials cada 10 tirs";
-			material = Material.PISTON_BASE;
+			material = Material.LEGACY_PISTON_BASE;
 			Cost = 50;
 			max = 5;
 			break;

@@ -22,7 +22,7 @@ public class ToolRecipeGenerator {
 		ms.addAll(getFromKb("_AXE"));
 		ms.addAll(getFromKb("_PICKAXE"));
 		ms.addAll(getFromKb("_SPADE"));
-		ms.add(Material.WOOD_SWORD);
+		ms.add(Material.LEGACY_WOOD_SWORD);
 		for (Material m : ms){
 			ShapelessRecipe sr= new ShapelessRecipe(Utils.setItemLore(new ItemStack(m), ChatColor.YELLOW + "Automatic"));
 			//ShapelessRecipe sr= new ShapelessRecipe(new ItemStack(m));

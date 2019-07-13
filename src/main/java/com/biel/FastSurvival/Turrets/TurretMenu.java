@@ -6,21 +6,21 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
 
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Turrets.TurretLogic.AttackGroups;
 import com.biel.FastSurvival.Utils.IconMenu;
+import org.bukkit.material.Wool;
 
 public class TurretMenu {
 	public static void displayMenu(Player p, final int iId){
 		Turret t = new Turret(iId);
 		final String name = p.getName();
 		Material switchM = Material.LEVER;
-		Material mPlayers = Material.EYE_OF_ENDER;
+		Material mPlayers = Material.LEGACY_EYE_OF_ENDER;
 		String switchS = "off";
 		String plS = "on";
-		if (t.d.getEnabled()){switchM = Material.REDSTONE_TORCH_ON; switchS = "on";}
+		if (t.d.getEnabled()){switchM = Material.LEGACY_REDSTONE_TORCH_ON; switchS = "on";}
 		if (t.d.getNoPlayers()){mPlayers = Material.ENDER_PEARL; plS = "off";}
 
 		IconMenu menu = new IconMenu("Turret menu", 9, new IconMenu.OptionClickEventHandler() {
@@ -74,7 +74,7 @@ public class TurretMenu {
 			@Override
 			public void onOptionClick(IconMenu.OptionClickEvent event) {
 				Turret t = new Turret(iId);
-				event.getPlayer().sendMessage("Desactivat de moment. Aquesta acció no és possible.");
+				event.getPlayer().sendMessage("Desactivat de moment. Aquesta acciï¿½ no ï¿½s possible.");
 				event.setWillClose(true);
 				event.setWillDestroy(true);
 			}
@@ -108,7 +108,7 @@ public class TurretMenu {
 		int i = 0;
 		for(String s : t.d.getFriendlyPlayers()){
 			Wool w = new Wool(DyeColor.LIME);
-			menu.setOption(i, new ItemStack(Material.WOOL, 1, (short) 0, w.getData()), s, "Click to remove");
+			menu.setOption(i, new ItemStack(Material.LEGACY_WOOL, 1, (short) 0, w.getData()), s, "Click to remove");
 			i++;
 		}
 		menu.open(p);
@@ -135,7 +135,7 @@ public class TurretMenu {
 		int i = 0;
 		for(String s : t.getNearbyNonFriendlySuggestions()){
 			Wool w = new Wool(DyeColor.YELLOW);
-			menu.setOption(i, new ItemStack(Material.WOOL, 1, (short) 0, w.getData()), s, "Click to add");
+			menu.setOption(i, new ItemStack(Material.LEGACY_WOOL, 1, (short) 0, w.getData()), s, "Click to add");
 			i++;
 		}
 		menu.open(p);

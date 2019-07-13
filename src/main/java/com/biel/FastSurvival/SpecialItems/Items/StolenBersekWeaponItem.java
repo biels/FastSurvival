@@ -18,7 +18,7 @@ public class StolenBersekWeaponItem extends RawBersekDamageBoosterItem {
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.GOLD_PICKAXE;
+		return Material.LEGACY_GOLD_PICKAXE;
 	}
 	@Override
 	public int getTier() {

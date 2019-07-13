@@ -34,7 +34,7 @@ public class CloudPopulator extends BlockPopulator {
         int spawnerChance = 400; // Spawners are generated at a chance of 12/400
         Material matWalls = Material.NETHERRACK;
         Material matFloor = Material.SOUL_SAND;
-        Material matDecor = Material.WEB;
+        Material matDecor = Material.LEGACY_WEB;
 
         //Editing is over
         int lengthH = sizeX / 2;
@@ -51,7 +51,7 @@ public class CloudPopulator extends BlockPopulator {
         int maxY = centerY + heightH;
         int minZ = centerZ - widthH;
         int maxZ = centerZ + widthH;
-        Boolean chained = random.nextBoolean();
+        boolean chained = random.nextBoolean();
         int MaxLength = 3 + random.nextInt(4);
        // Bukkit.broadcastMessage(Integer.toString(centerY));
         //
@@ -59,16 +59,16 @@ public class CloudPopulator extends BlockPopulator {
         Location l1 = new Location(world, centerX  + offX, 60, centerZ);
         int ycomp = world.getHighestBlockYAt(l1);
         Biome b = l1.getBlock().getBiome();
-        Boolean snow = false;
-		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.BEACHES || b == Biome.TAIGA) || b == Biome.ICE_FLATS){
+        boolean snow = false;
+		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.BEACH || b == Biome.TAIGA) || b == Biome.ICE_SPIKES){
         	return;
         }
-		if (b == Biome.TAIGA_COLD || b == Biome.ICE_FLATS){
+		if (b == Biome.TAIGA || b == Biome.ICE_SPIKES){
 			snow = true;
 		}
 		Location lp = new Location(world, centerX  + offX, ycomp, centerZ);
 		Material type = lp.getBlock().getRelative(BlockFace.DOWN).getType();
-		if (type.isTransparent() || !type.isSolid() || type == Material.LEAVES || type == Material.LEAVES_2){
+		if (type.isTransparent() || !type.isSolid() || type == Material.LEGACY_LEAVES || type == Material.LEGACY_LEAVES_2){
 			return;
 		}
 		Location lpf = new Location(world, centerX  + offX, ycomp, centerZ + MaxLength);
@@ -87,14 +87,15 @@ public class CloudPopulator extends BlockPopulator {
         	faces.add(BlockFace.SELF);
         	for (BlockFace f : faces){
         		Block relative = blk.getRelative(f);
-        		relative.setData((byte) 8);
-				relative.setType(Material.LOG);
-        		//blk.getRelative(f, 2).setType(Material.LOG);
+        		// TODO Set horizontal data
+//        		relative.setData((byte) 8);
+				relative.setType(Material.LEGACY_LOG);
+        		//blk.getRelative(f, 2).setType(Material.LEGACY_LOG);
 				if (chained){
 					for (BlockFace f2 : faces){
 						Block relative2 = relative.getRelative(f2);
 						if (relative2.getType() == Material.AIR || relative2.getType() == Material.GRASS){
-							relative2.setType(Material.RAILS);
+							relative2.setType(Material.LEGACY_RAILS);
 						}
 						
 					}

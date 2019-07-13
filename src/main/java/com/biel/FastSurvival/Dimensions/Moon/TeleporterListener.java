@@ -77,17 +77,17 @@ public class TeleporterListener implements Listener {
 		int cBlock = 0;
 		for(Block b : blocks){
 			Material t = b.getType();
-			if(t == Material.WOOD_BUTTON){wButtons++;}
+			if(t == Material.LEGACY_WOOD_BUTTON){wButtons++;}
 			if(t == Material.IRON_BLOCK){iBlocks++;}
-			if(t == Material.IRON_FENCE){iBars++;}
+			if(t == Material.LEGACY_IRON_FENCE){iBars++;}
 			if(t == Material.DIAMOND_BLOCK){dBlocks++;}
 			if(t == Material.GLASS){gBlocks++;}
-			if(t == Material.REDSTONE_LAMP_ON){glowBlocks++;}
-			if(t == Material.IRON_PLATE){iPlate++;}
-			if(t == Material.NETHER_FENCE){nFence++;}
+			if(t == Material.LEGACY_REDSTONE_LAMP_ON){glowBlocks++;}
+			if(t == Material.LEGACY_IRON_PLATE){iPlate++;}
+			if(t == Material.LEGACY_NETHER_FENCE){nFence++;}
 			if(t == Material.FURNACE){oFurnance++;}
-			if(t == Material.REDSTONE_TORCH_ON){tTorch++;}
-			if(t == Material.REDSTONE_TORCH_OFF){tTorchOff++;}
+			if(t == Material.LEGACY_REDSTONE_TORCH_ON){tTorch++;}
+			if(t == Material.LEGACY_REDSTONE_TORCH_OFF){tTorchOff++;}
 			if(t == Material.REDSTONE_BLOCK){rBlock++;}
 			if(t == Material.COAL_BLOCK){cBlock++;}
 			if(t == Material.GOLD_BLOCK){cBlock++;}

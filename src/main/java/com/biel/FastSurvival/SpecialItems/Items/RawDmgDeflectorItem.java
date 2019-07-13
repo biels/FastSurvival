@@ -24,7 +24,7 @@ public class RawDmgDeflectorItem extends SpecialItem{
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.STAINED_GLASS;
+		return Material.LEGACY_STAINED_GLASS;
 	}
 	@Override
 	public String getDescription(SpecialItemData d) {
@@ -83,7 +83,7 @@ public class RawDmgDeflectorItem extends SpecialItem{
 				
 				evt.setCancelled(true);
 				//Play loaded effect
-				p.playSound(p.getEyeLocation(), Sound.ENTITY_IRONGOLEM_ATTACK, 0.5F, 4F);
+				p.playSound(p.getEyeLocation(), Sound.ENTITY_IRON_GOLEM_ATTACK, 0.5F, 4F);
 			}
 			d.setValue(newValue);
 

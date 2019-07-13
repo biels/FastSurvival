@@ -30,28 +30,28 @@ public class BuilderWandUtils {
 	public static void recipeWithGold() {
 		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
 		r.addIngredient(Material.GOLD_INGOT);
-		r.addIngredient(Material.REDSTONE_TORCH_ON);
+		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static void recipeWithIce() {
 		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
 		r.addIngredient(Material.ICE);
-		r.addIngredient(Material.REDSTONE_TORCH_ON);
+		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static void recipeWithDiamond() {
 		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
 		r.addIngredient(Material.DIAMOND);
-		r.addIngredient(Material.REDSTONE_TORCH_ON);
+		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static ItemStack getWandItem(){
-		ItemStack i = Utils.setItemName(new ItemStack(Material.REDSTONE_TORCH_ON), ChatColor.YELLOW + "Builder's wand");
+		ItemStack i = Utils.setItemName(new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON), ChatColor.YELLOW + "Builder's wand");
 		i.addUnsafeEnchantment(Enchantment.DIG_SPEED, 3);
 		return i;
 	}
 	public static Boolean isWandItem(ItemStack i){
-		if (i.getType() != Material.REDSTONE_TORCH_ON){return false;}
+		if (i.getType() != Material.LEGACY_REDSTONE_TORCH_ON){return false;}
 		if (i.getEnchantments().size() >= 1){
 			return true;
 		}
@@ -83,7 +83,7 @@ public class BuilderWandUtils {
 			p.updateInventory();
 		}
 		toSet.setType(orig.getType());
-		toSet.setData(orig.getData());
+		toSet.setBlockData(orig.getBlockData());
 		return true;
 	}
 	public static void extrudeSelectedBlocks(Block cblk, BlockFace face, Player p, int depth){

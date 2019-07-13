@@ -112,7 +112,7 @@ public class MoonListener implements Listener{
 		World w = b.getWorld();
 		if (MoonUtils.IsMoon(w)){
 			//--
-			if(b.getType() == Material.LEAVES && b.getLocation().getBlockY() > 80){
+			if(b.getType() == Material.LEGACY_LEAVES && b.getLocation().getBlockY() > 80){
 				evt.setCancelled(true);
 			}
 			

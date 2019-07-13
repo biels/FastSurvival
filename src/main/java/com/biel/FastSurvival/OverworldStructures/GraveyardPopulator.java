@@ -29,7 +29,7 @@ public class GraveyardPopulator extends BlockPopulator {
 		Location center = new Location(world, centerX, centerY, centerZ);
 		
 		Material tc = center.getBlock().getRelative(BlockFace.DOWN).getType();
-		if (tc == Material.LEAVES || tc == Material.LEAVES_2 || tc == Material.WATER || tc == Material.WOOD || tc == Material.LAVA || tc == Material.LOG){
+		if (tc == Material.LEGACY_LEAVES || tc == Material.LEGACY_LEAVES_2 || tc == Material.WATER || tc == Material.LEGACY_WOOD || tc == Material.LAVA || tc == Material.LEGACY_LOG){
 			return;
 		}
 		
@@ -71,8 +71,8 @@ public class GraveyardPopulator extends BlockPopulator {
 					//1 as is
 					if (intStep == 2 || intStep == 3){
 						if (!b.getRelative(BlockFace.DOWN).getType().isSolid()){break;}
-						b.setType(Material.STEP);
-						b.setData((byte) 0);
+						b.setType(Material.LEGACY_STEP);
+//						b.setData((byte) 0);
 						if (Utils.Possibilitat(85)){
 							
 							if (Utils.Possibilitat(48)){
@@ -83,7 +83,7 @@ public class GraveyardPopulator extends BlockPopulator {
 							}else{
 								//Spawner
 								Block bl = b.getRelative(BlockFace.DOWN, Utils.NombreEntre(1, 4));
-								bl.setType(Material.MOB_SPAWNER);
+								bl.setType(Material.LEGACY_MOB_SPAWNER);
 								CreatureSpawner spawner = (CreatureSpawner) bl.getState();
 								spawner.setSpawnedType(EntityType.ZOMBIE);
 								if (Utils.Possibilitat(15)){
@@ -99,8 +99,8 @@ public class GraveyardPopulator extends BlockPopulator {
 						if (Utils.Possibilitat(1)){bl.setType(Material.COAL_BLOCK);}
 						if (Utils.Possibilitat(1)){bl.setType(Material.GOLD_BLOCK);}
 						if (Utils.Possibilitat(1)){bl.setType(Material.QUARTZ_BLOCK);}
-						if (Utils.Possibilitat(1)){bl.setType(Material.WOOD);}
-						if (Utils.Possibilitat(1)){bl.setType(Material.WOOD_STAIRS);}
+						if (Utils.Possibilitat(1)){bl.setType(Material.LEGACY_WOOD);}
+						if (Utils.Possibilitat(1)){bl.setType(Material.LEGACY_WOOD_STAIRS);}
 						if (Utils.Possibilitat(1)){bl.setType(Material.COBBLESTONE_STAIRS);}
 
 
@@ -122,17 +122,17 @@ public class GraveyardPopulator extends BlockPopulator {
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CARROT, Utils.NombreEntre(1,  3)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.DIAMOND_HELMET, 1));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.IRON_SWORD, Utils.NombreEntre(1,  3)));}
-		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.IRON_SPADE, Utils.NombreEntre(1,  3)));}
+		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.LEGACY_IRON_SPADE, Utils.NombreEntre(1,  3)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1,  2)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.REDSTONE, Utils.NombreEntre(1,  2)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.WHEAT, Utils.NombreEntre(1,  20)));}
 		if (Utils.Possibilitat(3)){i.add(new ItemStack(Material.ENDER_PEARL, Utils.NombreEntre(1,  4)));}
-		if (Utils.Possibilitat(2)){i.add(new ItemStack(Material.WEB, Utils.NombreEntre(1,  3)));}
-		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.WEB, Utils.NombreEntre(1,  6)));}
+		if (Utils.Possibilitat(2)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  3)));}
+		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  6)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.GOLD_INGOT, Utils.NombreEntre(1,  4)));}
 		if (Utils.Possibilitat(85)){i.add(new ItemStack(Material.BONE, Utils.NombreEntre(1,  8)));}
 		if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.BONE, Utils.NombreEntre(1,  6)));}
-		if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.EXP_BOTTLE, Utils.NombreEntre(1,  6)));}
+		if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.LEGACY_EXP_BOTTLE, Utils.NombreEntre(1,  6)));}
 		if (Utils.Possibilitat(15)){i.add(Utils.getRandomPotion());}
 		if (Utils.Possibilitat(15)){i.add(Utils.setItemName(new ItemStack(Material.GOLD_NUGGET, Utils.NombreEntre(1,  2)), "Dent d'or" + ChatColor.GOLD));}
 		if (Utils.Possibilitat(38)){i.add(new ItemStack(Material.POISONOUS_POTATO, Utils.NombreEntre(1,  30)));}

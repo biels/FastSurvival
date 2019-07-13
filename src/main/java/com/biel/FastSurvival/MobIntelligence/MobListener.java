@@ -162,7 +162,7 @@ public class MobListener implements Listener {
 			//					fet = true;
 			//				}
 			if (Utils.Possibilitat(6) && fet == false){
-				i = new ItemStack(Material.WOOD_SWORD);
+				i = new ItemStack(Material.LEGACY_WOOD_SWORD);
 				sk.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
 				fet = true;
@@ -202,7 +202,7 @@ public class MobListener implements Listener {
 				////								while (iterator.hasNext()) {
 				////									hitBlock = iterator.next();
 				////
-				////									if (hitBlock.getTypeId() != 0) {
+				////									if (hitBlock.getType().getId() != 0) {
 				////										hitBlock.setType(Material.AIR);
 				////										break;
 				////									}
@@ -318,7 +318,7 @@ public class MobListener implements Listener {
 				if (i != null){
 					if (i.getType() == Material.STICK){
 						damaged.setVelocity(new Vector(0,Utils.NombreEntre(1, 2) * 0.8,0));
-						damaged.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_MAGMACUBE_JUMP, 4F, 0.9F);
+						damaged.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_MAGMA_CUBE_JUMP, 4F, 0.9F);
 					}else{
 
 					}
@@ -441,7 +441,7 @@ public class MobListener implements Listener {
 				}
 				KingSkeletonBossUtils.dropLoot(sk.getLocation());
 			}
-			ItemStack it = new ItemStack(Material.SKULL_ITEM, 1, (byte) 1);
+			ItemStack it = new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (byte) 1);
 			if (Utils.Possibilitat(15) || evt.getDrops().contains(it)){
 				if (sk.getSkeletonType() == SkeletonType.WITHER){
 
@@ -458,7 +458,7 @@ public class MobListener implements Listener {
 			evt.setDroppedExp((int) (evt.getDroppedExp() * 2));
 			if (Utils.Possibilitat(70)){
 				evt.getDrops().add(new ItemStack(Material.EMERALD, Utils.NombreEntre(1, 3)));
-				evt.getDrops().add(new ItemStack(Material.RAW_BEEF, Utils.NombreEntre(1, 6)));
+				evt.getDrops().add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1, 6)));
 				evt.getDrops().add(new ItemStack(Material.BONE, Utils.NombreEntre(1, 8)));
 			}
 
@@ -473,7 +473,7 @@ public class MobListener implements Listener {
 						evt.getDrops().add(new ItemStack(SpecialItemsUtils.getRandomSpecialItem(2)));
 					}
 				}
-				evt.getDrops().add(new ItemStack(Material.RAW_BEEF, Utils.NombreEntre(1, 6)));
+				evt.getDrops().add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1, 6)));
 				evt.getDrops().add(new ItemStack(Material.BONE, Utils.NombreEntre(1, 8)));
 				
 			}
@@ -537,17 +537,17 @@ public class MobListener implements Listener {
 					break;
 				case MAGNETIC:
 					if (Utils.Possibilitat(1))
-						evt.getDrops().add(new ItemStack(Material.IRON_FENCE, 1));
+						evt.getDrops().add(new ItemStack(Material.LEGACY_IRON_FENCE, 1));
 					break;
 				case MULTI:
 					if (Utils.Possibilitat(1))
-						evt.getDrops().add(new ItemStack(Material.IRON_FENCE, 1));
+						evt.getDrops().add(new ItemStack(Material.LEGACY_IRON_FENCE, 1));
 					if (Utils.Possibilitat(1))
 						evt.getDrops().add(new ItemStack(Material.CAKE, 1));
 					if (Utils.Possibilitat(8))
 						evt.getDrops().add(new ItemStack(Material.DISPENSER, 1));
 					if (Utils.Possibilitat(8))
-						evt.getDrops().add(new ItemStack(Material.REDSTONE_COMPARATOR, 1));
+						evt.getDrops().add(new ItemStack(Material.LEGACY_REDSTONE_COMPARATOR, 1));
 					if (Utils.Possibilitat(8))
 						evt.getDrops().add(new ItemStack(Material.REDSTONE_ORE, 1));
 					if (Utils.Possibilitat(12))
@@ -561,7 +561,7 @@ public class MobListener implements Listener {
 					if (Utils.Possibilitat(30))
 						evt.getDrops().add(new ItemStack(Material.WATER_BUCKET, 1));
 					if (Utils.Possibilitat(35))
-						evt.getDrops().add(new ItemStack(Material.WATER_LILY, 1));
+						evt.getDrops().add(new ItemStack(Material.LEGACY_WATER_LILY, 1));
 					break;
 				case WITHER:
 					if (Utils.Possibilitat(30))

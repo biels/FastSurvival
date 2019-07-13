@@ -25,14 +25,14 @@ import com.biel.FastSurvival.Utils.Utils;
 public class MoonUtils {
 
 	public static World getMoon(){
-		return  Bukkit.getWorld("Moon");//Bukkit.getWorld("Moon");
+		return  Bukkit.getWorld("moon");//Bukkit.getWorld("Moon");
 	}
 	public static World getEarth(){
 		return  Bukkit.getWorlds().get(0);//Bukkit.getWorld("Moon");
 	}
 	public static void loadMoon(){
 
-		WorldCreator wc = new WorldCreator("Moon");
+		WorldCreator wc = new WorldCreator("moon");
 		wc.type(WorldType.NORMAL);
 		wc.environment(Environment.NORMAL);
 
@@ -99,17 +99,17 @@ public class MoonUtils {
 	}
 	public static ArrayList<Material> getMoonPortalMaterials(){
 		ArrayList<Material> m = new ArrayList<Material>();
-		m.add(Material.WOOD_BUTTON);
+		m.add(Material.ACACIA_BUTTON); // TODO All buttons
 		m.add(Material.IRON_BLOCK);
-		m.add(Material.IRON_FENCE);
+		m.add(Material.LEGACY_IRON_FENCE);
 		m.add(Material.DIAMOND_BLOCK);
 		m.add(Material.GLASS);
 		m.add(Material.GLOWSTONE);
-		m.add(Material.IRON_PLATE);
-		m.add(Material.NETHER_FENCE);
+		m.add(Material.LEGACY_IRON_PLATE);
+		m.add(Material.LEGACY_NETHER_FENCE);
 		m.add(Material.FURNACE);
-		m.add(Material.REDSTONE_TORCH_ON);
-		m.add(Material.REDSTONE_TORCH_OFF);
+		m.add(Material.LEGACY_REDSTONE_TORCH_ON);
+		m.add(Material.LEGACY_REDSTONE_TORCH_OFF);
 		m.add(Material.REDSTONE_BLOCK);
 		m.add(Material.STONE_BUTTON);
 
@@ -187,7 +187,7 @@ public class MoonUtils {
 				if (type == Material.REDSTONE_BLOCK && Utils.Possibilitat(30)){
 					nb.setType(Material.GLASS);
 				}
-				nb.setData(b.getData());
+				nb.setBlockData(b.getBlockData());
 			}
 		}
 		for(Block b : portalBlocks){
@@ -196,7 +196,8 @@ public class MoonUtils {
 			Block nb = rel.getBlock();
 			if (!nb.getType().isSolid()){
 				nb.setType(b.getType());
-				nb.setData(b.getData());
+				nb.setBlockData(b.getBlockData());
+//				nb.setData(b.getData());
 			}
 		}
 	}

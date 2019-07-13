@@ -33,7 +33,7 @@ public class RegenEnchancerItem extends SpecialItem{
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.SAPLING;
+		return Material.LEGACY_SAPLING;
 	}
 	@Override
 	public int getTier() {

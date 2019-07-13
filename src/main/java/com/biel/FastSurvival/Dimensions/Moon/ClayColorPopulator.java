@@ -6,6 +6,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 
 public class ClayColorPopulator extends BlockPopulator {
@@ -24,8 +25,9 @@ public class ClayColorPopulator extends BlockPopulator {
 					int blockZ = (chunkZ * 16) + z;
 
 					Block block = world.getBlockAt(blockX, y, blockZ);
-					if(block.getType() == Material.STAINED_CLAY){
-						block.setData((byte) ((y < 16) ? 9 : 0));
+					if(block.getType() == Material.LEGACY_STAINED_CLAY){
+						//block.setData((byte) ((y < 16) ? 9 : 0));
+						//block.setBlockData();
 					}
 				}
 			}

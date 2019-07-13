@@ -41,14 +41,14 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
 		//No sobreposar
 		Material ct = bCenter.getType();
-		if ((ct == Material.LEAVES || ct == Material.LEAVES_2)){return;}
+		if ((ct == Material.LEGACY_LEAVES|| ct == Material.LEGACY_LEAVES_2)){return;}
 		int radius = 2; //Utils.NombreEntre(2, 5);
 		Cuboid sc = generateCenterCuboid(center, 41, radius);
 		for (Block b: sc.getBlocks()){
-			b.setType(Material.LOG);
-			b.setData(getWoodData(), false);
+			b.setType(Material.LEGACY_LOG);
+//			b.setData(getWoodData(), false);
 			//			if (Utils.Possibilitat(1)){
-			//				b.setType(Material.WOOD);
+			//				b.setType(Material.LEGACY_WOOD);
 			//			}
 		}
 		GenerateLowerRoots(center.clone().add(0, Utils.NombreEntre(3, 4), 0));
@@ -85,8 +85,8 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 				Block blk = lBlock.getBlock();
 				if (RemAmp != 2){
 					if (!Utils.Possibilitat(1)){
-						blk.setType(Material.LOG);
-						blk.setData(getWoodData(), false);
+						blk.setType(Material.LEGACY_LOG);
+//						blk.setData(getWoodData(), false);
 					}
 				}else{
 					if (Utils.Possibilitat(100)){
@@ -110,7 +110,9 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 //							//blk.setType(Material.GOLD_BLOCK);
 //						}
 						//v.putOnFace(f);  --IMP
-						blk.setData(v.getData());
+						// TODO Figure out how to set data
+//						blk.setData(v.getData());
+
 					}
 					//					if (Utils.Possibilitat(10)){
 					//						Block blk = lBlock.getBlock();
@@ -154,7 +156,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		blks.addAll(Utils.getOuterCylBlocks(center.clone().add(0, 2, 0), radius, height, false));
 		blks.addAll(Utils.getCylBlocks(center.clone().add(0, -1, 0), radius -1, 3, true));
 		for(Block b : blks){
-			b.setType(Material.LEAVES);
+			b.setType(Material.LEGACY_LEAVES);
 		}
 		for(Block b : Utils.getOuterCylBlocks(center.clone().add(0, 2, 0), radius + 1, height, false)){
 			//if (Utils.Possibilitat(12)){b.setType(Material.GOLD_BLOCK);}
@@ -165,7 +167,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		iblks.add(lampCenterLoc.getBlock());
 		for(Block b : iblks){
 			b.getRelative(BlockFace.DOWN).setType(Material.REDSTONE_BLOCK);
-			b.setType(Material.REDSTONE_LAMP_ON);
+			b.setType(Material.LEGACY_REDSTONE_LAMP_ON);
 			b.getRelative(BlockFace.UP, 7).setType(Material.AIR);
 		}
 	}
@@ -192,8 +194,8 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 			if (l.getBlockY() - center.getY() > 4){return;}
 			//Set
 			Block blk = l.getBlock();
-			blk.setType(Material.LOG);
-			blk.setData(getWoodData(), false);
+			blk.setType(Material.LEGACY_LOG);
+			//blk.setData(getWoodData(), false);
 			//Advance or lateral
 			Vector ndir = dir.clone().normalize();
 			Vector random = Vector.getRandom().subtract(Vector.getRandom());

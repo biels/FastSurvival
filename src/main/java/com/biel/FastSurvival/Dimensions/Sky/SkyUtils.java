@@ -175,17 +175,17 @@ public class SkyUtils {
 	}
 	public static ArrayList<Material> getSkyPortalMaterials(){
 		ArrayList<Material> m = new ArrayList<Material>();
-		m.add(Material.WOOD_BUTTON);
+		m.add(Material.LEGACY_WOOD_BUTTON);
 		m.add(Material.IRON_BLOCK);
-		m.add(Material.IRON_FENCE);
+		m.add(Material.LEGACY_IRON_FENCE);
 		m.add(Material.DIAMOND_BLOCK);
 		m.add(Material.GLASS);
 		m.add(Material.GLOWSTONE);
-		m.add(Material.IRON_PLATE);
-		m.add(Material.NETHER_FENCE);
+		m.add(Material.LEGACY_IRON_PLATE);
+		m.add(Material.LEGACY_NETHER_FENCE);
 		m.add(Material.FURNACE);
-		m.add(Material.REDSTONE_TORCH_ON);
-		m.add(Material.REDSTONE_TORCH_OFF);
+		m.add(Material.LEGACY_REDSTONE_TORCH_ON);
+		m.add(Material.LEGACY_REDSTONE_TORCH_OFF);
 		m.add(Material.REDSTONE_BLOCK);
 		m.add(Material.STONE_BUTTON);
 		
@@ -242,7 +242,7 @@ public class SkyUtils {
 			Location rel = SkyLocation.clone().add(relV);
 			Block nb = rel.getBlock();
 			nb.setType(b.getType());
-			nb.setData(b.getData());
+			nb.setBlockData(b.getBlockData());
 		}
 		
 	}
@@ -257,7 +257,7 @@ public class SkyUtils {
 			Block nb = rel.getBlock();
 			nb.setType(b.getType());
 			Bukkit.broadcastMessage(b.getType().name());
-			nb.setData(b.getData());
+			nb.setBlockData(b.getBlockData());
 		}
 		
 	}

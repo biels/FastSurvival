@@ -55,7 +55,7 @@ public class BowRecipeGenerator {
         r.setIngredient('R', Material.REDSTONE);
         r.setIngredient('X', Material.TNT);
         r.setIngredient('I', Material.IRON_INGOT);
-        r.setIngredient('T', Material.REDSTONE_TORCH_ON);
+        r.setIngredient('T', Material.LEGACY_REDSTONE_TORCH_ON);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void torchRecipe(){
@@ -65,7 +65,7 @@ public class BowRecipeGenerator {
 		r.setIngredient('C', Material.COAL_BLOCK);
         r.setIngredient('S', Material.STICK);
         r.setIngredient('T', Material.TORCH);
-        r.setIngredient('G', Material.THIN_GLASS);
+        r.setIngredient('G', Material.LEGACY_THIN_GLASS);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void bouncyRecipe(){
@@ -85,7 +85,7 @@ public class BowRecipeGenerator {
         r.setIngredient('D', Material.DIAMOND);
         r.setIngredient('G', Material.GOLD_INGOT);
         r.setIngredient('I', Material.ICE);
-        r.setIngredient('W', Material.WATCH);
+        r.setIngredient('W', Material.LEGACY_WATCH);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void witherRecipe(){
@@ -95,7 +95,7 @@ public class BowRecipeGenerator {
         r.setIngredient('R', Material.REDSTONE_BLOCK);
         r.setIngredient('W', Material.STONE_SWORD);
         r.setIngredient('G', Material.GOLD_INGOT);
-        r.setIngredient('S', Material.SKULL_ITEM);
+        r.setIngredient('S', Material.LEGACY_SKULL_ITEM);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void waterRecipe(){
@@ -103,8 +103,8 @@ public class BowRecipeGenerator {
 		r.shape(" W ", "LBL", "RVR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_FENCE);
-        r.setIngredient('W', Material.RAW_FISH);
+        r.setIngredient('V', Material.LEGACY_IRON_FENCE);
+        r.setIngredient('W', Material.LEGACY_RAW_FISH);
         r.setIngredient('L', Material.LAPIS_BLOCK);
         Bukkit.getServer().addRecipe(r);
 	}
@@ -113,7 +113,7 @@ public class BowRecipeGenerator {
 		r.shape("AAA", " B ", "RVR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_FENCE);
+        r.setIngredient('V', Material.LEGACY_IRON_FENCE);
         r.setIngredient('A', Material.ARROW);
         //r.setIngredient('D', Material.DISPENSER);
         Bukkit.getServer().addRecipe(r);
@@ -123,7 +123,7 @@ public class BowRecipeGenerator {
 		r.shape(" D ", "VBV", "RLR");
 		r.setIngredient('B', Material.BOW);
         r.setIngredient('R', Material.REDSTONE);
-        r.setIngredient('V', Material.IRON_FENCE);
+        r.setIngredient('V', Material.LEGACY_IRON_FENCE);
         r.setIngredient('D', Material.DIAMOND);
         r.setIngredient('L', Material.DIAMOND_BLOCK);
         Bukkit.getServer().addRecipe(r);

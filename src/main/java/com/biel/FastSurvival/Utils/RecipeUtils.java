@@ -149,7 +149,7 @@ public class RecipeUtils
             FurnaceRecipe r2 = (FurnaceRecipe)recipe2;
             
             //return (r1.getInput().equals(r2.getInput())); // TODO use this when furnace data PR is pulled
-            return r1.getInput().getTypeId() == r2.getInput().getTypeId();
+            return r1.getInput().getType().getId() == r2.getInput().getType().getId();
         }
         else
         {

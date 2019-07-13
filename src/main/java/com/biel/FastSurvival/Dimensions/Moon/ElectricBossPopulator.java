@@ -49,7 +49,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			Location center = new Location(world, centerX, centerY, centerZ);
 			Block bCenter = center.getBlock();
 			//No sobreposar
-			if (bCenter.getType() != Material.STAINED_CLAY){return;}
+			if (bCenter.getType() != Material.LEGACY_STAINED_CLAY){return;}
 			
 			BlockFace direction = null;
 			Block top = null;
@@ -67,7 +67,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 			for (int y = centerY; y < centerY + FLAG_HEIGHT; y++) {
 				top = world.getBlockAt(centerX, y, centerZ);
-				top.setType(Material.FENCE);
+				top.setType(Material.LEGACY_FENCE);
 			}
 			Cuboid c = Utils.getCuboidAround(top.getLocation(), 10, 1, 10);
 			LevelType lastLevelType = null;
@@ -84,7 +84,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 				boolean topLevel = LEVELS == 0;
 				int sponges = Utils.NombreEntre(1, 3);
 				for(Block b : floor){
-					b.setType(Material.WOOD);
+					b.setType(Material.LEGACY_WOOD);
 					if(lastLevel){
 						b.setType(Material.BEDROCK);
 						if (sponges > 0){
@@ -155,26 +155,26 @@ public class ElectricBossPopulator extends BlockPopulator{
 					for (Block b : bonusZone){
 						if (Utils.Possibilitat(2)){
 							Material topmat = Material.BOOKSHELF;
-							if (Utils.Possibilitat(40)){topmat = Material.WORKBENCH;}
+							if (Utils.Possibilitat(40)){topmat = Material.LEGACY_WORKBENCH;}
 							if (b.isEmpty()){b.setType(Material.BOOKSHELF);b.getLocation().add(0, 1, 0).getBlock().setType(topmat);
 							}
 
 						}
 						if (Utils.Possibilitat(10)){
-							if (b.isEmpty()){b.setType(Material.WORKBENCH);}
+							if (b.isEmpty()){b.setType(Material.LEGACY_WORKBENCH);}
 						}
 						if (Utils.Possibilitat(10)){
-							if (b.isEmpty()){b.setType(Material.REDSTONE_LAMP_OFF);}
+							if (b.isEmpty()){b.setType(Material.LEGACY_REDSTONE_LAMP_OFF);}
 						}
 					}
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.GOLD_PLATE);};
+							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_GOLD_PLATE);};
 						}
 					}
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.IRON_PLATE);};
+							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_IRON_PLATE);};
 						}
 					}
 					break;
@@ -244,15 +244,15 @@ public class ElectricBossPopulator extends BlockPopulator{
 					st = EntityType.SKELETON;
 					for (Block b : bonusZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty()){b.setType(Material.SOIL);b.getLocation().add(0, 1, 0).getBlock().setType(Material.CROPS);};
+							if (b.isEmpty()){b.setType(Material.LEGACY_SOIL);b.getLocation().add(0, 1, 0).getBlock().setType(Material.LEGACY_CROPS);};
 						}
 					}
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType() == Material.WOOD){b.setType(Material.FENCE);};
+							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType() == Material.LEGACY_WOOD){b.setType(Material.LEGACY_FENCE);};
 						}
 						if (Utils.Possibilitat(1)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.FENCE_GATE);};
+							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_FENCE_GATE);};
 						}
 					}
 					break;
@@ -264,7 +264,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(15)){
-							if (b.isEmpty()){b.setType(Material.WEB);};
+							if (b.isEmpty()){b.setType(Material.LEGACY_WEB);};
 						}
 					}
 					break;
@@ -273,15 +273,15 @@ public class ElectricBossPopulator extends BlockPopulator{
 					for (Block b : bonusZone){
 						
 						if (Utils.Possibilitat(5)){
-							if (b.isEmpty()){b.setType(Material.WORKBENCH);}
+							if (b.isEmpty()){b.setType(Material.LEGACY_WORKBENCH);}
 						}
 						if (Utils.Possibilitat(2)){
-							if (b.isEmpty()){b.setType(Material.REDSTONE_LAMP_OFF);}
+							if (b.isEmpty()){b.setType(Material.LEGACY_REDSTONE_LAMP_OFF);}
 						}
 					}
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(15)){
-							if (b.isEmpty()){b.setType(Material.IRON_FENCE);};
+							if (b.isEmpty()){b.setType(Material.LEGACY_IRON_FENCE);};
 						}
 					}
 					break;
@@ -323,7 +323,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 
 					Block b = l.getBlock();
-					b.setType(Material.MOB_SPAWNER);
+					b.setType(Material.LEGACY_MOB_SPAWNER);
 					CreatureSpawner spawner = (CreatureSpawner) b.getState();
 					spawner.setSpawnedType(st);
 					if (Utils.Possibilitat(prob)){
@@ -339,7 +339,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 						faces.add(BlockFace.UP);
 						for (BlockFace f : faces){
 							Block relB = b.getRelative(f);
-							relB.setType(Material.WOOD);
+							relB.setType(Material.LEGACY_WOOD);
 						}
 					}
 					if (lastLevel){
@@ -375,7 +375,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(100)){i.add(new ItemStack(Material.LEVER));}
 			if (Utils.Possibilitat(26)){i.add(new ItemStack(Material.GOLD_NUGGET));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.DIAMOND_HELMET));}
-			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.GOLD_CHESTPLATE));}
+			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.LEGACY_GOLD_CHESTPLATE));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.IRON_CHESTPLATE));}
 			if (Utils.Possibilitat(38)){i.add(new ItemStack(Material.GOLDEN_APPLE));}
 			if (Utils.Possibilitat(65)){i.add(new ItemStack(Material.POTATO, Utils.NombreEntre(8,  32)));}
@@ -392,7 +392,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.PACKED_ICE, Utils.NombreEntre(1,  6)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.BUCKET));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.COAL));}
-			if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.SNOW_BALL, Utils.NombreEntre(1,  16)));}
+			if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.LEGACY_SNOW_BALL, Utils.NombreEntre(1,  16)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.SNOW_BLOCK, Utils.NombreEntre(1,  12)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1,  2)));}
 			break;
@@ -400,7 +400,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(2)){i.add(SpecialItemsUtils.getRandomSpecialItem(2));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.GLASS, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.GHAST_TEAR, Utils.NombreEntre(1,  2)));}
-			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.CAULDRON_ITEM));}
+			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.LEGACY_CAULDRON_ITEM));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.SPIDER_EYE, Utils.NombreEntre(1,  2)));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.GLOWSTONE_DUST, Utils.NombreEntre(1,  9)));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.BLAZE_POWDER, Utils.NombreEntre(1,  2)));}
@@ -410,11 +410,11 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.STONE_SWORD));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.IRON_BOOTS));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.EGG, Utils.NombreEntre(1,  4)));}
-			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.WOOD_SWORD));}
+			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.LEGACY_WOOD_SWORD));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.GLASS, Utils.NombreEntre(1,  4)));}
-			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.MUSHROOM_SOUP, Utils.NombreEntre(1,  4)));}
+			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.LEGACY_MUSHROOM_SOUP, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.COBBLESTONE, Utils.NombreEntre(1,  15)));}
-			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.BOAT));}
+			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.LEGACY_BOAT));}
 			break;
 		case SKELETON:
 			if (Utils.Possibilitat(100)){i.add(new ItemStack(Material.ARROW, Utils.NombreEntre(1,  6)));}
@@ -427,8 +427,8 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(38)){i.add(BowRecipeGenerator.getBow(BowUtils.BowType.values()[Utils.NombreEntre(0, BowUtils.BowType.values().length - 1)]));}
 			break;
 		case SPIDER:
-			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.WEB, Utils.NombreEntre(1,  9)));}
-			if (Utils.Possibilitat(62)){i.add(new ItemStack(Material.WEB, Utils.NombreEntre(1,  4)));}
+			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  9)));}
+			if (Utils.Possibilitat(62)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(100)){i.add(new ItemStack(Material.STRING, Utils.NombreEntre(1,  26)));}
 			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.SPIDER_EYE, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.FERMENTED_SPIDER_EYE, Utils.NombreEntre(1,  4)));}
@@ -461,12 +461,12 @@ public class ElectricBossPopulator extends BlockPopulator{
 		if (Utils.Possibilitat(6)){i.add(new ItemStack(Material.EMERALD, Utils.NombreEntre(1,  8)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.ANVIL));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CHEST, Utils.NombreEntre(1,  2)));}
-		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.BED, Utils.NombreEntre(1,  3)));}
+		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.LEGACY_BED, Utils.NombreEntre(1,  3)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.REDSTONE_ORE, Utils.NombreEntre(1,  12)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.NAME_TAG, Utils.NombreEntre(1,  4)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.APPLE, Utils.NombreEntre(1,  4)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  2)));}
-		if (Utils.Possibilitat(2)){i.add(new ItemStack(Material.EXP_BOTTLE, Utils.NombreEntre(1,  10)));}
+		if (Utils.Possibilitat(2)){i.add(new ItemStack(Material.LEGACY_EXP_BOTTLE, Utils.NombreEntre(1,  10)));}
 		if (Utils.Possibilitat(2)){i.add(new ItemStack(Material.SLIME_BALL, Utils.NombreEntre(1,  10)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.DIAMOND_AXE));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.IRON_INGOT, Utils.NombreEntre(1,  4)));}

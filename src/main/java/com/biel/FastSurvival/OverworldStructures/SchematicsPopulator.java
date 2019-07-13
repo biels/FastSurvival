@@ -16,6 +16,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
  
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
  
@@ -51,8 +52,8 @@ int rely = y - starty;
 int id = man.getBlockIdAt(x, rely, z);
 byte data = man.getMetadataAt(x, rely, z);
  
-if (id != -1) world.getBlockAt(realX, y, realZ).setTypeId(id);
-if (id != -1) world.getBlockAt(realX, y, realZ).setData(data);
+if (id != -1) world.getBlockAt(realX, y, realZ).setType(Material.getMaterial(Integer.toString(id), true));
+//if (id != -1) world.getBlockAt(realX, y, realZ).setData(data);
 }
 }
 }

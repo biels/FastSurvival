@@ -102,7 +102,7 @@ public class EventListener implements Listener {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_INGOT));
                 }
                 if (Utils.Possibilitat(4)) {
-                    p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_FENCE));
+                    p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.LEGACY_IRON_FENCE));
                 }
                 if (Utils.Possibilitat(3)) {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.GOLD_NUGGET, 1));
@@ -121,7 +121,7 @@ public class EventListener implements Listener {
                     }
                 }
             }
-            if (blk.getType() == Material.MOB_SPAWNER) {
+            if (blk.getType() == Material.LEGACY_MOB_SPAWNER) {
                 p.damage(1);
                 if (Utils.Possibilitat(80)) {
                     if (Utils.Possibilitat(62)) {
@@ -131,7 +131,7 @@ public class EventListener implements Listener {
                     }
                 }
                 p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_INGOT, Utils.NombreEntre(1, 10)));
-                p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_FENCE, 6));
+                p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.LEGACY_IRON_FENCE, 6));
                 if (Utils.Possibilitat(1)) {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.DIAMOND));
                     //p.setFireTicks(20 * 24);
@@ -251,7 +251,7 @@ public class EventListener implements Listener {
                             || b.getType() == Material.DIRT
                             || b.getType() == Material.GRAVEL
                             || b.getType() == Material.CLAY
-                            || b.getType() == Material.STAINED_CLAY
+                            || b.getType() == Material.LEGACY_STAINED_CLAY
                             || b.getType() == Material.GLASS
                             || b.getType() == Material.SOUL_SAND
                             || b.getType() == Material.SAND
@@ -310,7 +310,7 @@ public class EventListener implements Listener {
         World w = b.getWorld();
         if (MoonUtils.IsEarth(w)) {
             //--
-            if (b.getType() == Material.LEAVES && b.getLocation().getBlockY() > 90) {
+            if (b.getType() == Material.LEGACY_LEAVES && b.getLocation().getBlockY() > 90) {
                 evt.setCancelled(true);
             }
 
@@ -332,10 +332,10 @@ public class EventListener implements Listener {
                 || b == Material.GOLD_ORE
                 || b == Material.GLOWSTONE
                 || b == Material.REDSTONE_ORE
-                || b == Material.GLOWING_REDSTONE_ORE
+                || b == Material.LEGACY_GLOWING_REDSTONE_ORE
                 || b == Material.DIAMOND_ORE
                 || b == Material.LAPIS_ORE
-                || b == Material.QUARTZ_ORE
+                || b == Material.LEGACY_QUARTZ_ORE
                 || b == Material.EMERALD_ORE;
     }
 
@@ -346,12 +346,12 @@ public class EventListener implements Listener {
     public void CutTree(Block b, Player p, Boolean tree) {
         World w = b.getWorld();
         Location l = b.getLocation();
-        if (w.getHighestBlockAt(l).getY() > 80 && b.getType() == Material.LEAVES) {
+        if (w.getHighestBlockAt(l).getY() > 80 && b.getType() == Material.LEGACY_LEAVES) {
             return;
         }
         ItemStack i = p.getItemInHand();
         Material m = b.getType();
-        if (!(m == Material.LOG || m == Material.LOG_2 || m == Material.AIR) && tree) {
+        if (!(m == Material.LEGACY_LOG || m == Material.LEGACY_LOG_2 || m == Material.AIR) && tree) {
             return;
         }
         if (!isOre(m) && !tree) {

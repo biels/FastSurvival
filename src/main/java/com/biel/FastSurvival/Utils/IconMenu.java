@@ -15,17 +15,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
- 
+
 public class IconMenu implements Listener {
- 
+
     private String name;
     private int size;
     private OptionClickEventHandler handler;
     private Plugin plugin;
-   
+
     private String[] optionNames;
     private ItemStack[] optionIcons;
-   
+
     public IconMenu(String name, int size, OptionClickEventHandler handler, Plugin plugin) {
         this.name = name;
         this.size = size;
@@ -35,13 +35,13 @@ public class IconMenu implements Listener {
         this.optionIcons = new ItemStack[size];
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
-   
+
     public IconMenu setOption(int position, ItemStack icon, String name, String... info) {
         optionNames[position] = name;
         optionIcons[position] = setItemNameAndLore(icon, name, info);
         return this;
     }
-   
+
     public void open(Player player) {
         Inventory inventory = Bukkit.createInventory(player, size, name);
         for (int i = 0; i < optionIcons.length; i++) {
@@ -51,7 +51,7 @@ public class IconMenu implements Listener {
         }
         player.openInventory(inventory);
     }
-   
+
     public void destroy() {
         HandlerList.unregisterAll(this);
         handler = null;
@@ -59,36 +59,38 @@ public class IconMenu implements Listener {
         optionNames = null;
         optionIcons = null;
     }
-   
-    @EventHandler(priority=EventPriority.MONITOR)
+
+    @EventHandler(priority = EventPriority.MONITOR)
     void onInventoryClick(InventoryClickEvent event) {
-        if (event.getInventory().getTitle().equals(name)) {
-            event.setCancelled(true);
-            
-            int slot = event.getRawSlot();
-            if (slot >= 0 && slot < size && optionNames[slot] != null) {
-                Plugin plugin = this.plugin;
-                OptionClickEvent e = new OptionClickEvent((Player)event.getWhoClicked(), slot, event.getAction(), optionNames[slot]);
-                handler.onOptionClick(e);
-                if (e.willClose()) {
-                    final Player p = (Player)event.getWhoClicked();
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                        public void run() {
-                            p.closeInventory();
-                        }
-                    }, 1);
-                }
-                if (e.willDestroy()) {
-                    destroy();
-                }
-            }
-        }
+        event.setCancelled(true);
+        // TODO Disabled until refactor (titles not available anymore?)
+//        if (event.getInventory().getTitle().equals(name)) {
+//            event.setCancelled(true);
+//
+//            int slot = event.getRawSlot();
+//            if (slot >= 0 && slot < size && optionNames[slot] != null) {
+//                Plugin plugin = this.plugin;
+//                OptionClickEvent e = new OptionClickEvent((Player) event.getWhoClicked(), slot, event.getAction(), optionNames[slot]);
+//                handler.onOptionClick(e);
+//                if (e.willClose()) {
+//                    final Player p = (Player) event.getWhoClicked();
+//                    Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+//                        public void run() {
+//                            p.closeInventory();
+//                        }
+//                    }, 1);
+//                }
+//                if (e.willDestroy()) {
+//                    destroy();
+//                }
+//            }
+//        }
     }
-    
+
     public interface OptionClickEventHandler {
-        public void onOptionClick(OptionClickEvent event);       
+        public void onOptionClick(OptionClickEvent event);
     }
-    
+
     public class OptionClickEvent {
         private Player player;
         private int position;
@@ -96,7 +98,7 @@ public class IconMenu implements Listener {
         private String name;
         private boolean close;
         private boolean destroy;
-       
+
         public OptionClickEvent(Player player, int position, InventoryAction action, String name) {
             this.player = player;
             this.position = position;
@@ -105,50 +107,50 @@ public class IconMenu implements Listener {
             this.close = true;
             this.destroy = false;
         }
-       
+
         public Player getPlayer() {
             return player;
         }
-       
+
         public int getPosition() {
             return position;
         }
-       
+
         public String getName() {
             return name;
         }
-       
+
         public boolean willClose() {
             return close;
         }
-       
+
         public boolean willDestroy() {
             return destroy;
         }
-       
+
         public void setWillClose(boolean close) {
             this.close = close;
         }
-       
+
         public void setWillDestroy(boolean destroy) {
             this.destroy = destroy;
         }
 
-		public InventoryAction getAction() {
-			return action;
-		}
+        public InventoryAction getAction() {
+            return action;
+        }
 
-		public void setAction(InventoryAction action) {
-			this.action = action;
-		}
+        public void setAction(InventoryAction action) {
+            this.action = action;
+        }
     }
-   
+
     private ItemStack setItemNameAndLore(ItemStack item, String name, String[] lore) {
         ItemMeta im = item.getItemMeta();
-            im.setDisplayName(name);
-            im.setLore(Arrays.asList(lore));
+        im.setDisplayName(name);
+        im.setLore(Arrays.asList(lore));
         item.setItemMeta(im);
         return item;
     }
-   
+
 }

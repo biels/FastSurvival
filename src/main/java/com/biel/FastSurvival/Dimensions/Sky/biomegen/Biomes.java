@@ -32,8 +32,8 @@ public enum Biomes {
 	DESERT(Biome.DESERT, new DesertNoiseGenerator(), 70, 0),
 	FOREST(Biome.FOREST, new ForestNoiseGenerator(), 50, 60),
 	PLAINS(Biome.PLAINS, new PlainsNoiseGenerator(), 50, 30),
-	SWAMP(Biome.SWAMPLAND, new SwampNoiseGenerator(), 40, 70),
-	HILLS(Biome.EXTREME_HILLS, new HillsNoiseGenerator(), 50, 10);
+	SWAMP(Biome.SWAMP, new SwampNoiseGenerator(), 40, 70),
+	HILLS(Biome.TAIGA_HILLS, new HillsNoiseGenerator(), 50, 10);
 	
 	public final Biome biome;
 	public final double optimumTemperature, optimumRainfall;

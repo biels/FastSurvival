@@ -28,7 +28,7 @@ public class AssaultEquipmentItem extends RawAssaultEquipmentItem{
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.GOLD_BOOTS;
+		return Material.LEGACY_GOLD_BOOTS;
 	}
 	@Override
 	public int getTier() {

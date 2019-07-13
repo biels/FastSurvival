@@ -26,7 +26,6 @@ import org.bukkit.util.Vector;
 
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.SpecialItems.SpecialItemData;
-import com.biel.FastSurvival.Turrets.OldTurret.TipusMillora;
 import com.biel.FastSurvival.Utils.Utils;
 
 public class TurretUtils {
@@ -39,7 +38,7 @@ public class TurretUtils {
 		ShapedRecipe r = new ShapedRecipe(Utils.setItemNameAndLore(new ItemStack(Material.ARROW), "Crafted turret", "1"));
 		r.shape(" T ", " I ", "EIE");
 		r.setIngredient('I', Material.IRON_BLOCK);
-		r.setIngredient('T', Material.REDSTONE_TORCH_ON);
+		r.setIngredient('T', Material.LEGACY_REDSTONE_TORCH_ON);
 		r.setIngredient('E', Material.REDSTONE_BLOCK);
 		Bukkit.getServer().addRecipe(r);
 
@@ -49,7 +48,7 @@ public class TurretUtils {
 		r.shape(" T ", " I ", "EDE");
 		r.setIngredient('I', Material.IRON_BLOCK);
 		r.setIngredient('D', Material.DIAMOND_BLOCK);
-		r.setIngredient('T', Material.REDSTONE_TORCH_ON);
+		r.setIngredient('T', Material.LEGACY_REDSTONE_TORCH_ON);
 		r.setIngredient('E', Material.REDSTONE_BLOCK);
 		Bukkit.getServer().addRecipe(r);
 

@@ -79,8 +79,8 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(1, 400)) return;
         if (Utils.Possibilitat(1, 150)) v.setY(v.getY() + -1);
         Material material = Material.NETHERRACK;
-        if (Utils.Possibilitat(10)) material = Material.QUARTZ_ORE;
-        if (Utils.Possibilitat(20)) material = Material.MAGMA;
+        if (Utils.Possibilitat(10)) material = Material.LEGACY_QUARTZ_ORE;
+        if (Utils.Possibilitat(20)) material = Material.LEGACY_MAGMA;
         v.toLocation(world).getBlock().setType(material);
     }
 
@@ -89,15 +89,15 @@ public class ChestCorePopulator extends BlockPopulator {
         chest.setType(Material.TRAPPED_CHEST);
         ArrayList<ItemStack> it = new ArrayList<>();
         if (Utils.Possibilitat(80)) it.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1, 4)));
-        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.NETHER_WARTS, Utils.NombreEntre(1, 3)));
+        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.LEGACY_NETHER_WARTS, Utils.NombreEntre(1, 3)));
         if (Utils.Possibilitat(80)) it.add(new ItemStack(Material.GOLD_NUGGET, Utils.NombreEntre(1, 5)));
         if (Utils.Possibilitat(80)) it.add(new ItemStack(Material.GOLD_NUGGET, Utils.NombreEntre(1, 5)));
         if (Utils.Possibilitat(80)) it.add(new ItemStack(Material.GOLD_NUGGET, Utils.NombreEntre(1, 5)));
         if (Utils.Possibilitat(70)) it.add(new ItemStack(Material.GOLD_INGOT, Utils.NombreEntre(1, 5)));
         if (Utils.Possibilitat(70)) it.add(new ItemStack(Material.ROTTEN_FLESH, Utils.NombreEntre(1, 8)));
         if (Utils.Possibilitat(60)) it.add(new ItemStack(Material.QUARTZ, Utils.NombreEntre(1, 8)));
-        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.GOLD_SWORD));
-        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.GOLD_SPADE));
+        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.LEGACY_GOLD_SWORD));
+        if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.LEGACY_GOLD_SPADE));
         if (Utils.Possibilitat(10)) it.add(new ItemStack(Material.BLAZE_POWDER));
         if (Utils.Possibilitat(5)) it.add(new ItemStack(Material.GHAST_TEAR));
         if (Utils.Possibilitat(3)) it.add(new ItemStack(Material.DIAMOND_PICKAXE));
@@ -106,14 +106,14 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.BAKED_POTATO));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.GOLDEN_CARROT));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.REDSTONE, 3));
-        if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.EXP_BOTTLE, 3));
+        if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.LEGACY_EXP_BOTTLE, 3));
         if (Utils.Possibilitat(2)) it.add(new ItemStack(Material.REDSTONE, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.COCOA, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.FLINT, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.QUARTZ_BLOCK, 2));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 10));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 20));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.SULPHUR, 20));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 10));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 20));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 20));
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(1)) it.add(SpecialItemsUtils.getRandomSpecialItem(1));

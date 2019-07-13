@@ -191,7 +191,7 @@ public class TurretListener implements Listener{
 				while(iterator.hasNext()) {
 					hitBlock = iterator.next();
 					// hitBlock.breakNaturally();
-					if(hitBlock.getTypeId()!=0) //Check all non-solid blockid's here.
+					if(hitBlock.getType().getId()!=0) //Check all non-solid blockid's here.
 					{ break;}
 				}
 				//land.getBlock().setType(Material.IRON_BLOCK);
@@ -243,7 +243,7 @@ public class TurretListener implements Listener{
 		List<Block> toRemove = new ArrayList<Block>();
 		List<Block> blockList = evt.blockList();
 		for(Block b : blockList){
-			if (b.getType() == Material.BRICK || b.getType() == Material.BRICK_STAIRS || b.getType() == Material.SMOOTH_BRICK || b.getType() == Material.SMOOTH_STAIRS){
+			if (b.getType() == Material.BRICK || b.getType() == Material.BRICK_STAIRS || b.getType() == Material.LEGACY_SMOOTH_BRICK || b.getType() == Material.LEGACY_SMOOTH_STAIRS){
 				toRemove.add(b);
 				continue;
 			}

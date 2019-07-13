@@ -38,7 +38,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             for (int z = 0; z < 16; z++) {
                 int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2) + 60;
                 for (int y = 0; y < height; y++) {
-                    result[(x * 16 + z) * 128 + y] = (byte) Material.STAINED_CLAY.getId();
+                    result[(x * 16 + z) * 128 + y] = (byte) Material.LEGACY_STAINED_CLAY.getId();
                 }
             }
         }
@@ -47,10 +47,26 @@ public class MoonChunkGenerator extends ChunkGenerator {
     }
 
     @Override
+    public ChunkData generateChunkData(World world, Random random, int cx, int cz, BiomeGrid biome) {
+        ChunkData chunk = createChunkData(world);
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2) + 60;
+                for (int y = 1; y < height; y++) {
+                    chunk.setBlock(x, y, z, Material.LEGACY_STAINED_CLAY);
+                }
+                chunk.setBlock(x, 0, z, Material.BEDROCK);
+            }
+        }
+        return chunk;
+    }
+
+    @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        return Arrays.asList((BlockPopulator) new MoonCraterPopulator(),
-                new FlagPopulator(),
-                new ClayColorPopulator(),
+        return Arrays.asList(
+                new MoonCraterPopulator(),
+                //new FlagPopulator(),
+                //new ClayColorPopulator(),
                 new MoonMagicTreePopulator()
                 //new MiniMazePopulator()
         );

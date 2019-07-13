@@ -34,7 +34,7 @@ public class ClaySpiralPopulator extends BlockPopulator {
         if(radius < 6) number--;
         double constant = Math.sqrt(height) / radius;
         for (int i = 0; i < number; i++) {
-            populateSpiral( i * (360 / number) * toRadians, h -> radius, (int) height,  0.6, false, h -> 0.001, 1000, Material.STAINED_CLAY, DyeColor.WHITE.getWoolData());
+            populateSpiral( i * (360 / number) * toRadians, h -> radius, (int) height,  0.6, false, h -> 0.001, 1000, Material.LEGACY_STAINED_CLAY, DyeColor.WHITE.getWoolData());
         }
        // populateSpiral( h -> 12.0 + h * 0.05, 50,  0.2,  3 * toRadians, h -> 0.0, h -> -0.001 * toRadians, 1000, Material.CONCRETE, DyeColor.CYAN.getWoolData());
         //populateSpiral( h -> 20.0, 50, 0.8, -4 * toRadians, h -> 0.0, h ->  0.001 * toRadians, 1000, Material.CONCRETE, DyeColor.CYAN.getWoolData());
@@ -52,7 +52,7 @@ public class ClaySpiralPopulator extends BlockPopulator {
                 .forEach(block -> {
                     block.setType(material);
                     //block.setMetadata("spiral", );
-                    block.setData(data);
+                    //block.setData(data);
                 });
     }
 

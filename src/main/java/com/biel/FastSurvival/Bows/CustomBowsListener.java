@@ -108,13 +108,13 @@ public class CustomBowsListener implements Listener {
 		World world = arr.getWorld();
 		switch(type){
 		case ENDER:
-			world.playSound(pLoc, Sound.ENTITY_ENDERMEN_TELEPORT, 4 * f, 1);
+			world.playSound(pLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 4 * f, 1);
 			break;
 		case EXPLOSIVE:
 			world.playSound(pLoc, Sound.ENTITY_GENERIC_EXPLODE, 5 * f, 2);
 			break;
 		case MAGNETIC:
-			world.playSound(pLoc, Sound.ENTITY_IRONGOLEM_HURT, 5 * f, 1.4F);
+			world.playSound(pLoc, Sound.ENTITY_IRON_GOLEM_HURT, 5 * f, 1.4F);
 			break;
 		case TORCH:
 			world.playSound(pLoc, Sound.ENTITY_ITEM_PICKUP, 7 * f, 1.2F);
@@ -304,8 +304,8 @@ public class CustomBowsListener implements Listener {
 				//b.setType(Material.DIAMOND_BLOCK);
 				if (b.getType() == Material.BEDROCK){continue;};
 				if (b.getPistonMoveReaction() == PistonMoveReaction.BLOCK || b.getPistonMoveReaction() == PistonMoveReaction.IGNORE){continue;};
-				if (b.getType() == Material.WOOD){b.setType(Material.COBBLESTONE); continue;};
-				if (b.getType() == Material.LOG){b.setType(Material.STONE); continue;};
+				if (b.getType() == Material.LEGACY_WOOD){b.setType(Material.COBBLESTONE); continue;};
+				if (b.getType() == Material.LEGACY_LOG){b.setType(Material.STONE); continue;};
 				if(b.getType() != Material.AIR){
 					if (p != null){
 						if (p instanceof Player){
@@ -534,8 +534,8 @@ public class CustomBowsListener implements Listener {
 			Vector newLine = Utils.CrearVector(damager.getEyeLocation(), damaged.getLocation().clone().add(0.5, 0, 0.5));
 			List<Vector> lineVects = Utils.getLine(damager.getLocation().clone().add(0.5, 1, 0.5).toVector(), newLine.clone().normalize(), (int) newLine.length());
 			lineVects.forEach(v -> {
-				world.playEffect(v.toLocation(world), Effect.CLOUD, 4);
-				world.playEffect(v.toLocation(world), Effect.CLOUD, 3);
+				world.playEffect(v.toLocation(world), Effect.SMOKE, 4);
+				world.playEffect(v.toLocation(world), Effect.SMOKE, 3);
 			});
 			break;
 		case MULTI:

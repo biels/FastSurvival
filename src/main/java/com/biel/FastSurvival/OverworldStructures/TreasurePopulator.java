@@ -38,15 +38,15 @@ public class TreasurePopulator extends BlockPopulator {
         int ycomp = world.getHighestBlockYAt(l1);
         Biome b = l1.getBlock().getBiome();
         Boolean snow = false;
-		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.STONE_BEACH || b == Biome.TAIGA) || b == Biome.ICE_FLATS || b == Biome.FOREST){
+		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.STONE_SHORE || b == Biome.TAIGA) || b == Biome.ICE_SPIKES || b == Biome.FOREST){
         	return;
         }
-		if (b == Biome.TAIGA_COLD || b == Biome.ICE_FLATS){
+		if (b == Biome.SNOWY_TAIGA || b == Biome.ICE_SPIKES){
 			snow = true;
 		}
 		Location lp = new Location(world, centerX  + offX, ycomp, centerZ);
 		Material type = lp.getBlock().getRelative(BlockFace.DOWN).getType();
-		if (type.isTransparent() || !type.isSolid() || type == Material.LEAVES || type == Material.LEAVES_2){
+		if (type.isTransparent() || !type.isSolid() || type == Material.LEGACY_LEAVES || type == Material.LEGACY_LEAVES_2){
 			return;
 		}
 		int r = 12;

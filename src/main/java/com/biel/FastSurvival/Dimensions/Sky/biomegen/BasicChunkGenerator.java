@@ -32,7 +32,6 @@ public class BasicChunkGenerator extends ChunkGenerator {
 		else return 0;
 	}
 
-	@Override
 	public short[][] generateExtBlockSections(World world, Random rand, int chunkX,
 			int chunkZ, BiomeGrid biomeGrid) {
 		Biomes.setWorld(world);
@@ -113,8 +112,8 @@ public class BasicChunkGenerator extends ChunkGenerator {
 		case DESERT: return Material.SANDSTONE;
 		case OCEAN: return Material.ICE;
 		case PLAINS: return Material.GOLD_BLOCK;
-		case SWAMPLAND: return Material.MYCEL;
-		case EXTREME_HILLS: return Material.STONE;
+			case SWAMP: return Material.LEGACY_MYCEL;
+			case TAIGA_HILLS: return Material.STONE;
 		default: return Material.SNOW_BLOCK;
 		}
 	}

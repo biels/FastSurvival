@@ -13,7 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.generator.BlockPopulator;
 
 public class NetherPopulator extends BlockPopulator {
-
+// Regex to replace: getBlockTypeIdAt(.+?)\)       /////      getBlockAt$1).getType().getId()
 	@SuppressWarnings("deprecation")
 	@Override
     public void populate(World world, Random random, Chunk chunk) {
@@ -27,7 +27,7 @@ public class NetherPopulator extends BlockPopulator {
         int spawnerChance = 400; // Spawners are generated at a chance of 12/400
         Material matWalls = Material.NETHERRACK;
         Material matFloor = Material.SOUL_SAND;
-        Material matDecor = Material.WEB;
+        Material matDecor = Material.LEGACY_WEB;
 
         //Editing is over
         int lengthH = sizeX / 2;
@@ -48,27 +48,27 @@ public class NetherPopulator extends BlockPopulator {
         // Step 1: Cuboid generation around the entire area
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-            	if(world.getBlockTypeIdAt(x, y, minZ)!=0)
+            	if(world.getBlockAt(x, y, minZ).getType().getId()!=0)
                 world.getBlockAt(x, y, minZ).setType(matWalls);
-            	if(world.getBlockTypeIdAt(x, y, maxZ)!=0)
+            	if(world.getBlockAt(x, y, maxZ).getType().getId()!=0)
                 world.getBlockAt(x, y, maxZ).setType(matWalls);
             }
         }
 
         for (int y = minY; y <= maxY; y++) {
             for (int z = minZ; z <= maxZ; z++) {
-            	if(world.getBlockTypeIdAt(minX, y, z)!=0)
+            	if(world.getBlockAt(minX, y, z).getType().getId()!=0)
                 world.getBlockAt(minX, y, z).setType(matWalls);
-            	if(world.getBlockTypeIdAt(maxX, y, z)!=0)
+            	if(world.getBlockAt(maxX, y, z).getType().getId()!=0)
                 world.getBlockAt(maxX, y, z).setType(matWalls);
             }
         }
 
         for (int z = minZ; z <= maxZ; z++) {
             for (int x = minX; x <= maxX; x++) {
-            	if(world.getBlockTypeIdAt(x, minY, z)!=0)
+            	if(world.getBlockAt(x, minY, z).getType().getId()!=0)
                 world.getBlockAt(x, minY, z).setType(matWalls);
-            	if(world.getBlockTypeIdAt(x, maxY, z)!=0)
+            	if(world.getBlockAt(x, maxY, z).getType().getId()!=0)
                 world.getBlockAt(x, maxY, z).setType(matWalls);
             }
         }
@@ -80,18 +80,18 @@ public class NetherPopulator extends BlockPopulator {
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
-            	if(world.getBlockTypeIdAt(x, y, minZ)!=0)
+            	if(world.getBlockAt(x, y, minZ).getType().getId()!=0)
                 world.getBlockAt(x, y, minZ).setType(pickDecor(random, matDecor, matWalls));
-            	if(world.getBlockTypeIdAt(x, y, maxZ)!=0)
+            	if(world.getBlockAt(x, y, maxZ).getType().getId()!=0)
                 world.getBlockAt(x, y, maxZ).setType(pickDecor(random, matDecor, matWalls));
             }
         }
 
         for (int y = minY; y <= maxY; y++) {
             for (int z = minZ; z <= maxZ; z++) {
-            	if(world.getBlockTypeIdAt(minX,y,z)!=0)
+            	if(world.getBlockAt(minX,y,z).getType().getId()!=0)
                 world.getBlockAt(minX, y, z).setType(pickDecor(random, matDecor, matWalls));
-            	if(world.getBlockTypeIdAt(maxX,y,z)!=0)
+            	if(world.getBlockAt(maxX,y,z).getType().getId()!=0)
             	world.getBlockAt(maxX, y, z).setType(pickDecor(random, matDecor, matWalls));
             }
         }
@@ -101,9 +101,9 @@ public class NetherPopulator extends BlockPopulator {
             for (int x = minX; x <= maxX; x++) {
                 int floor = random.nextInt(spawnerChance); // spawner rate
                 Block block = world.getBlockAt(x, minY, z);
-                if(block.getTypeId()!=0)
+                if(block.getType().getId()!=0)
                 if (floor < 12) {
-                    block.setType(Material.MOB_SPAWNER);
+                    block.setType(Material.LEGACY_MOB_SPAWNER);
                     CreatureSpawner spawner = (CreatureSpawner) block.getState();
                     if (floor <= 2) {
                         spawner.setSpawnedType(EntityType.ZOMBIE);
@@ -115,10 +115,10 @@ public class NetherPopulator extends BlockPopulator {
                     	spawner.setSpawnedType(EntityType.GHAST);
                     }
                 } else {
-                	if(block.getTypeId()!=0)
+                	if(block.getType().getId()!=0)
                     block.setType(matFloor);
                 }
-                if(world.getBlockTypeIdAt(x, maxY, z)!=0)
+                if(world.getBlockAt(x, maxY, z).getType().getId()!=0)
                 world.getBlockAt(x, maxY, z).setType(matWalls);
             }
         }
@@ -135,14 +135,14 @@ public class NetherPopulator extends BlockPopulator {
                     if (block.getRelative(BlockFace.DOWN).getType() != Material.AIR && block.getRelative(BlockFace.DOWN).getType() != matDecor) {
                         int rand = random.nextInt(10);
                         if (rand <= 6) {
-                        	if(world.getBlockTypeIdAt(x, y, z)!=0)
+                        	if(world.getBlockAt(x, y, z).getType().getId()!=0)
                             world.getBlockAt(x, y, z).setType(matFloor);
                         } else {
-                        	if(world.getBlockTypeIdAt(x, y, z)!=0)
+                        	if(world.getBlockAt(x, y, z).getType().getId()!=0)
                             world.getBlockAt(x, y, z).setType(pickDecor(random, matDecor, Material.AIR));
                         }
                     } else {
-                    	if(world.getBlockTypeIdAt(x, y, z)!=0)
+                    	if(world.getBlockAt(x, y, z).getType().getId()!=0)
                         world.getBlockAt(x, y, z).setType(Material.AIR);
                     }
                 }

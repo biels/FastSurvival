@@ -25,7 +25,7 @@ public class RawDamageCollectorItem extends SpecialItem {
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.STAINED_GLASS;
+		return Material.LEGACY_STAINED_GLASS;
 	}
 	@Override
 	public Byte getData() {
@@ -90,7 +90,7 @@ public class RawDamageCollectorItem extends SpecialItem {
 					evt.setDamage(dmg + d.getValue());			
 					d.setValue(0D);
 					//Play loaded effect
-					p.playSound(p.getEyeLocation(), Sound.ENTITY_IRONGOLEM_ATTACK, 0.5F, 4F);
+					p.playSound(p.getEyeLocation(), Sound.ENTITY_IRON_GOLEM_ATTACK, 0.5F, 4F);
 				}
 			}
 			

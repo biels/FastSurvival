@@ -1,28 +1,18 @@
 package com.biel.FastSurvival.OverworldStructures;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Wool;
-import org.bukkit.util.Vector;
-
 import com.biel.FastSurvival.Bows.BowRecipeGenerator;
-import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.BUtils;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class HotAirBalloonPopulator extends BlockPopulator{
 	private static final int BALLOON_CHANCE = 1; // Out of 1000 (0.12%)
@@ -39,8 +29,8 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 	}
 	public void generateDownChest(Location center){
 		Cuboid botC = new Cuboid(center.clone().add(-1 * 1, 0, -1 * 1),center.clone().add(1, 0, 1));
-		BUtils.fillBlocks(botC.getBlocks(), Material.WOOD);
-		center.getBlock().setType(Material.WORKBENCH);
+		BUtils.fillBlocks(botC.getBlocks(), Material.LEGACY_WOOD);
+		center.getBlock().setType(Material.LEGACY_WORKBENCH);
 		
 		//Chest
 		ArrayList<BlockFace> edgeFaces = new ArrayList<BlockFace>();
@@ -88,8 +78,8 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 				fenceBlocks.add(bl.getRelative(f2, 2).getRelative(BlockFace.UP, 2));
 				fenceBlocks.add(bl.getRelative(f2, 2).getRelative(BlockFace.UP, 3));
 			}
-			BUtils.fillBlocks(woodBlocks, Material.WOOD);
-			BUtils.fillBlocks(fenceBlocks, Material.FENCE);
+			BUtils.fillBlocks(woodBlocks, Material.LEGACY_WOOD);
+			BUtils.fillBlocks(fenceBlocks, Material.LEGACY_FENCE);
 		}
 		
 	}
@@ -124,8 +114,8 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(1)){c = DyeColor.GREEN;}
 			if (Utils.Possibilitat(1)){c = DyeColor.GRAY;}
 		}
-		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), Material.WOOL, c.getDyeData());
-		//BUtils.fillBlocks(BUtils.locListToBlock(c2), Material.WOOL, DyeColor.BLACK.getData());
+		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), Material.LEGACY_WOOL, c.getDyeData());
+		//BUtils.fillBlocks(BUtils.locListToBlock(c2), Material.LEGACY_WOOL, DyeColor.BLACK.getData());
 	}
 	public void generateEngine(Location center){
 		Location CLoc = center.clone().add(0, 5, 0);
@@ -135,7 +125,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		//--
 		Block Cblk = CLoc.getBlock();
 		Cblk.setType(Material.REDSTONE_BLOCK);
-		Cblk.getRelative(BlockFace.UP).setType(Material.REDSTONE_LAMP_ON);
+		Cblk.getRelative(BlockFace.UP).setType(Material.LEGACY_REDSTONE_LAMP_ON);
 		ArrayList<BlockFace> faces = new ArrayList<BlockFace>();
 		faces.add(BlockFace.NORTH);
 		faces.add(BlockFace.SOUTH);
@@ -143,16 +133,16 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		faces.add(BlockFace.WEST);
 		for(BlockFace f : faces){
 			Block bl = Cblk.getRelative(f);
-			bl.setType(Material.FENCE);
+			bl.setType(Material.LEGACY_FENCE);
 		}
 	}
 	public ArrayList<ItemStack> getItemsForLevel() {
 		ArrayList<ItemStack> i = new ArrayList<ItemStack>();
 
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.BREAD, Utils.NombreEntre(1,  25)));}
-		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.RAW_BEEF, Utils.NombreEntre(1,  25)));}
+		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1,  25)));}
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_BLOCK, Utils.NombreEntre(1,  5)));}
-		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_LAMP_OFF, Utils.NombreEntre(1,  5)));}
+		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.LEGACY_REDSTONE_LAMP_OFF, Utils.NombreEntre(1,  5)));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.PAPER, Utils.NombreEntre(1,  2)));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.BAKED_POTATO, Utils.NombreEntre(1,  18)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CARROT, Utils.NombreEntre(1,  3)));}
@@ -172,13 +162,13 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 					if (Utils.Possibilitat(45)){i.add(new ItemStack(Material.REDSTONE, Utils.NombreEntre(1,  40)));}
 					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.WHEAT, Utils.NombreEntre(1,  64)));}
 					if (Utils.Possibilitat(8)){i.add(new ItemStack(Material.ENDER_PEARL, Utils.NombreEntre(1,  4)));}
-					if (Utils.Possibilitat(8)){i.add(new ItemStack(Material.EYE_OF_ENDER, Utils.NombreEntre(1,  2)));}
+					if (Utils.Possibilitat(8)){i.add(new ItemStack(Material.LEGACY_EYE_OF_ENDER, Utils.NombreEntre(1,  2)));}
 					if (Utils.Possibilitat(8)){i.add(new ItemStack(Material.OBSIDIAN, Utils.NombreEntre(1,  4)));}
 					if (Utils.Possibilitat(95)){i.add(new ItemStack(Material.GOLD_INGOT, Utils.NombreEntre(1,  20)));}
 					if (Utils.Possibilitat(70)){i.add(new ItemStack(Material.IRON_INGOT, Utils.NombreEntre(1,  20)));}
 					if (Utils.Possibilitat(85)){i.add(new ItemStack(Material.BONE, Utils.NombreEntre(1,  8)));}
 					if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.BONE, Utils.NombreEntre(1,  6)));}
-					if (Utils.Possibilitat(35)){i.add(new ItemStack(Material.EXP_BOTTLE, Utils.NombreEntre(1,  6)));}
+					if (Utils.Possibilitat(35)){i.add(new ItemStack(Material.LEGACY_EXP_BOTTLE, Utils.NombreEntre(1,  6)));}
 					
 				}else{
 					int count = Utils.NombreEntre(10, 23);
@@ -199,17 +189,17 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 					if (Utils.Possibilitat(4)){i.add(BowRecipeGenerator.getRandomBow(false));}
 					if (Utils.Possibilitat(50)){i.add(new ItemStack(Material.DIAMOND_HELMET, 1));}
 					if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.DIAMOND_SWORD, 1));}
-					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.WOOD_SWORD, 1));}
+					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_WOOD_SWORD, 1));}
 					if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.DIAMOND_HELMET, 1));}
 					if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.IRON_HELMET, 1));}
 					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.IRON_SWORD, 1));}
-					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.IRON_SPADE, 1));}
+					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_IRON_SPADE, 1));}
 					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.ARROW, 1));}
 					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.FLINT_AND_STEEL, 1));}
 					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.IRON_DOOR, 1));}
 					if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_CHESTPLATE, 1));}
-					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.SNOW_BALL, 16));}
-					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.SNOW_BALL, 16));}
+					if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_SNOW_BALL, 16));}
+					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.LEGACY_SNOW_BALL, 16));}
 					if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.TORCH, 18));}
 					if (Utils.Possibilitat(50)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
 					if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
@@ -221,7 +211,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 				}else{
 					int count = Utils.NombreEntre(10, 20);
 					while(count >= 0){
-						i.add(new ItemStack(Material.EXP_BOTTLE, Utils.NombreEntre(1,  8)));
+						i.add(new ItemStack(Material.LEGACY_EXP_BOTTLE, Utils.NombreEntre(1,  8)));
 						count--;
 					}
 				}

@@ -23,7 +23,7 @@ public class UndeadProofLifeStealerItem extends RawLifeStealItem{
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.FIREBALL;
+		return Material.LEGACY_FIREBALL;
 	}
 	@Override
 	public Double getLifeStealMultiplier(SpecialItemData d) {

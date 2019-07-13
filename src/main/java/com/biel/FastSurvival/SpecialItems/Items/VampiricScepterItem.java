@@ -23,7 +23,7 @@ public class VampiricScepterItem extends RawLifeStealItem{
 	@Override
 	public Material getMaterial() {
 		// TODO Auto-generated method stub
-		return Material.REDSTONE_TORCH_ON;
+		return Material.LEGACY_REDSTONE_TORCH_ON;
 	}
 	@Override
 	public Double getLifeStealMultiplier(SpecialItemData d) {

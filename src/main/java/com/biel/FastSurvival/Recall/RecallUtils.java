@@ -39,21 +39,21 @@ public class RecallUtils {
 	public static void addRecallRecipe(){
 		ShapedRecipe r = new ShapedRecipe(getRecallItem(null));
 		r.shape("ERE", "RWR", "ERE");
-		r.setIngredient('W', Material.WATCH);
+		r.setIngredient('W', Material.LEGACY_WATCH);
 		r.setIngredient('R', Material.REDSTONE_BLOCK);
 		r.setIngredient('E', Material.ENDER_PEARL);
 		Bukkit.getServer().addRecipe(r);
 
 	}
 	public static Boolean isValidRecallItem(ItemStack s){
-		if (!(s.getType() == Material.WATCH)){return false;}
+		if (!(s.getType() == Material.LEGACY_WATCH)){return false;}
 		if (!s.hasItemMeta()){return false;}
 		ItemMeta itemMeta = s.getItemMeta();
 		if (!itemMeta.hasDisplayName()){return false;}
 		if (!itemMeta.hasLore()){return false;}
 		return true;
 	}
-	//Exemple - Material.WATCH
+	//Exemple - Material.LEGACY_WATCH
 	/* Recall - Linked
 	 * X: 605, Y: 72, Z: 562
 	 * PiloWorld
@@ -63,7 +63,7 @@ public class RecallUtils {
 	 * Right click to link
 	 */
 	public static ItemStack getRecallItem(RecallLink link){
-		ItemStack itemStack = new ItemStack(Material.WATCH);
+		ItemStack itemStack = new ItemStack(Material.LEGACY_WATCH);
 		//itemStack.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
 		String name = "Recall" + " - ";
 		String line2 = ChatColor.YELLOW + "";
@@ -90,7 +90,7 @@ public class RecallUtils {
 
 	}
 	public static RecallLink getRecallLink(Player p, ItemStack stack){
-		if (stack.getType() != Material.WATCH || !stack.hasItemMeta()){
+		if (stack.getType() != Material.LEGACY_WATCH || !stack.hasItemMeta()){
 			return null;
 		}
 		//Extract
@@ -382,7 +382,7 @@ public class RecallUtils {
 					pitch = (float) (pitch - (0.8F * (recallProgress - 0.8) * (recallProgress - 0.8)));
 					pitch = (float) (max * dp - (decay * (recallProgress - dp)));
 				}
-				ply.getWorld().playSound(ply.getLocation(), Sound.BLOCK_NOTE_BASS, 3F, pitch);
+				ply.getWorld().playSound(ply.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 3F, pitch);
 				//------------------
 				boolean moved = !plyloc.equalsIgnoreCase(Utils.writeHumanReadableLocation(ply.getLocation(), false));
 				boolean damaged = ply.getHealth() != ply.getMaxHealth();

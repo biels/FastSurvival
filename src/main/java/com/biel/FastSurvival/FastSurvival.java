@@ -1,29 +1,9 @@
 package com.biel.FastSurvival;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.*;
-
 import com.bergerkiller.bukkit.common.Task;
-import com.biel.FastSurvival.Bows.BowRecipeGenerator;
 import com.biel.FastSurvival.Bows.CustomBowsListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
-import com.biel.FastSurvival.Dimensions.Moon.MoonChunkGenerator;
 import com.biel.FastSurvival.Dimensions.Moon.MoonListener;
 import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.Dimensions.Moon.TeleporterListener;
@@ -35,20 +15,33 @@ import com.biel.FastSurvival.Recall.RecallListener;
 import com.biel.FastSurvival.Recall.RecallUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItem;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
-import com.biel.FastSurvival.Turrets.OldTurret;
 import com.biel.FastSurvival.Turrets.TurretListener;
-import com.biel.FastSurvival.Turrets.TurretLogic;
 import com.biel.FastSurvival.Turrets.TurretUtils;
 import com.biel.FastSurvival.Utils.GestorPropietats;
 import com.biel.FastSurvival.Utils.MazeGenerator;
 import com.biel.FastSurvival.Utils.Metrics;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public final class FastSurvival extends JavaPlugin {
 	public GestorPropietats pTemp = new GestorPropietats("pTemp.txt");
 	public void onEnable(){
 
-		getLogger().info("onEnable has been invoked!");
+		getLogger().info("FastSurvival onEnable has been invoked!");
 		try {
 			Metrics metrics = new Metrics(this);
 			metrics.start();
@@ -56,42 +49,45 @@ public final class FastSurvival extends JavaPlugin {
 			// Failed to submit the stats :-(
 			System.out.println("Metrics fail :-(");
 		}
-		//
 		if (!FastSurvival.getPlugin().getDataFolder().exists()){FastSurvival.getPlugin().getDataFolder().mkdirs();}
-
-		getServer().getPluginManager().registerEvents(new EventListener(), this);
-		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
-		getServer().getPluginManager().registerEvents(new MobListener(), this);
-		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
-		getServer().getPluginManager().registerEvents(new MoonListener(), this);
-		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
-		getServer().getPluginManager().registerEvents(new SkyListener(), this);
-		getServer().getPluginManager().registerEvents(new RecallListener(), this);
-		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
-		getServer().getPluginManager().registerEvents(new TurretListener(), this);
-		SpecialItemsUtils.registerItemListeners();
-		//
-		Task myTask = new Task(getPlugin()) {
-			@Override
-			public void run() {
-				MoonUtils.loadMoon();
-				SkyUtils.loadSky();
-				Bukkit.broadcastMessage("Addtitional worlds loaded!");
-				TurretUtils.startTurretLogicTask();
-				Bukkit.broadcastMessage("Turret logic started!");
-			}
-		}.start(1);
+//
+		//getServer().getPluginManager().registerEvents(new EventListener(), this);
+//		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
+//		getServer().getPluginManager().registerEvents(new MobListener(), this);
+//		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
+//		getServer().getPluginManager().registerEvents(new MoonListener(), this);
+//		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
+//		getServer().getPluginManager().registerEvents(new SkyListener(), this);
+//		getServer().getPluginManager().registerEvents(new RecallListener(), this);
+//		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
+//		getServer().getPluginManager().registerEvents(new TurretListener(), this);
+//		SpecialItemsUtils.registerItemListeners();
+//		//
+//		Task myTask = new Task(getPlugin()) {
+//			@Override
+//			public void run() {
+//				MoonUtils.loadMoon();
+//				SkyUtils.loadSky();
+//				Bukkit.broadcastMessage("Addtitional worlds loaded!");
+//				TurretUtils.startTurretLogicTask();
+//				Bukkit.broadcastMessage("Turret logic started!");
+//			}
+//		}.start(1);
 
 		//getServer().getPluginManager().registerEvents(new MobTracker(), this);
-		BowRecipeGenerator.addBowRecipes();
-		ToolRecipeGenerator.addToolRecipes();
-		RecallUtils.addRecallRecipe();
-		MoonUtils.spaceGlassRecipe();
-		BuilderWandUtils.addWandRecipe();
-		TurretUtils.addRecipes();
-		
+		// TODO Enable recipes
+//		BowRecipeGenerator.addBowRecipes();
+//		ToolRecipeGenerator.addToolRecipes();
+//		RecallUtils.addRecallRecipe();
+//		MoonUtils.spaceGlassRecipe();
+//		BuilderWandUtils.addWandRecipe();
+//		TurretUtils.addRecipes();
+
 		//MoonUtils.loadMoon();
 		//Turret.loadInstances();
+
+		getLogger().info("FastSurvival Finished enabled");
+
 	}
 
 	public void onDisable(){
@@ -121,7 +117,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("moon")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aix�! Construeix un teletransportador per fer-ho legalment en superviv�ncia!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aixo! Construeix un teletransportador per fer-ho legalment en superviv�ncia!");return true;}
 				if (MoonUtils.IsInMoon(p)){
 					MoonUtils.teleportPlayerToEarth(p);
 					getLogger().info("Teleported to earth!");
@@ -198,8 +194,8 @@ public final class FastSurvival extends JavaPlugin {
 				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(new ItemStack(Material.IRON_BLOCK, 8));
-				i.addItem(new ItemStack(Material.IRON_FENCE, 4));
-				i.addItem(new ItemStack(Material.WOOD_BUTTON, 2));
+				i.addItem(new ItemStack(Material.LEGACY_IRON_FENCE, 4));
+				i.addItem(new ItemStack(Material.LEGACY_WOOD_BUTTON, 2));
 				i.addItem(new ItemStack(Material.STONE_BUTTON, 1));
 
 
@@ -233,7 +229,7 @@ public final class FastSurvival extends JavaPlugin {
 			if (sender instanceof Player){
 				Player p = (Player) sender;
 				
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to do this!");return true;}
 				ArrayList<SpecialItem> registeredSpecialItems = SpecialItemsUtils.getRegisteredSpecialItems();
 				Inventory i;
 				if(args.length == 0){
@@ -245,7 +241,7 @@ public final class FastSurvival extends JavaPlugin {
 				}else{
 					i = p.getInventory();
 				}
-				Boolean fet = false;
+				boolean fet = false;
 //				if(args.length == 1){
 //					try {
 //						int parseInt = Integer.parseInt(args[1]);

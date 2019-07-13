@@ -125,7 +125,7 @@ public class Turret{
 
 		arrow.setVelocity(dir.multiply(3.4));
 
-		world.playSound(spawnpoint, Sound.ENTITY_IRONGOLEM_HURT, 0.15F, 0.3F);
+		world.playSound(spawnpoint, Sound.ENTITY_IRON_GOLEM_HURT, 0.15F, 0.3F);
 	}
 	public boolean canSee(Block a, Block b)	{
 		if(a.getWorld() != b.getWorld()) return false;
@@ -221,7 +221,7 @@ public class Turret{
 				while (count <= range){
 					Block block = iLoc.getBlock().getRelative(face);
 					Location loc = block.getLocation().clone();
-					tirarPoció(loc, PotionType.INSTANT_DAMAGE, (3 * count) + 1 + delayOffSet);
+					tirarPocio(loc, PotionType.INSTANT_DAMAGE, (3 * count) + 1 + delayOffSet);
 					iLoc = loc;
 					count++;
 				}
@@ -235,7 +235,7 @@ public class Turret{
 			if (espai <= 8){espai = 8;}
 			ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
 			for (Location loc : locs){
-				tirarPoció(loc, PotionType.POISON, delayOffSet);
+				tirarPocio(loc, PotionType.POISON, delayOffSet);
 				//loc.getBlock().setType(Material.COBBLESTONE);
 			}
 			location.getBlock().setType(Material.BEDROCK);
@@ -247,7 +247,7 @@ public class Turret{
 			if (espai <= 5){espai = 5;}
 			ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
 			for (Location loc : locs){
-				tirarPoció(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
+				tirarPocio(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
 				count++;
 			}
 		}
@@ -258,13 +258,13 @@ public class Turret{
 			if (espai <= 5){espai = 5;}
 			ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
 			for (Location loc : locs){
-				tirarPoció(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
-				tirarPoció(loc, PotionType.WEAKNESS, delayOffSet - (count * 2));
+				tirarPocio(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
+				tirarPocio(loc, PotionType.WEAKNESS, delayOffSet - (count * 2));
 				count++;
 			}
 		}
 	}
-	public void tirarPoció(Location loc, PotionType type){
+	public void tirarPocio(Location loc, PotionType type){
 		Location spawnpoint = location.clone().add(new Vector(0.5, 3.2, 0.5));
 		Vector rawDir = loc.toVector().subtract(spawnpoint.toVector());
 		Vector dir = rawDir.normalize();
@@ -281,10 +281,10 @@ public class Turret{
 		}
 
 	}
-	public void tirarPoció(final Location loc, final PotionType type, int delay){
+	public void tirarPocio(final Location loc, final PotionType type, int delay){
 		FastSurvival.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(FastSurvival.getPlugin(), new Runnable() {
 			public void run() {
-				tirarPoció(loc, type);
+				tirarPocio(loc, type);
 			}
 		}, delay);
 	}
@@ -424,11 +424,11 @@ public class Turret{
 		Location loc = location.clone();
 		loc.getBlock().setType(mat);
 		loc.setY(loc.getY() + 1);
-		Material netherFence = Material.NETHER_FENCE;
-		if (!d.getEnabled()){netherFence = Material.FENCE;}
+		Material netherFence = Material.LEGACY_NETHER_FENCE;
+		if (!d.getEnabled()){netherFence = Material.LEGACY_FENCE;}
 		loc.getBlock().setType(netherFence);
 		loc.setY(loc.getY() + 1);
-		Material redstoneTorchOn = Material.REDSTONE_TORCH_ON;
+		Material redstoneTorchOn = Material.LEGACY_REDSTONE_TORCH_ON;
 		if(d.getTier() == 3){redstoneTorchOn = Material.TORCH;}
 		loc.getBlock().setType(redstoneTorchOn);
 		d.setBuilt(true);
