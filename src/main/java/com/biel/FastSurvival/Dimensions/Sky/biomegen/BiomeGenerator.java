@@ -1,9 +1,9 @@
 package com.biel.FastSurvival.Dimensions.Sky.biomegen;
 
-import java.util.HashMap;
-
 import org.bukkit.World;
 import org.bukkit.util.noise.PerlinOctaveGenerator;
+
+import java.util.HashMap;
 
 public class BiomeGenerator {
 	

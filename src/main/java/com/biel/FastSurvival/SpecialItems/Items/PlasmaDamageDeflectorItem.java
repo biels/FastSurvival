@@ -1,7 +1,5 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
-import org.bukkit.Material;
-
 import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 import com.biel.FastSurvival.Utils.Utils;
 

@@ -1,6 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import org.bukkit.Bukkit;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,8 +15,6 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import com.biel.FastSurvival.Utils.Utils;
 
 public class MoonListener implements Listener{
 	@EventHandler

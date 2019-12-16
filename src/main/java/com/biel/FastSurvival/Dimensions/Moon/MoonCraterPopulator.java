@@ -1,7 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.Random;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -9,7 +8,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.Random;
 
 public class MoonCraterPopulator extends BlockPopulator {
     private static final int CRATER_CHANCE = 24; // Out of 100 (45)
@@ -18,17 +17,17 @@ public class MoonCraterPopulator extends BlockPopulator {
     private static final int BIG_CRATER_SIZE = 16;
     private static final int BIG_CRATER_CHANCE = 10; // Out of 100
 
-    public void populate(World world, Random random, Chunk source) {
+    public void populate(World world, Random random, Chunk chunk) {
         if (random.nextInt(115) <= CRATER_CHANCE) {
-            int centerX = (source.getX() << 4) + random.nextInt(16);
-            int centerZ = (source.getZ() << 4) + random.nextInt(16);
+            int centerX = (chunk.getX() << 4) + random.nextInt(16);
+            int centerZ = (chunk.getZ() << 4) + random.nextInt(16);
             int centerY = world.getHighestBlockYAt(centerX, centerZ);
             Vector center = new BlockVector(centerX, centerY, centerZ);
             Location lcenter = new Location(world, centerX, centerY, centerZ);
             Block bCenter = center.toLocation(world).getBlock().getRelative(BlockFace.DOWN);
-            bCenter.setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
+//            bCenter.setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
     		//No sobreposar
-    		if (bCenter.getType() != Material.LEGACY_STAINED_CLAY){return;}
+    		if (bCenter.getType() != Material.WHITE_TERRACOTTA){return;}
 
             //--
             int radius = 0;
@@ -38,14 +37,16 @@ public class MoonCraterPopulator extends BlockPopulator {
             } else {
                 radius = random.nextInt(SMALL_CRATER_SIZE - MIN_CRATER_SIZE + 1) + MIN_CRATER_SIZE;
             }
-
+//            Bukkit.getServer().getLogger().info("Populated crater radius: " + radius);
             for (int x = -radius; x <= radius; x++) {
                 for (int y = -radius; y <= radius; y++) {
                     for (int z = -radius; z <= radius; z++) {
-                        Vector position = center.clone().add(new Vector(x, y, z));
-
-                        if (center.distance(position) <= radius + 0.5) {
-                            world.getBlockAt(position.toLocation(world)).setBlockData(Material.BEDROCK.createBlockData(), false);
+                        Vector vec = new Vector(x, y, z);
+                        Vector position = center.clone().add(vec);
+                        if (vec.length() <= radius + 0.5) {
+                            Block block = position.toLocation(world).getBlock();
+                            block.setType(Material.AIR);
+//                            block.setBlockData(Material.BEDROCK.createBlockData(), false);
                         }
                     }
                 }
@@ -81,7 +82,10 @@ public class MoonCraterPopulator extends BlockPopulator {
                         if (Utils.Possibilitat(c)){mf = Material.STONE;}
                         if (center.distance(position) <= radius + 0.5) {
 
-                        	world.getBlockAt(position.toLocation(world)).setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
+                            Block block = position.toLocation(world).getBlock();
+                            block.setType(mf);
+//                            block.setBlockData(Material.GOLD_BLOCK.createBlockData(), false);
+//                        	chunk.getBlock(position.getBlockX(), position.getBlockY(), position.getBlockZ()).setType();
                         }
                     }
                 }

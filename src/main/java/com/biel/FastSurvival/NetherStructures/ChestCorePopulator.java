@@ -2,14 +2,20 @@ package com.biel.FastSurvival.NetherStructures;
 
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class ChestCorePopulator extends BlockPopulator {

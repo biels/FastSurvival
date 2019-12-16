@@ -1,22 +1,16 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
-import com.biel.FastSurvival.Utils.Cuboid;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class KnockUpListener implements Listener {
 	@EventHandler

@@ -1,5 +1,7 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
+import com.biel.FastSurvival.SpecialItems.SpecialItem;
+import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -11,9 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.projectiles.ProjectileSource;
-
-import com.biel.FastSurvival.SpecialItems.SpecialItem;
-import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 
 public class RawDmgDeflectorItem extends SpecialItem{
 	@Override

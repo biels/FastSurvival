@@ -1,8 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
-import java.util.ArrayList;
-
-import org.bukkit.Bukkit;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +19,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class SkyListener implements Listener{
 	@EventHandler

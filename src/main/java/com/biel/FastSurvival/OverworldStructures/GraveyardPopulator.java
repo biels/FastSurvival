@@ -1,13 +1,8 @@
 package com.biel.FastSurvival.OverworldStructures;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
+import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
@@ -15,9 +10,8 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 
-import com.biel.FastSurvival.Dimensions.Moon.ElectricBossPopulator.LevelType;
-import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GraveyardPopulator extends BlockPopulator {
 	@Override

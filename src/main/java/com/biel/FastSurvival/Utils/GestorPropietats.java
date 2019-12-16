@@ -1,10 +1,10 @@
 package com.biel.FastSurvival.Utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+
 import java.io.*;
 import java.util.ArrayList;
-
-import org.bukkit.*;
-import org.bukkit.entity.Player;
 
 public class GestorPropietats {
 	String Ruta = "";

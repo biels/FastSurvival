@@ -1,10 +1,7 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-
 import com.biel.FastSurvival.SpecialItems.SpecialItemData;
-import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.ChatColor;
 
 public class RawBersekDamageBoosterItem extends RawDamageAmplifierItem{
 	@Override

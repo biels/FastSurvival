@@ -1,24 +1,18 @@
 package com.biel.FastSurvival.OverworldStructures;
 
 /** @author jtjj222 */
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
- 
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.generator.BlockPopulator;
  
 public class SchematicsPopulator extends BlockPopulator {
  

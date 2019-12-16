@@ -1,15 +1,14 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
+import com.biel.FastSurvival.SpecialItems.SpecialItem;
+import com.biel.FastSurvival.SpecialItems.SpecialItemData;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerExpChangeEvent;
-
-import com.biel.FastSurvival.SpecialItems.SpecialItem;
-import com.biel.FastSurvival.SpecialItems.SpecialItemData;
-import com.biel.FastSurvival.Utils.Utils;
 
 public class KnowledgeFocuserItem extends SpecialItem{
 	@Override

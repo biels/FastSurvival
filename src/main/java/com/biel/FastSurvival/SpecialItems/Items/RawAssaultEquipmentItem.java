@@ -1,10 +1,10 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
-import java.util.ArrayList;
-
+import com.biel.FastSurvival.SpecialItems.SpecialItem;
+import com.biel.FastSurvival.SpecialItems.SpecialItemData;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,9 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.SpecialItems.SpecialItem;
-import com.biel.FastSurvival.SpecialItems.SpecialItemData;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class RawAssaultEquipmentItem extends SpecialItem{
 	@Override

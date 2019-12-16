@@ -1,37 +1,26 @@
 package com.biel.FastSurvival.SpecialItems;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
-import com.biel.FastSurvival.Utils.NbtFactory;
-import com.biel.FastSurvival.Utils.Utils;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
-import com.mysql.jdbc.Util;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpecialItem implements Listener{
 	public Material getMaterial(){
@@ -149,10 +138,19 @@ public class SpecialItem implements Listener{
 //		i.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, getTier());
 //		return i;//"[Line1]", "[Line2]", "Info{Current/Max}");
 //	}
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	public ItemStack recreateItemStack(int iId){
 		SpecialItemData d = getData(iId);
-		ItemStack i = Utils.setItemNameAndLore(new ItemStack(getMaterial(), 1, getDamageValue(), getData()), getTierChatColor() + getName(), getLoreArr(d));
+//		ItemStack item = new ItemStack(getMaterial(), 1, getDamageValue(), getData());
+		ItemStack item = new ItemStack(getMaterial(), 1);
+		ItemMeta itemMeta = item.getItemMeta();
+		if (itemMeta instanceof Damageable) {
+			((Damageable) itemMeta).setDamage(getDamageValue());
+			// Not intended, should set item data
+			itemMeta.setCustomModelData(Integer.valueOf(getData()));
+		}
+		item.setItemMeta(itemMeta);
+		ItemStack i = Utils.setItemNameAndLore(item, getTierChatColor() + getName(), getLoreArr(d));
 		//ItemStack i = new ItemStack(getMaterial());
 		i.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, getTier());
 		return i;//"[Line1]", "[Line2]", "Info{Current/Max}");

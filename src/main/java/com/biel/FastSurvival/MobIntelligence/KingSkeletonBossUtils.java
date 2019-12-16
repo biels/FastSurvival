@@ -1,13 +1,9 @@
 package com.biel.FastSurvival.MobIntelligence;
 
-import java.util.ArrayList;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import com.biel.FastSurvival.Bows.BowRecipeGenerator;
+import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
+import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -20,13 +16,9 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.Bows.BowRecipeGenerator;
-import com.biel.FastSurvival.Bows.BowUtils;
-import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class KingSkeletonBossUtils {
 	/**
@@ -45,7 +37,8 @@ public class KingSkeletonBossUtils {
 	}
 	public static void updateEquipment(Skeleton sk){
 		EntityEquipment eq = sk.getEquipment();
-		
+
+		assert eq != null;
 		eq.setHelmet(new ItemStack(Material.LEGACY_GOLD_HELMET));
 		Color c = Color.BLUE;
 		if (sk.getHealth() <= 100){
@@ -70,11 +63,11 @@ public class KingSkeletonBossUtils {
 			ItemStack it = sk.getEquipment().getItemInHand();
 			ItemStack nextit = null;
 			if (it.isSimilar(new ItemStack(Material.ENDER_PEARL))){
-				nextit = new ItemStack(Material.LEGACY_EYE_OF_ENDER);
+				nextit = new ItemStack(Material.ENDER_EYE);
 				w.playSound(sk.getEyeLocation(), Sound.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, 2, (float) 1.1);
 				teleportToEscape(sk);
 			}
-			if (it.isSimilar(new ItemStack(Material.LEGACY_EYE_OF_ENDER))){
+			if (it.isSimilar(new ItemStack(Material.ENDER_EYE))){
 				nextit = getSpellItemStack(getNextSpell());
 				w.playSound(sk.getEyeLocation(), Sound.ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR, (float) 2.5, (float) 1.55);
 				//return;
@@ -217,7 +210,7 @@ public class KingSkeletonBossUtils {
 			Location randomLoc = locs.get(Utils.NombreEntre(0, locs.size() - 1));
 			Block block = randomLoc.getBlock();
 			Material type = block.getType();
-			if ((type == Material.LEGACY_LEAVES || type == Material.LEGACY_REDSTONE_LAMP_ON) && block.getRelative(BlockFace.UP).isEmpty()){
+			if ((type == Material.OAK_LEAVES || type == Material.BIRCH_LEAVES) && block.getRelative(BlockFace.UP).isEmpty()){
 				finalLocs.add(randomLoc);
 			}
 			//Bukkit.broadcastMessage("msg: " + Integer.toString(num) + " - - " + Integer.toString(locs.size()) + ": "  + Integer.toString(finalLocs.size()));
@@ -251,7 +244,7 @@ public class KingSkeletonBossUtils {
 		d.add(new ItemStack(Material.TNT, 25));
 		d.add(new ItemStack(Material.ENDER_PEARL, Utils.NombreEntre(8, 16)));
 		d.add(SpecialItemsUtils.getRandomSpecialItem(2));
-		ItemStack itemStack3 = new ItemStack(Material.LEGACY_GOLD_HELMET);
+		ItemStack itemStack3 = new ItemStack(Material.GOLDEN_HELMET);
 		itemStack3.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 9);
 		itemStack3.addUnsafeEnchantment(Enchantment.DURABILITY, 9);
 		d.add(itemStack3);

@@ -1,24 +1,16 @@
 package com.biel.FastSurvival.TerrainBoss;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Slime;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.Random;
 
 public class SlimeBossPopulator extends BlockPopulator {
 

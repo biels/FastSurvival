@@ -1,7 +1,6 @@
 package com.biel.FastSurvival.BuilderWand;
 
-import java.util.ArrayList;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -11,15 +10,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class BuilderWandUtils {
 	public static void addWandRecipe(){

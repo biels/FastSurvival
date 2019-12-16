@@ -1,6 +1,6 @@
 package com.biel.FastSurvival;
 
-import com.bergerkiller.bukkit.common.Task;
+import com.biel.FastSurvival.Bows.BowRecipeGenerator;
 import com.biel.FastSurvival.Bows.CustomBowsListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
@@ -15,6 +15,7 @@ import com.biel.FastSurvival.Recall.RecallListener;
 import com.biel.FastSurvival.Recall.RecallUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItem;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
+import com.biel.FastSurvival.Turrets.Turret;
 import com.biel.FastSurvival.Turrets.TurretListener;
 import com.biel.FastSurvival.Turrets.TurretUtils;
 import com.biel.FastSurvival.Utils.GestorPropietats;
@@ -31,6 +32,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,40 +53,46 @@ public final class FastSurvival extends JavaPlugin {
 		}
 		if (!FastSurvival.getPlugin().getDataFolder().exists()){FastSurvival.getPlugin().getDataFolder().mkdirs();}
 //
-		//getServer().getPluginManager().registerEvents(new EventListener(), this);
-//		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
-//		getServer().getPluginManager().registerEvents(new MobListener(), this);
-//		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
-//		getServer().getPluginManager().registerEvents(new MoonListener(), this);
-//		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
-//		getServer().getPluginManager().registerEvents(new SkyListener(), this);
-//		getServer().getPluginManager().registerEvents(new RecallListener(), this);
-//		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
-//		getServer().getPluginManager().registerEvents(new TurretListener(), this);
-//		SpecialItemsUtils.registerItemListeners();
+		getServer().getPluginManager().registerEvents(new EventListener(), this);
+		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
+		getServer().getPluginManager().registerEvents(new MobListener(), this);
+		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
+		getServer().getPluginManager().registerEvents(new MoonListener(), this);
+		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
+		getServer().getPluginManager().registerEvents(new SkyListener(), this);
+		getServer().getPluginManager().registerEvents(new RecallListener(), this);
+		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
+		getServer().getPluginManager().registerEvents(new TurretListener(), this);
+		SpecialItemsUtils.registerItemListeners();
 //		//
-//		Task myTask = new Task(getPlugin()) {
-//			@Override
-//			public void run() {
+		BukkitTask loadWorldsTask = getServer().getScheduler().runTaskLater(this, new Runnable() {
+			@Override
+			public void run() {
 //				MoonUtils.loadMoon();
 //				SkyUtils.loadSky();
 //				Bukkit.broadcastMessage("Addtitional worlds loaded!");
 //				TurretUtils.startTurretLogicTask();
 //				Bukkit.broadcastMessage("Turret logic started!");
-//			}
-//		}.start(1);
+			}
+		}, 1);
 
-		//getServer().getPluginManager().registerEvents(new MobTracker(), this);
+//		getServer().getPluginManager().registerEvents(new MobTracker(), this);
 		// TODO Enable recipes
-//		BowRecipeGenerator.addBowRecipes();
-//		ToolRecipeGenerator.addToolRecipes();
-//		RecallUtils.addRecallRecipe();
-//		MoonUtils.spaceGlassRecipe();
-//		BuilderWandUtils.addWandRecipe();
-//		TurretUtils.addRecipes();
 
-		//MoonUtils.loadMoon();
-		//Turret.loadInstances();
+		getServer().getScheduler().runTaskLater(this, new Runnable() {
+			@Override
+			public void run() {
+				BowRecipeGenerator.addBowRecipes();
+				ToolRecipeGenerator.addToolRecipes();
+				RecallUtils.addRecallRecipe();
+				MoonUtils.spaceGlassRecipe();
+				BuilderWandUtils.addWandRecipe();
+				TurretUtils.addRecipes();
+				getLogger().info("Added all recipes to server");
+			}
+		}, 20 * 10);
+//		MoonUtils.loadMoon();
+//		Turret.loadInstances();
 
 		getLogger().info("FastSurvival Finished enabled");
 

@@ -1,12 +1,12 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.Random;
-
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
+
+import java.util.Random;
 
 public class MiniMazePopulator extends BlockPopulator {
 	@Override

@@ -1,16 +1,16 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.util.noise.NoiseGenerator;
+import org.bukkit.util.noise.SimplexNoiseGenerator;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import org.bukkit.Location;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.util.noise.NoiseGenerator;
-import org.bukkit.util.noise.SimplexNoiseGenerator;
 
 public class MoonChunkGenerator extends ChunkGenerator {
     private NoiseGenerator generator;
@@ -65,10 +65,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(
                 new MoonCraterPopulator(),
-                //new FlagPopulator(),
-                //new ClayColorPopulator(),
+                new FlagPopulator(),
+                new ClayColorPopulator(),
                 new MoonMagicTreePopulator()
-                //new MiniMazePopulator()
+//                new MiniMazePopulator()
         );
     }
 

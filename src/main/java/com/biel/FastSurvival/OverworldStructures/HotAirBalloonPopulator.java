@@ -30,7 +30,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 	public void generateDownChest(Location center){
 		Cuboid botC = new Cuboid(center.clone().add(-1 * 1, 0, -1 * 1),center.clone().add(1, 0, 1));
 		BUtils.fillBlocks(botC.getBlocks(), Material.LEGACY_WOOD);
-		center.getBlock().setType(Material.LEGACY_WORKBENCH);
+		center.getBlock().setType(Material.CRAFTING_TABLE);
 		
 		//Chest
 		ArrayList<BlockFace> edgeFaces = new ArrayList<BlockFace>();
@@ -142,7 +142,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.BREAD, Utils.NombreEntre(1,  25)));}
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1,  25)));}
 		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_BLOCK, Utils.NombreEntre(1,  5)));}
-		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.LEGACY_REDSTONE_LAMP_OFF, Utils.NombreEntre(1,  5)));}
+		if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.REDSTONE_LAMP, Utils.NombreEntre(1,  5)));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.PAPER, Utils.NombreEntre(1,  2)));}
 		if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.BAKED_POTATO, Utils.NombreEntre(1,  18)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CARROT, Utils.NombreEntre(1,  3)));}

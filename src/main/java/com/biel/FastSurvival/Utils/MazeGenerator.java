@@ -1,12 +1,11 @@
 package com.biel.FastSurvival.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Arrays;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
  
 public class MazeGenerator {
 	private final int x;

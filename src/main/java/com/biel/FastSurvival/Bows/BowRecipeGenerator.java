@@ -1,9 +1,8 @@
 package com.biel.FastSurvival.Bows;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
+import com.biel.FastSurvival.Bows.BowUtils.BowType;
 import com.biel.FastSurvival.FastSurvival;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,10 +10,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
-
-import com.biel.FastSurvival.Bows.BowUtils.BowType;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BowRecipeGenerator {
 	public static void addBowRecipes(){
@@ -30,6 +29,9 @@ public class BowRecipeGenerator {
 		electricRecipe();
 	}
 	static void enderRecipe(){
+
+//		ShapelessRecipe r = new ShapelessRecipe(getKey("ender"), Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.DARK_GREEN + Utils.L("BOW_NAME_TELEPORT"), ChatColor.WHITE + Utils.L("BOW_DESC_TELEPORT"), getID(BowType.ENDER)));
+//		Bukkit.getServer().addRecipe(r);
 		ShapedRecipe r = new ShapedRecipe(getKey("ender"), Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.DARK_GREEN + Utils.L("BOW_NAME_TELEPORT"), ChatColor.WHITE + Utils.L("BOW_DESC_TELEPORT"), getID(BowType.ENDER)));
 		r.shape("IEI", "EBE", "GRG");
 		r.setIngredient('B', Material.BOW);
@@ -38,6 +40,7 @@ public class BowRecipeGenerator {
         r.setIngredient('I', Material.IRON_INGOT);
         r.setIngredient('E', Material.ENDER_PEARL);
         Bukkit.getServer().addRecipe(r);
+//        Bukkit.getLogger().info("Added Ender recipe");
 	}
 	static void magneticRecipe(){
 		ShapedRecipe r = new ShapedRecipe(getKey("magnetic"), Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.DARK_BLUE + Utils.L("BOW_NAME_MAGNETIC"), ChatColor.WHITE + Utils.L("BOW_DESC_MAGNETIC"), getID(BowType.MAGNETIC)));

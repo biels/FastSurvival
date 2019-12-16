@@ -1,15 +1,10 @@
 package com.biel.FastSurvival.Utils;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
+import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Translations.LanguageStrings;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
+import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
@@ -31,9 +26,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Utils {

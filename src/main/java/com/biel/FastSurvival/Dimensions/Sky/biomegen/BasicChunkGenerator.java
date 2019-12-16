@@ -1,17 +1,15 @@
 package com.biel.FastSurvival.Dimensions.Sky.biomegen;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 public class BasicChunkGenerator extends ChunkGenerator {
 

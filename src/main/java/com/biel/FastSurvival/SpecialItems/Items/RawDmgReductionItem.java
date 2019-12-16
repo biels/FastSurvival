@@ -1,17 +1,13 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
+import com.biel.FastSurvival.SpecialItems.SpecialItem;
+import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-
-import com.biel.FastSurvival.MobIntelligence.KingSkeletonBossUtils;
-import com.biel.FastSurvival.SpecialItems.SpecialItem;
-import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 
 public class RawDmgReductionItem extends SpecialItem {
 	@Override

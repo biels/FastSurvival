@@ -1,16 +1,14 @@
 package com.biel.FastSurvival.Turrets;
 
+import com.biel.FastSurvival.Turrets.TurretLogic.AttackGroups;
+import com.biel.FastSurvival.Turrets.TurretLogic.Upgrades;
+import com.biel.FastSurvival.Utils.GestorPropietats;
+import org.bukkit.Location;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import com.biel.FastSurvival.Turrets.TurretLogic.*;
-import com.biel.FastSurvival.Utils.GestorPropietats;
-import com.biel.FastSurvival.Utils.Utils;
 
 public class TurretData {
 	int iId;

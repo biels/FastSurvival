@@ -1,32 +1,23 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
+import com.biel.FastSurvival.MobIntelligence.KingSkeletonBossUtils;
+import com.biel.FastSurvival.Utils.BUtils;
+import com.biel.FastSurvival.Utils.Cuboid;
+import com.biel.FastSurvival.Utils.Cuboid.CuboidDirection;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Stairs;
 import org.bukkit.material.Vine;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.utils.MaterialUtil;
-import com.biel.FastSurvival.MobIntelligence.KingSkeletonBossUtils;
-import com.biel.FastSurvival.Utils.BUtils;
-import com.biel.FastSurvival.Utils.Cuboid;
-import com.biel.FastSurvival.Utils.Utils;
-import com.biel.FastSurvival.Utils.Cuboid.CuboidDirection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class MoonMagicTreePopulator extends BlockPopulator {
 	private static final int TREE_CHANCE = 1; // Out of 100 (45)

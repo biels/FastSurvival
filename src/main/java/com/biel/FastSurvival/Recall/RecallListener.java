@@ -1,6 +1,5 @@
 package com.biel.FastSurvival.Recall;
 
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,8 +11,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import com.biel.FastSurvival.FastSurvival;
 
 public class RecallListener implements Listener {
 //Link

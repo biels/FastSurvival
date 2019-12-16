@@ -1,18 +1,16 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
 import org.bukkit.Location;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
 
-import com.biel.FastSurvival.Dimensions.Moon.MoonCraterPopulator;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class SkyChunkGenerator extends ChunkGenerator {
     private NoiseGenerator generator;
@@ -32,20 +30,39 @@ public class SkyChunkGenerator extends ChunkGenerator {
         result *= variance;
         return NoiseGenerator.floor(result);
     }
-    
+
+    //Unused
     public byte[] generate(World world, Random random, int cx, int cz) {
         byte[] result = new byte[32768];
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 4)+50;
+                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 4) + 50;
                 for (int y = 46; y < height; y++) {
-                    result[(x * 16 + z) * 128 + y] = (byte)Material.SNOW_BLOCK.getId();
+                    result[(x * 16 + z) * 128 + y] = (byte) Material.SNOW_BLOCK.getId();
                 }
             }
         }
 
         return result;
+    }
+
+    @Override
+    public ChunkData generateChunkData(World world, Random random, int cx, int cz, BiomeGrid biome) {
+        ChunkData chunk = createChunkData(world);
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 4) + 50;
+                for (int y = 46; y < height; y++) {
+                    if (y != 48) {
+                        chunk.setBlock(x, y, z, Material.SNOW_BLOCK);
+                    } else {
+                        chunk.setBlock(x, y, z, Material.BLUE_ICE);
+                    }
+                }
+            }
+        }
+        return chunk;
     }
 
     @Override

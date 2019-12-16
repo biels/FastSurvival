@@ -1,20 +1,13 @@
 package com.biel.FastSurvival.Turrets;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
+import com.biel.FastSurvival.FastSurvival;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -23,19 +16,15 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Vine;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.BlockIterator;
 
-import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Turrets.*;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TurretListener implements Listener{
 	//	@EventHandler
@@ -191,7 +180,7 @@ public class TurretListener implements Listener{
 				while(iterator.hasNext()) {
 					hitBlock = iterator.next();
 					// hitBlock.breakNaturally();
-					if(hitBlock.getType().getId()!=0) //Check all non-solid blockid's here.
+					if(!hitBlock.getType().isSolid()) //Check all non-solid blockid's here.
 					{ break;}
 				}
 				//land.getBlock().setType(Material.IRON_BLOCK);

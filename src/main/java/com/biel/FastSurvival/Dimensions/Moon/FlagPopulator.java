@@ -1,21 +1,16 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.List;
-import java.util.Random;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.List;
+import java.util.Random;
 
 public class FlagPopulator extends BlockPopulator {
     private static final int FLAG_CHANCE = 8; // Out of 200
@@ -30,14 +25,14 @@ public class FlagPopulator extends BlockPopulator {
         Block top = null;
         for (int y = centerY; y < centerY + FLAG_HEIGHT; y++) {
             top = world.getBlockAt(centerX, y, centerZ);
-            top.setType(Material.LEGACY_FENCE);
+            top.setType(Material.BIRCH_FENCE);
         }
 
         Block signBlock = top.getRelative(direction);
 
         if (Utils.Possibilitat(30)){
             if (Utils.Possibilitat(20)){
-                signBlock.setType(Material.LEGACY_WALL_SIGN);
+                signBlock.setType(Material.BIRCH_WALL_SIGN);
                 BlockState state = signBlock.getState();
                 if (state instanceof Sign) {
                     Sign sign = (Sign)state;
@@ -56,11 +51,11 @@ public class FlagPopulator extends BlockPopulator {
                     sign.update(true);
                 }
             }else{
-                signBlock.setType(Material.LEGACY_REDSTONE_LAMP_OFF);
+                signBlock.setType(Material.REDSTONE_LAMP);
             }
 
         }else{
-            signBlock.setType(Material.LEGACY_MOB_SPAWNER);
+            signBlock.setType(Material.SPAWNER);
             if(signBlock.getState() instanceof CreatureSpawner){
                 CreatureSpawner spawner = (CreatureSpawner) signBlock.getState();
                 //spawner.setDelay(20 * 3);
@@ -68,7 +63,7 @@ public class FlagPopulator extends BlockPopulator {
                 spawner.setSpawnedType(EntityType.ZOMBIE);;
                 spawner.update();
             }else{
-                signBlock.setType(Material.LEGACY_REDSTONE_LAMP_OFF);
+                signBlock.setType(Material.REDSTONE_LAMP);
             }
 
         }

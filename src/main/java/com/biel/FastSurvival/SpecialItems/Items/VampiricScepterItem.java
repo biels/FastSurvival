@@ -1,8 +1,7 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
-import org.bukkit.Material;
-
 import com.biel.FastSurvival.SpecialItems.SpecialItemData;
+import org.bukkit.Material;
 
 public class VampiricScepterItem extends RawLifeStealItem{
 	@Override

@@ -1,13 +1,12 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.Random;
-
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
+
+import java.util.Random;
 
 public class ClayColorPopulator extends BlockPopulator {
 

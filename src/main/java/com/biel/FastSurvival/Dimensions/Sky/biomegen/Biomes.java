@@ -1,11 +1,9 @@
 package com.biel.FastSurvival.Dimensions.Sky.biomegen;
 
-import java.util.HashMap;
-
-
-
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+
+import java.util.HashMap;
 
 /**
  * In order to find the biome of a region, we look up how close it's

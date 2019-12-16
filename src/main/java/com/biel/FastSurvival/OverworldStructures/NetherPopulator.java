@@ -1,8 +1,5 @@
 package com.biel.FastSurvival.OverworldStructures;
 
-import java.util.Random;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,6 +8,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.generator.BlockPopulator;
+
+import java.util.Random;
 
 public class NetherPopulator extends BlockPopulator {
 // Regex to replace: getBlockTypeIdAt(.+?)\)       /////      getBlockAt$1).getType().getId()

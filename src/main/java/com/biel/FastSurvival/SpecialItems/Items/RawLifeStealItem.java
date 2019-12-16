@@ -1,22 +1,14 @@
 package com.biel.FastSurvival.SpecialItems.Items;
 
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Zombie;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
-import org.bukkit.projectiles.ProjectileSource;
-
 import com.biel.FastSurvival.SpecialItems.SpecialItem;
 import com.biel.FastSurvival.SpecialItems.SpecialItemData;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class RawLifeStealItem extends SpecialItem{
 	@Override

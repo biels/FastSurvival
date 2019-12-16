@@ -1,16 +1,10 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.biel.FastSurvival.FastSurvival;
+import com.biel.FastSurvival.Utils.Cuboid;
+import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
 import org.bukkit.World.Environment;
-import org.bukkit.WorldCreator;
-import org.bukkit.WorldType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,17 +14,11 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.Task;
-import com.bergerkiller.bukkit.common.utils.CommonUtil;
-import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Bows.BowUtils.BowType;
-import com.biel.FastSurvival.Dimensions.Sky.biomegen.BasicChunkGenerator;
-import com.biel.FastSurvival.Utils.Cuboid;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SkyUtils {
 	

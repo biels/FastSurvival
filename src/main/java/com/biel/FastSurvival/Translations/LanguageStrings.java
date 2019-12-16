@@ -1,9 +1,9 @@
 package com.biel.FastSurvival.Translations;
 
-import java.io.File;
-
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.GestorPropietats;
+
+import java.io.File;
 
 public class LanguageStrings {
 	public static String getString(String code){

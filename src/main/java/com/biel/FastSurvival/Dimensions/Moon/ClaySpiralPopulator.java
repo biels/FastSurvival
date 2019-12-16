@@ -4,10 +4,7 @@ import com.biel.FastSurvival.Dimensions.utils.Spiral;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
 

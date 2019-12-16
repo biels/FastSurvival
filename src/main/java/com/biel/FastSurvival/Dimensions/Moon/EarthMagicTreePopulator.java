@@ -1,32 +1,23 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Bukkit;
+import com.biel.FastSurvival.MobIntelligence.KingSkeletonBossUtils;
+import com.biel.FastSurvival.Utils.BUtils;
+import com.biel.FastSurvival.Utils.Cuboid;
+import com.biel.FastSurvival.Utils.Cuboid.CuboidDirection;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.EntityEquipment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Stairs;
 import org.bukkit.material.Vine;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.utils.MaterialUtil;
-import com.biel.FastSurvival.MobIntelligence.KingSkeletonBossUtils;
-import com.biel.FastSurvival.Utils.BUtils;
-import com.biel.FastSurvival.Utils.Cuboid;
-import com.biel.FastSurvival.Utils.Utils;
-import com.biel.FastSurvival.Utils.Cuboid.CuboidDirection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class EarthMagicTreePopulator extends BlockPopulator {
 	private static final int TREE_CHANCE = 1; // Out of 100 (45)
@@ -41,11 +32,11 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
 		//No sobreposar
 		Material ct = bCenter.getType();
-		if ((ct == Material.LEGACY_LEAVES|| ct == Material.LEGACY_LEAVES_2)){return;}
+		if ((ct == Material.BIRCH_LEAVES|| ct == Material.OAK_LEAVES)){return;}
 		int radius = 2; //Utils.NombreEntre(2, 5);
 		Cuboid sc = generateCenterCuboid(center, 41, radius);
 		for (Block b: sc.getBlocks()){
-			b.setType(Material.LEGACY_LOG);
+			b.setType(Material.BIRCH_LOG);
 //			b.setData(getWoodData(), false);
 			//			if (Utils.Possibilitat(1)){
 			//				b.setType(Material.LEGACY_WOOD);
@@ -66,7 +57,6 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		c.expand(CuboidDirection.Up, height - 1);
 		return c;
 	}
-	@SuppressWarnings("deprecation")
 	public void generateStair(Location center, int MaxHeight, int radius, int amp, int UpFact){
 		int height = 0;
 		int upFactRemaining = UpFact; 
@@ -85,14 +75,15 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 				Block blk = lBlock.getBlock();
 				if (RemAmp != 2){
 					if (!Utils.Possibilitat(1)){
-						blk.setType(Material.LEGACY_LOG);
+						blk.setType(Material.BIRCH_LOG);
 //						blk.setData(getWoodData(), false);
 					}
 				}else{
 					if (Utils.Possibilitat(100)){
 						blk.setType(Material.VINE);
-						Vine v = new Vine(blk.getData());
-						
+//						Vine v = new Vine(blk.getData());
+
+
 //						ArrayList<BlockFace> adjf = Utils.getAdjacentFaces(blk, Utils.getFacesNSEW());
 						BlockFace f = Utils.getFacesNSEW().get(Utils.NombreEntre(0, 3));
 //						int size = adjf.size();
@@ -156,7 +147,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		blks.addAll(Utils.getOuterCylBlocks(center.clone().add(0, 2, 0), radius, height, false));
 		blks.addAll(Utils.getCylBlocks(center.clone().add(0, -1, 0), radius -1, 3, true));
 		for(Block b : blks){
-			b.setType(Material.LEGACY_LEAVES);
+			b.setType(Material.BIRCH_LEAVES);
 		}
 		for(Block b : Utils.getOuterCylBlocks(center.clone().add(0, 2, 0), radius + 1, height, false)){
 			//if (Utils.Possibilitat(12)){b.setType(Material.GOLD_BLOCK);}
@@ -167,7 +158,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 		iblks.add(lampCenterLoc.getBlock());
 		for(Block b : iblks){
 			b.getRelative(BlockFace.DOWN).setType(Material.REDSTONE_BLOCK);
-			b.setType(Material.LEGACY_REDSTONE_LAMP_ON);
+			b.setType(Material.REDSTONE_LAMP);
 			b.getRelative(BlockFace.UP, 7).setType(Material.AIR);
 		}
 	}
@@ -194,7 +185,7 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 			if (l.getBlockY() - center.getY() > 4){return;}
 			//Set
 			Block blk = l.getBlock();
-			blk.setType(Material.LEGACY_LOG);
+			blk.setType(Material.BIRCH_LOG);
 			//blk.setData(getWoodData(), false);
 			//Advance or lateral
 			Vector ndir = dir.clone().normalize();

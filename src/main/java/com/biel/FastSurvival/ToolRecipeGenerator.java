@@ -1,16 +1,13 @@
 package com.biel.FastSurvival;
 
-import java.util.ArrayList;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 
-import com.biel.FastSurvival.Bows.BowUtils.BowType;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
 
 public class ToolRecipeGenerator {
 	public static void addToolRecipes(){

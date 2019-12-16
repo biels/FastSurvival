@@ -1,10 +1,8 @@
 package com.biel.FastSurvival.SpecialItems;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-
 import com.biel.FastSurvival.Utils.GestorPropietats;
+
+import java.io.File;
 
 public class SpecialItemData {
 	int iId;

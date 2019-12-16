@@ -1,8 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,10 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
-import com.biel.FastSurvival.Utils.Cuboid;
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeleporterListener implements Listener {
 	@EventHandler

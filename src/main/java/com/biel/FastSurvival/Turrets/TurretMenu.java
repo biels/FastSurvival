@@ -1,15 +1,14 @@
 package com.biel.FastSurvival.Turrets;
 
+import com.biel.FastSurvival.FastSurvival;
+import com.biel.FastSurvival.Turrets.TurretLogic.AttackGroups;
+import com.biel.FastSurvival.Utils.IconMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Turrets.TurretLogic.AttackGroups;
-import com.biel.FastSurvival.Utils.IconMenu;
 import org.bukkit.material.Wool;
 
 public class TurretMenu {

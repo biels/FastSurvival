@@ -1,32 +1,21 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import javax.swing.Box.Filler;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.BrewingStand;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.EntityType;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
-
 import com.biel.FastSurvival.Bows.BowRecipeGenerator;
 import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BrewingStand;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ElectricBossPopulator extends BlockPopulator{
 	private static final int BOSS_CHANCE = 2; // Out of 200
@@ -35,6 +24,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 	public void populate(World world, Random random, Chunk source) {
 		if (random.nextInt(500) <= 1) { // 1 in every 14 square chnks
+//            Bukkit.getServer().getLogger().info("Populated ElectricBossPopulator" );
 
 			int BLOCKS_PER_LEVEL = 5;
 			int MAX_LEVELS = Utils.NombreEntre(7, 9);
@@ -49,7 +39,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			Location center = new Location(world, centerX, centerY, centerZ);
 			Block bCenter = center.getBlock();
 			//No sobreposar
-			if (bCenter.getType() != Material.LEGACY_STAINED_CLAY){return;}
+			if (bCenter.getType() != Material.WHITE_TERRACOTTA){return;}
 			
 			BlockFace direction = null;
 			Block top = null;
@@ -84,7 +74,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 				boolean topLevel = LEVELS == 0;
 				int sponges = Utils.NombreEntre(1, 3);
 				for(Block b : floor){
-					b.setType(Material.LEGACY_WOOD);
+					b.setType(Material.BIRCH_PLANKS);
 					if(lastLevel){
 						b.setType(Material.BEDROCK);
 						if (sponges > 0){
@@ -155,16 +145,16 @@ public class ElectricBossPopulator extends BlockPopulator{
 					for (Block b : bonusZone){
 						if (Utils.Possibilitat(2)){
 							Material topmat = Material.BOOKSHELF;
-							if (Utils.Possibilitat(40)){topmat = Material.LEGACY_WORKBENCH;}
+							if (Utils.Possibilitat(40)){topmat = Material.CRAFTING_TABLE;}
 							if (b.isEmpty()){b.setType(Material.BOOKSHELF);b.getLocation().add(0, 1, 0).getBlock().setType(topmat);
 							}
 
 						}
 						if (Utils.Possibilitat(10)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_WORKBENCH);}
+							if (b.isEmpty()){b.setType(Material.CRAFTING_TABLE);}
 						}
 						if (Utils.Possibilitat(10)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_REDSTONE_LAMP_OFF);}
+							if (b.isEmpty()){b.setType(Material.REDSTONE_LAMP);}
 						}
 					}
 					for (Block b : internalZone){
@@ -244,15 +234,15 @@ public class ElectricBossPopulator extends BlockPopulator{
 					st = EntityType.SKELETON;
 					for (Block b : bonusZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_SOIL);b.getLocation().add(0, 1, 0).getBlock().setType(Material.LEGACY_CROPS);};
+							if (b.isEmpty()){b.setType(Material.FARMLAND);b.getLocation().add(0, 1, 0).getBlock().setType(Material.WHEAT);};
 						}
 					}
 					for (Block b : internalZone){
 						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType() == Material.LEGACY_WOOD){b.setType(Material.LEGACY_FENCE);};
+							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType() == Material.BIRCH_PLANKS){b.setType(Material.BIRCH_FENCE);};
 						}
 						if (Utils.Possibilitat(1)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_FENCE_GATE);};
+							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.BIRCH_FENCE_GATE);};
 						}
 					}
 					break;
@@ -263,8 +253,8 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(15)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_WEB);};
+						if (Utils.Possibilitat(12)){
+							if (b.isEmpty()){b.setType(Material.COBWEB);};
 						}
 					}
 					break;
@@ -273,15 +263,15 @@ public class ElectricBossPopulator extends BlockPopulator{
 					for (Block b : bonusZone){
 						
 						if (Utils.Possibilitat(5)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_WORKBENCH);}
+							if (b.isEmpty()){b.setType(Material.CRAFTING_TABLE);}
 						}
 						if (Utils.Possibilitat(2)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_REDSTONE_LAMP_OFF);}
+							if (b.isEmpty()){b.setType(Material.REDSTONE_LAMP);}
 						}
 					}
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(15)){
-							if (b.isEmpty()){b.setType(Material.LEGACY_IRON_FENCE);};
+						if (Utils.Possibilitat(14)){
+							if (b.isEmpty()){b.setType(Material.IRON_BARS);};
 						}
 					}
 					break;

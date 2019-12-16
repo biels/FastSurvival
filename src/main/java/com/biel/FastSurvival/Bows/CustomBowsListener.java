@@ -1,38 +1,19 @@
 package com.biel.FastSurvival.Bows;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.World;
+import com.biel.FastSurvival.Bows.BowUtils.BowType;
+import com.biel.FastSurvival.FastSurvival;
+import com.biel.FastSurvival.Turrets.TurretUtils;
+import com.biel.FastSurvival.Utils.Utils;
+import com.biel.FastSurvival.Utils.WGUtils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LightningStrike;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.weather.LightningStrikeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -41,12 +22,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.bergerkiller.bukkit.common.Task;
-import com.biel.FastSurvival.FastSurvival;
-import com.biel.FastSurvival.Bows.BowUtils.BowType;
-import com.biel.FastSurvival.Turrets.TurretUtils;
-import com.biel.FastSurvival.Utils.Utils;
-import com.biel.FastSurvival.Utils.WGUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class CustomBowsListener implements Listener {
 	@EventHandler
@@ -238,7 +216,7 @@ public class CustomBowsListener implements Listener {
 			final Location lf = l;
 			final float ff = f *  2.3F;
 			final UUID id = p.getUniqueId();
-			Task myTask = new Task(FastSurvival.getPlugin()) {
+			Runnable myTask = new Runnable() {
 			    @Override
 			    public void run() {
 			    	ultraStrike(lf, ff, p, 0.9F);
@@ -258,7 +236,8 @@ public class CustomBowsListener implements Listener {
 						ent.setVelocity(vel);
 					}
 			    }
-			}.start(7);
+			};
+			Bukkit.getScheduler().runTaskLater(FastSurvival.getPlugin(), myTask, 7);
 			for(LivingEntity ent : Utils.getNearbyEnemies(p, l, f * 10, false)){
 				if(ent instanceof FallingBlock) return;;
 				int time = (int) (10 * 20 + f * 3);
@@ -300,12 +279,11 @@ public class CustomBowsListener implements Listener {
 				finalLocs.add(b);
 			}
 			for (Block b : finalLocs) {
-
 				//b.setType(Material.DIAMOND_BLOCK);
 				if (b.getType() == Material.BEDROCK){continue;};
 				if (b.getPistonMoveReaction() == PistonMoveReaction.BLOCK || b.getPistonMoveReaction() == PistonMoveReaction.IGNORE){continue;};
-				if (b.getType() == Material.LEGACY_WOOD){b.setType(Material.COBBLESTONE); continue;};
-				if (b.getType() == Material.LEGACY_LOG){b.setType(Material.STONE); continue;};
+				if (Tag.PLANKS.isTagged(b.getType())){b.setType(Material.COBBLESTONE); continue;};
+				if (Tag.LOGS.isTagged(b.getType())){b.setType(Material.STONE); continue;};
 				if(b.getType() != Material.AIR){
 					if (p != null){
 						if (p instanceof Player){
@@ -315,9 +293,8 @@ public class CustomBowsListener implements Listener {
 						}
 					}
 					
-					@SuppressWarnings("deprecation")
 					FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(
-							b.getLocation().add(new Vector(0.5, 1.5 ,0.5)), b.getType(), b.getData());
+							b.getLocation().add(new Vector(0.5, 1.5 ,0.5)), b.getBlockData());
 					fallingBlock.setDropItem(true);
 					fallingBlock.setHurtEntities(true);
 					//fallingBlock.setVelocity(Utils.CrearVector(l, location).setY(0).add(vr));
@@ -327,7 +304,7 @@ public class CustomBowsListener implements Listener {
 			}
 			//world.strikeLightningEffect(location);
 		} catch (Exception e) {
-			
+
 		}
 		
 	}
@@ -499,6 +476,7 @@ public class CustomBowsListener implements Listener {
 				
 				
 				//----
+				dmg = dmg / 2;
 				break;
 			}
 		case WATER:
@@ -560,7 +538,7 @@ public class CustomBowsListener implements Listener {
 		if (lastDamageCause == null){return;}
 		if (!(lastDamageCause.getEntity() instanceof LivingEntity)){return;}
 		LivingEntity damager = (LivingEntity) lastDamageCause.getEntity();
-		BowType type = BowUtils.getBowType(Utils.getItemInHand(damaged));
+		BowType type = BowUtils.getBowType(Utils.getItemInHand(damager));
 		if (type != null){	if (type == BowType.EXPLOSIVE){return;}}
 		
 		MetadataValue metadataAcc = Utils.getMetadata(damaged, "ExplAcc");
@@ -568,7 +546,6 @@ public class CustomBowsListener implements Listener {
 		//if (evt.getDamage() <= 5){return;}	
 		if (evt.getCause() == DamageCause.ENTITY_EXPLOSION || evt.getCause() == DamageCause.BLOCK_EXPLOSION) {evt.setDamage(evt.getDamage() * 0.6);return;}	
 		//Bukkit.broadcastMessage(evt.getCause().name());
-		
 		float ExplAcc = metadataAcc.asFloat();
 		if (ExplAcc == 0F){return;}
 		w.createExplosion(damaged.getEyeLocation().toVector().toLocation(w), ExplAcc);

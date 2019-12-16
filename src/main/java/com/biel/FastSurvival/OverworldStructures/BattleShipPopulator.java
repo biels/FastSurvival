@@ -1,13 +1,12 @@
 package com.biel.FastSurvival.OverworldStructures;
 
-import java.util.Random;
-
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
-import com.biel.FastSurvival.Utils.Utils;
+import java.util.Random;
 
 public class BattleShipPopulator extends BlockPopulator{
 	private static final int BALLOON_CHANCE = 1; // Out of 100 (45)

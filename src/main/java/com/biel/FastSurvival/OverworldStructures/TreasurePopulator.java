@@ -1,14 +1,15 @@
 package com.biel.FastSurvival.OverworldStructures;
 
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class TreasurePopulator extends BlockPopulator {

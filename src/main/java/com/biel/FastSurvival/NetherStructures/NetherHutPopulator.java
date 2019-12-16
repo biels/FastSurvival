@@ -1,18 +1,19 @@
 package com.biel.FastSurvival.NetherStructures;
 
 import com.biel.FastSurvival.Bows.BowRecipeGenerator;
-import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 
-import javax.rmi.CORBA.Util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

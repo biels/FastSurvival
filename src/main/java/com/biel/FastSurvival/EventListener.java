@@ -1,25 +1,23 @@
 package com.biel.FastSurvival;
 
-import java.util.ArrayList;
-
-import com.biel.FastSurvival.Dimensions.Moon.*;
+import com.biel.FastSurvival.Dimensions.Moon.ClaySpiralPopulator;
+import com.biel.FastSurvival.Dimensions.Moon.EarthMagicTreePopulator;
+import com.biel.FastSurvival.Dimensions.Moon.ElectricBossPopulator;
+import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
-import com.biel.FastSurvival.OverworldStructures.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Difficulty;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.biel.FastSurvival.OverworldStructures.GraveyardPopulator;
+import com.biel.FastSurvival.OverworldStructures.HotAirBalloonPopulator;
+import com.biel.FastSurvival.OverworldStructures.LogPopulator;
+import com.biel.FastSurvival.OverworldStructures.NetherPopulator;
+import com.biel.FastSurvival.Utils.Utils;
+import com.biel.FastSurvival.Utils.WGUtils;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.PistonMoveReaction;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -37,8 +35,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.biel.FastSurvival.Utils.Utils;
-import com.biel.FastSurvival.Utils.WGUtils;
+import java.util.ArrayList;
 
 public class EventListener implements Listener {
     @EventHandler

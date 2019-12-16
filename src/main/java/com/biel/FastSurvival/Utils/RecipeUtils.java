@@ -1,14 +1,10 @@
 package com.biel.FastSurvival.Utils;
 
+import org.bukkit.inventory.*;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import org.bukkit.inventory.FurnaceRecipe;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
 
 /**
  * Utility class to compare Bukkit recipes.<br>

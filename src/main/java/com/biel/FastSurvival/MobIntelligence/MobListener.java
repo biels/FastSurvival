@@ -1,61 +1,29 @@
 package com.biel.FastSurvival.MobIntelligence;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter.Yellow;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Effect;
-import org.bukkit.EntityEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.EnderDragon;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Pig;
-import org.bukkit.entity.PigZombie;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Silverfish;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Spider;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Witch;
-import org.bukkit.entity.Zombie;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.BlockIterator;
-import org.bukkit.util.Vector;
-
-import com.bergerkiller.bukkit.common.controller.EntityController;
-import com.bergerkiller.bukkit.common.entity.CommonEntity;
 import com.biel.FastSurvival.Bows.BowRecipeGenerator;
 import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.Bows.BowUtils.BowType;
 import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MobListener implements Listener {
 	@EventHandler
@@ -537,17 +505,17 @@ public class MobListener implements Listener {
 					break;
 				case MAGNETIC:
 					if (Utils.Possibilitat(1))
-						evt.getDrops().add(new ItemStack(Material.LEGACY_IRON_FENCE, 1));
+						evt.getDrops().add(new ItemStack(Material.IRON_BARS, 1));
 					break;
 				case MULTI:
 					if (Utils.Possibilitat(1))
-						evt.getDrops().add(new ItemStack(Material.LEGACY_IRON_FENCE, 1));
+						evt.getDrops().add(new ItemStack(Material.IRON_BARS, 1));
 					if (Utils.Possibilitat(1))
 						evt.getDrops().add(new ItemStack(Material.CAKE, 1));
 					if (Utils.Possibilitat(8))
 						evt.getDrops().add(new ItemStack(Material.DISPENSER, 1));
 					if (Utils.Possibilitat(8))
-						evt.getDrops().add(new ItemStack(Material.LEGACY_REDSTONE_COMPARATOR, 1));
+						evt.getDrops().add(new ItemStack(Material.COMPARATOR, 1));
 					if (Utils.Possibilitat(8))
 						evt.getDrops().add(new ItemStack(Material.REDSTONE_ORE, 1));
 					if (Utils.Possibilitat(12))
@@ -561,7 +529,7 @@ public class MobListener implements Listener {
 					if (Utils.Possibilitat(30))
 						evt.getDrops().add(new ItemStack(Material.WATER_BUCKET, 1));
 					if (Utils.Possibilitat(35))
-						evt.getDrops().add(new ItemStack(Material.LEGACY_WATER_LILY, 1));
+						evt.getDrops().add(new ItemStack(Material.LILY_PAD, 1));
 					break;
 				case WITHER:
 					if (Utils.Possibilitat(30))
