@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MobListener implements Listener {
 	@EventHandler
@@ -426,7 +427,7 @@ public class MobListener implements Listener {
 			evt.setDroppedExp((int) (evt.getDroppedExp() * 2));
 			if (Utils.Possibilitat(70)){
 				evt.getDrops().add(new ItemStack(Material.EMERALD, Utils.NombreEntre(1, 3)));
-				evt.getDrops().add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1, 6)));
+				evt.getDrops().add(new ItemStack(Material.BEEF, Utils.NombreEntre(1, 6)));
 				evt.getDrops().add(new ItemStack(Material.BONE, Utils.NombreEntre(1, 8)));
 			}
 
@@ -441,7 +442,7 @@ public class MobListener implements Listener {
 						evt.getDrops().add(new ItemStack(SpecialItemsUtils.getRandomSpecialItem(2)));
 					}
 				}
-				evt.getDrops().add(new ItemStack(Material.LEGACY_RAW_BEEF, Utils.NombreEntre(1, 6)));
+				evt.getDrops().add(new ItemStack(Material.BEEF, Utils.NombreEntre(1, 6)));
 				evt.getDrops().add(new ItemStack(Material.BONE, Utils.NombreEntre(1, 8)));
 				
 			}
@@ -467,12 +468,12 @@ public class MobListener implements Listener {
 			evt.setDroppedExp((int) (evt.getDroppedExp() * 22));
 		}
 		if (killed instanceof Silverfish){
-			EnderDragon sk = (EnderDragon) killed;
+			Silverfish sk = (Silverfish) killed;
 			evt.setDroppedExp((int) (evt.getDroppedExp() + 6));
 		}
 		if (killed instanceof Skeleton){
 			Skeleton sk = (Skeleton) killed;
-			ItemStack itemInHand = sk.getEquipment().getItemInHand();
+			ItemStack itemInHand = Objects.requireNonNull(sk.getEquipment()).getItemInMainHand();
 			BowType bowType = BowUtils.getBowType(itemInHand);
 			if(bowType != null){
 				//Bukkit.broadcastMessage(bowType.name());

@@ -117,9 +117,9 @@ public class ChestCorePopulator extends BlockPopulator {
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.COCOA, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.FLINT, 2));
         if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.QUARTZ_BLOCK, 2));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 10));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 20));
-        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.LEGACY_SULPHUR, 20));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.GUNPOWDER, 10));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.GUNPOWDER, 20));
+        if (Utils.Possibilitat(1)) it.add(new ItemStack(Material.GUNPOWDER, 20));
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(2)) it.add(Utils.getRandomPotion());
         if (Utils.Possibilitat(1)) it.add(SpecialItemsUtils.getRandomSpecialItem(1));

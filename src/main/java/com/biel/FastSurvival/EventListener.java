@@ -1,15 +1,9 @@
 package com.biel.FastSurvival;
 
-import com.biel.FastSurvival.Dimensions.Moon.ClaySpiralPopulator;
-import com.biel.FastSurvival.Dimensions.Moon.EarthMagicTreePopulator;
-import com.biel.FastSurvival.Dimensions.Moon.ElectricBossPopulator;
-import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
+import com.biel.FastSurvival.Dimensions.Moon.*;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
-import com.biel.FastSurvival.OverworldStructures.GraveyardPopulator;
-import com.biel.FastSurvival.OverworldStructures.HotAirBalloonPopulator;
-import com.biel.FastSurvival.OverworldStructures.LogPopulator;
-import com.biel.FastSurvival.OverworldStructures.NetherPopulator;
+import com.biel.FastSurvival.OverworldStructures.*;
 import com.biel.FastSurvival.Utils.Utils;
 import com.biel.FastSurvival.Utils.WGUtils;
 import org.bukkit.*;
@@ -48,23 +42,24 @@ public class EventListener implements Listener {
             //evt.getWorld().getPopulators().add(new SlimeBossPopulator());
             world.getPopulators().add(new NetherPopulator());
             world.getPopulators().add(new LogPopulator());
-            //evt.getWorld().getPopulators().add(new MoonMagicTreePopulator());
+            evt.getWorld().getPopulators().add(new MoonMagicTreePopulator());
             world.getPopulators().add(new GraveyardPopulator());
             world.getPopulators().add(new EarthMagicTreePopulator());
             world.getPopulators().add(new HotAirBalloonPopulator());
-            //world.getPopulators().add(new TreasurePopulator());
+//            world.getPopulators().add(new TreasurePopulator());
             world.setMonsterSpawnLimit(80);
         }
 
         if (MoonUtils.IsMoon(world)) {
             world.getPopulators().add(new ClaySpiralPopulator());
             world.getPopulators().add(new ElectricBossPopulator());
-            world.setMonsterSpawnLimit(180);
+            world.setMonsterSpawnLimit(100);
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doFireTick", "false");
             world.setDifficulty(Difficulty.NORMAL);
             world.setTime(15000);
         }
+
         if(Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)){
             world.getPopulators().add(new ChestCorePopulator());
             world.getPopulators().add(new NetherHutPopulator());
@@ -73,7 +68,7 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBrak(BlockBreakEvent evt) {
+    public void onBlockBreak(BlockBreakEvent evt) {
 
         if (evt.getPlayer() != null) {
             Player p = evt.getPlayer();

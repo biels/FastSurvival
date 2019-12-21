@@ -1,10 +1,8 @@
 package com.biel.FastSurvival.BuilderWand;
 
+import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.PistonMoveReaction;
@@ -24,31 +22,35 @@ public class BuilderWandUtils {
 		recipeWithIce();
 		recipeWithDiamond();
 	}
+
 	public static void recipeWithGold() {
-		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
+		ShapelessRecipe r = new ShapelessRecipe(getKey("WithGold"),getWandItem());
 		r.addIngredient(Material.GOLD_INGOT);
-		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
+		r.addIngredient(Material.REDSTONE_TORCH);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static void recipeWithIce() {
-		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
+		ShapelessRecipe r = new ShapelessRecipe(getKey("WithIce"), getWandItem());
 		r.addIngredient(Material.ICE);
-		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
+		r.addIngredient(Material.REDSTONE_TORCH);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static void recipeWithDiamond() {
-		ShapelessRecipe r = new ShapelessRecipe(getWandItem());
+		ShapelessRecipe r = new ShapelessRecipe(getKey("WithDiamond"), getWandItem());
 		r.addIngredient(Material.DIAMOND);
-		r.addIngredient(Material.LEGACY_REDSTONE_TORCH_ON);
+		r.addIngredient(Material.REDSTONE_TORCH);
 		Bukkit.getServer().addRecipe(r);
 	}
 	public static ItemStack getWandItem(){
-		ItemStack i = Utils.setItemName(new ItemStack(Material.LEGACY_REDSTONE_TORCH_ON), ChatColor.YELLOW + "Builder's wand");
+		ItemStack i = Utils.setItemName(new ItemStack(Material.REDSTONE_TORCH), ChatColor.YELLOW + "Builder's wand");
 		i.addUnsafeEnchantment(Enchantment.DIG_SPEED, 3);
 		return i;
 	}
+	private static NamespacedKey getKey(String key) {
+		return new NamespacedKey(FastSurvival.getPlugin(), key + "FSWand");
+	}
 	public static Boolean isWandItem(ItemStack i){
-		if (i.getType() != Material.LEGACY_REDSTONE_TORCH_ON){return false;}
+		if (i.getType() != Material.REDSTONE_TORCH){return false;}
 		if (i.getEnchantments().size() >= 1){
 			return true;
 		}
@@ -68,11 +70,11 @@ public class BuilderWandUtils {
 		long secs = time / 1000;
 		//Bukkit.broadcastMessage("Time: " + Long.toString(time) + " ms");
 	}
-	@SuppressWarnings("deprecation")
+
 	public static Boolean trySetWandBlock(Block orig, Block toSet, Player p){
 		if(p.getGameMode() == GameMode.SURVIVAL){
 			PlayerInventory inv = p.getInventory();
-
+			//noinspection deprecation
 			if (!inv.removeItem(new ItemStack(orig.getType(), 1, (byte)0, orig.getData())).isEmpty()){
 				return false;
 			}

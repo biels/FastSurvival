@@ -23,7 +23,8 @@ public class ElectricBossPopulator extends BlockPopulator{
 	public enum LevelType{SKELETON, ZOMBIE, MAGIC, SPIDER, ICY, SILVERFISH, ABYSS, BONUS}
 
 	public void populate(World world, Random random, Chunk source) {
-		if (random.nextInt(500) <= 1) { // 1 in every 14 square chnks
+		if(source.getX() % 5 != 0 || source.getZ() % 5 != 0) return;
+		if (random.nextInt(520 / 25) <= 1) { // 1 in every 14 square chnks (*25)
 //            Bukkit.getServer().getLogger().info("Populated ElectricBossPopulator" );
 
 			int BLOCKS_PER_LEVEL = 5;
@@ -39,8 +40,11 @@ public class ElectricBossPopulator extends BlockPopulator{
 			Location center = new Location(world, centerX, centerY, centerZ);
 			Block bCenter = center.getBlock();
 			//No sobreposar
-			if (bCenter.getType() != Material.WHITE_TERRACOTTA){return;}
-			
+//			if (bCenter.getType() != MoonUtils.getMoonSurfaceMaterial()){return;}
+
+
+
+
 			BlockFace direction = null;
 			Block top = null;
 			int dir = random.nextInt(4);
@@ -158,13 +162,13 @@ public class ElectricBossPopulator extends BlockPopulator{
 						}
 					}
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_GOLD_PLATE);};
+						if (Utils.Possibilitat(10)){
+							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType().isSolid()){b.setType(Material.LIGHT_WEIGHTED_PRESSURE_PLATE);};
 						}
 					}
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(20)){
-							if (b.isEmpty() && !b.getRelative(BlockFace.DOWN).isEmpty()){b.setType(Material.LEGACY_IRON_PLATE);};
+						if (Utils.Possibilitat(10)){
+							if (b.isEmpty() && b.getRelative(BlockFace.DOWN).getType().isSolid()){b.setType(Material.HEAVY_WEIGHTED_PRESSURE_PLATE);};
 						}
 					}
 					break;
@@ -185,13 +189,15 @@ public class ElectricBossPopulator extends BlockPopulator{
 				case MAGIC:
 					st = EntityType.WITCH;
 					st2 = EntityType.ZOMBIE;
-					prob = 5;
+					if (Utils.Possibilitat(20)){
+						st2 = EntityType.SKELETON;
+					}
+					prob = 15;
 					for (Block b : bonusZone){
 						if (Utils.Possibilitat(20)){
 							Material topmat = Material.BOOKSHELF;
 							if (Utils.Possibilitat(40)){topmat = Material.FLOWER_POT;}
-							if (b.isEmpty()){b.setType(Material.BOOKSHELF);b.getLocation().add(0, 1, 0).getBlock().setType(topmat);
-							}
+							if (b.isEmpty()){b.setType(Material.BOOKSHELF);b.getLocation().add(0, 1, 0).getBlock().setType(topmat);}
 
 						}
 					}
@@ -217,7 +223,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 					}
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(4)){
+						if (Utils.Possibilitat(3)){
 							if (b.isEmpty()){b.setType(Material.CAULDRON);};
 						}
 					}
@@ -225,7 +231,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 				case SILVERFISH:
 					st = EntityType.SILVERFISH;
 					for (Block b : internalZone){
-						if (Utils.Possibilitat(12)){
+						if (Utils.Possibilitat(11)){
 							if (b.isEmpty()){b.setType(Material.COBBLESTONE);};
 						}
 					}
@@ -313,7 +319,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 
 
 					Block b = l.getBlock();
-					b.setType(Material.LEGACY_MOB_SPAWNER);
+					b.setType(Material.SPAWNER);
 					CreatureSpawner spawner = (CreatureSpawner) b.getState();
 					spawner.setSpawnedType(st);
 					if (Utils.Possibilitat(prob)){
@@ -329,12 +335,12 @@ public class ElectricBossPopulator extends BlockPopulator{
 						faces.add(BlockFace.UP);
 						for (BlockFace f : faces){
 							Block relB = b.getRelative(f);
-							relB.setType(Material.LEGACY_WOOD);
+							relB.setType(Material.BIRCH_PLANKS);
 						}
 					}
 					if (lastLevel){
 						Block sb = b.getRelative(BlockFace.UP);
-						sb.setType(Material.SPONGE);
+						sb.setType(Material.SLIME_BLOCK); // For now so players find something interesting there
 					}
 				}
 				
@@ -365,7 +371,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(100)){i.add(new ItemStack(Material.LEVER));}
 			if (Utils.Possibilitat(26)){i.add(new ItemStack(Material.GOLD_NUGGET));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.DIAMOND_HELMET));}
-			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.LEGACY_GOLD_CHESTPLATE));}
+			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.GOLDEN_CHESTPLATE));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.IRON_CHESTPLATE));}
 			if (Utils.Possibilitat(38)){i.add(new ItemStack(Material.GOLDEN_APPLE));}
 			if (Utils.Possibilitat(65)){i.add(new ItemStack(Material.POTATO, Utils.NombreEntre(8,  32)));}
@@ -382,7 +388,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(24)){i.add(new ItemStack(Material.PACKED_ICE, Utils.NombreEntre(1,  6)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.BUCKET));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.COAL));}
-			if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.LEGACY_SNOW_BALL, Utils.NombreEntre(1,  16)));}
+			if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.SNOWBALL, Utils.NombreEntre(1,  16)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.SNOW_BLOCK, Utils.NombreEntre(1,  12)));}
 			if (Utils.Possibilitat(5)){i.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1,  2)));}
 			break;
@@ -417,11 +423,12 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(38)){i.add(BowRecipeGenerator.getBow(BowUtils.BowType.values()[Utils.NombreEntre(0, BowUtils.BowType.values().length - 1)]));}
 			break;
 		case SPIDER:
-			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  9)));}
-			if (Utils.Possibilitat(62)){i.add(new ItemStack(Material.LEGACY_WEB, Utils.NombreEntre(1,  4)));}
+			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.COBWEB, Utils.NombreEntre(1,  9)));}
+			if (Utils.Possibilitat(62)){i.add(new ItemStack(Material.COBWEB, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(100)){i.add(new ItemStack(Material.STRING, Utils.NombreEntre(1,  26)));}
 			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.SPIDER_EYE, Utils.NombreEntre(1,  4)));}
 			if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.FERMENTED_SPIDER_EYE, Utils.NombreEntre(1,  4)));}
+			if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.WHITE_WOOL, Utils.NombreEntre(1,  3)));}
 
 			break;
 		case ZOMBIE:
@@ -431,6 +438,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(80)){i.add(new ItemStack(Material.ROTTEN_FLESH, Utils.NombreEntre(1,  18)));}
 			if (Utils.Possibilitat(70)){i.add(new ItemStack(Material.CARROT, Utils.NombreEntre(1,  3)));}
 			if (Utils.Possibilitat(48)){i.add(new ItemStack(Material.POISONOUS_POTATO, Utils.NombreEntre(1,  30)));}
+			if (Utils.Possibilitat(23)){i.add(new ItemStack(Material.POISONOUS_POTATO, Utils.NombreEntre(1,  30)));}
 			break;
 		default:
 			break;
@@ -451,7 +459,7 @@ public class ElectricBossPopulator extends BlockPopulator{
 		if (Utils.Possibilitat(6)){i.add(new ItemStack(Material.EMERALD, Utils.NombreEntre(1,  8)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.ANVIL));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.CHEST, Utils.NombreEntre(1,  2)));}
-		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.LEGACY_BED, Utils.NombreEntre(1,  3)));}
+		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.RED_BED));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.REDSTONE_ORE, Utils.NombreEntre(1,  12)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.NAME_TAG, Utils.NombreEntre(1,  4)));}
 		if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.APPLE, Utils.NombreEntre(1,  4)));}

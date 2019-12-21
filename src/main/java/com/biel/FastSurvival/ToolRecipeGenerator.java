@@ -4,6 +4,7 @@ import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
@@ -19,18 +20,21 @@ public class ToolRecipeGenerator {
 		ms.addAll(getFromKb("_AXE"));
 		ms.addAll(getFromKb("_PICKAXE"));
 		ms.addAll(getFromKb("_SPADE"));
-		ms.add(Material.LEGACY_WOOD_SWORD);
+		ms.add(Material.WOODEN_SWORD);
+
 		for (Material m : ms){
-			ShapelessRecipe sr= new ShapelessRecipe(Utils.setItemLore(new ItemStack(m), ChatColor.YELLOW + "Automatic"));
-			//ShapelessRecipe sr= new ShapelessRecipe(new ItemStack(m));
+			ShapelessRecipe sr= new ShapelessRecipe(getKey("pickaxe" + m.toString()), Utils.setItemLore(new ItemStack(m), ChatColor.YELLOW + "Automatic"));
 
 			sr.addIngredient(1, m);
 			sr.addIngredient(1, Material.REDSTONE);
 			Bukkit.getServer().addRecipe(sr);
 		}		
 	}
+	private static NamespacedKey getKey(String key) {
+		return new NamespacedKey(FastSurvival.getPlugin(), key + "FSTool");
+	}
 	static void sampleRec(){
-		ShapelessRecipe sr= new ShapelessRecipe(new ItemStack(Material.DIAMOND));
+		ShapelessRecipe sr= new ShapelessRecipe(getKey("pickaxe"),new ItemStack(Material.DIAMOND));
 		sr.addIngredient(1, Material.IRON_INGOT);
 		sr.addIngredient(2, Material.REDSTONE);
 		

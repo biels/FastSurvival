@@ -52,8 +52,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2) + 60;
-                for (int y = 1; y < height; y++) {
-                    chunk.setBlock(x, y, z, Material.LEGACY_STAINED_CLAY);
+                int hardenedHeight = height - 15;
+                for (int y = 1; y < hardenedHeight; y++) {
+                    chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
+                }
+                for (int y = hardenedHeight; y < height; y++) {
+                    chunk.setBlock(x, y, z, MoonUtils.getMoonSurfaceMaterial());
                 }
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
             }

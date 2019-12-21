@@ -215,4 +215,10 @@ public class MoonUtils {
 			}			
 		}
 	}
+	public static Material getMoonSurfaceMaterial(){
+		return Material.WHITE_TERRACOTTA;
+	}
+	public static Material getMoonInnerMaterial(){
+		return Material.WHITE_CONCRETE;
+	}
 }

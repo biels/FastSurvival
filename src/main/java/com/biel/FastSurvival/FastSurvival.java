@@ -340,7 +340,7 @@ public final class FastSurvival extends JavaPlugin {
 
 		// WorldGuard may not be loaded
 		if (plugin == null || !(plugin instanceof FastSurvival)) {
-			return null; // Maybe you want throw an exception instead
+			throw new RuntimeException("Plugin not found (should never happen)");
 		}
 
 		return (FastSurvival) plugin;
