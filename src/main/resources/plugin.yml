@@ -7,46 +7,36 @@ api-version: 1.15
 authors: [biels]
 commands:
    save:
-     description: Lol xD
-     aliases: [iniciar, i]
-     usage: OOPSh!
+     description: Imperatively save the turrets data (should not need to be used). Deprecated.
+     usage: /save
    load:
-     description: Lol xD
-     
+     description:  Imperatively laod the turrets data. Deprecated.
    maze:
-     description: Lol xD
+     description: Test command.
    recall:
      description: Back to base!
      usage: Click items!
    b:
      description: Arcs
      aliases: [arcs, bows]
-     usage: OOPSh!
+     usage: /b
    it:
      description: Gets all special items
      aliases: [items, specialitems]
-     usage: OOPSh!
    e:
      description: Arcs
      aliases: [pilota]
-     usage: OOPSh!
    wand:
      description: Get a magic builder's wand
      aliases: [builder, w]
-     usage: OOPSh!
    moonmats:
-     description: Arcs
-     aliases: [portal, materials, m]
-     usage: OOPSh!
+     description: Gives you the items required to build a portal to the moon (creative).
    t:
      description: Turrets
      aliases: [turrets, torres]
-     usage: OOPSh!
    moon:
-     description: Tet teletrasporta a la lluna
+     description: Teleports you to the moon
      aliases: [lluna]
-     usage: OOPSh!
    sky:
-     description: Tet teletrasporta al cel
+     description: Teleports you to the sky
      aliases: [cel]
-     usage: OOPSh!
