@@ -74,24 +74,24 @@ public class TeleporterListener implements Listener {
 		int cBlock = 0;
 		for(Block b : blocks){
 			Material t = b.getType();
-			if(t == Material.LEGACY_WOOD_BUTTON){wButtons++;}
+			if(t == Material.OAK_BUTTON){wButtons++;}
 			if(t == Material.IRON_BLOCK){iBlocks++;}
-			if(t == Material.LEGACY_IRON_FENCE){iBars++;}
+			if(t == Material.IRON_BARS){iBars++;}
 			if(t == Material.DIAMOND_BLOCK){dBlocks++;}
 			if(t == Material.GLASS){gBlocks++;}
-			if(t == Material.LEGACY_REDSTONE_LAMP_ON){glowBlocks++;}
-			if(t == Material.LEGACY_IRON_PLATE){iPlate++;}
-			if(t == Material.LEGACY_NETHER_FENCE){nFence++;}
+			if(t == Material.REDSTONE_LAMP){glowBlocks++;}
+			if(t == Material.HEAVY_WEIGHTED_PRESSURE_PLATE){iPlate++;}
+			if(t == Material.NETHER_BRICK_FENCE){nFence++;}
 			if(t == Material.FURNACE){oFurnance++;}
-			if(t == Material.LEGACY_REDSTONE_TORCH_ON){tTorch++;}
-			if(t == Material.LEGACY_REDSTONE_TORCH_OFF){tTorchOff++;}
+			if(t == Material.REDSTONE_TORCH){tTorch++;}
+			if(t == Material.REDSTONE_WALL_TORCH){tTorchOff++;}
 			if(t == Material.REDSTONE_BLOCK){rBlock++;}
 			if(t == Material.COAL_BLOCK){cBlock++;}
-			if(t == Material.GOLD_BLOCK){cBlock++;}
+			if(t == Material.GOLD_BLOCK){gBlock++;}
 		}
 		double e = 0;
 		
-		if(iBlocks < 8 || iBars < 4 || wButtons < 2){return 0;}
+		if(iBlocks < 8 || iBars < 4 || wButtons < 2){return -5;}
 		e = e + iBlocks * 38;
 		//e = e + gBlocks * (5 + oFurnance);
 		if (dBlocks >= 1){e = e + 75;}
