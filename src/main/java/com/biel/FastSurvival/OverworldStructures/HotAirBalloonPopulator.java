@@ -114,7 +114,8 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 			if (Utils.Possibilitat(1)){c = DyeColor.GREEN;}
 			if (Utils.Possibilitat(1)){c = DyeColor.GRAY;}
 		}
-		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), Material.LEGACY_WOOL, c.getDyeData());
+		Material coloredWool = Material.getMaterial(c.name() + "_WOOL");
+		BUtils.fillBlocks(BUtils.locListToBlock(sphBlocks), coloredWool, (byte) 0);
 		//BUtils.fillBlocks(BUtils.locListToBlock(c2), Material.LEGACY_WOOL, DyeColor.BLACK.getData());
 	}
 	public void generateEngine(Location center){
@@ -150,7 +151,7 @@ public class HotAirBalloonPopulator extends BlockPopulator{
 		if (Utils.Possibilitat(60)){
 			
 			if (Utils.Possibilitat(50)){
-				//Càrrega
+				//Cï¿½rrega
 				if (Utils.Possibilitat(85)){
 					if (Utils.Possibilitat(75)){i.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1,  2)));}
 					if (Utils.Possibilitat(45)){i.add(new ItemStack(Material.DIAMOND, Utils.NombreEntre(1,  5)));}
