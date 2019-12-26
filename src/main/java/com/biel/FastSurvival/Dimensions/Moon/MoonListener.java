@@ -74,6 +74,12 @@ public class MoonListener implements Listener{
         	 if (b.getType() == Material.TORCH){
              	event.setCancelled(true);
              }
+			if (b.getType() == Material.WALL_TORCH){
+				event.setCancelled(true);
+			}
+			if (b.getType() == Material.CAMPFIRE){
+				event.setCancelled(true);
+			}
              if (b.getType() == Material.FIRE){
              	event.setCancelled(true);
              }
