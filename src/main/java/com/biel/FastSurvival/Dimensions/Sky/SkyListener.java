@@ -21,104 +21,117 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
-public class SkyListener implements Listener{
-	@EventHandler
-    public void onClick(PlayerInteractEvent evt){
-		
+public class SkyListener implements Listener {
+    @EventHandler
+    public void onClick(PlayerInteractEvent evt) {
+
         final Player p = evt.getPlayer();
         Block b = evt.getClickedBlock();
-        if (b == null){return;}
+        if (b == null) {
+            return;
+        }
         Block r = b.getRelative(evt.getBlockFace());
         Action a = evt.getAction();
-       
-        if (SkyUtils.IsInSky(p)){
-        	
-        	if (a == Action.RIGHT_CLICK_BLOCK){
-            	Material t = p.getItemInHand().getType();
-    			if (t == Material.WATER_BUCKET){
-    				r.setType(Material.SNOW_BLOCK);
-    				evt.setCancelled(true);   			
-            	}
-    			if (t == Material.LAVA_BUCKET){
-    				if (Utils.Possibilitat(30)){
-    					r.setType(Material.DIRT);
-    				}else{
-    					r.setType(Material.OBSIDIAN);
-    				}
-    				
-    				evt.setCancelled(true);
-            	}
-    			if (t == Material.FLINT_AND_STEEL){
-    				evt.setCancelled(true);
-    			}
-    			//Exprosions --> Neu
+
+        if (SkyUtils.IsInSky(p)) {
+
+            if (a == Action.RIGHT_CLICK_BLOCK) {
+                Material t = p.getItemInHand().getType();
+                if (t == Material.WATER_BUCKET) {
+                    r.setType(Material.SNOW_BLOCK);
+                    evt.setCancelled(true);
+                }
+                if (t == Material.LAVA_BUCKET) {
+                    if (Utils.Possibilitat(30)) {
+                        r.setType(Material.DIRT);
+                    } else {
+                        r.setType(Material.OBSIDIAN);
+                    }
+
+                    evt.setCancelled(true);
+                }
+                if (t == Material.FLINT_AND_STEEL) {
+                    evt.setCancelled(true);
+                }
+                //Exprosions --> Neu
 //    			if (t == Material.TNT){
 //    				evt.setCancelled(true);
 //    			}
-    			if (t == Material.GLOWSTONE){
-    				evt.setCancelled(true);
-    			}
+                if (t == Material.GLOWSTONE) {
+                    evt.setCancelled(true);
+                }
             }
         }
-		
-		
-	}
-	@SuppressWarnings("deprecation")
-	@EventHandler
-    public void BlockFromToEvent(BlockPlaceEvent event){
+
+
+    }
+
+    @SuppressWarnings("deprecation")
+    @EventHandler
+    public void BlockFromToEvent(BlockPlaceEvent event) {
         final Player p = event.getPlayer();
         Block b = event.getBlock();
-        if (SkyUtils.IsInSky(p)){
-        	 if (b.getType() == Material.TORCH){
-             	event.setCancelled(true);
-             	p.playEffect(b.getLocation(), Effect.SMOKE, 4);
-             }
-             if (b.getType() == Material.FIRE){
-             	event.setCancelled(true);
-             }
+        if (SkyUtils.IsInSky(p)) {
+            if (b.getType() == Material.TORCH) {
+                event.setCancelled(true);
+                p.playEffect(b.getLocation(), Effect.SMOKE, 4);
+            }
+            if (b.getType() == Material.FIRE) {
+                event.setCancelled(true);
+            }
         }
-       
-		
-	}
-	@EventHandler
-    public void onDmg(EntityDamageEvent evt){
-        if (SkyUtils.IsInSky(evt.getEntity())){
-        	if (evt.getCause() == DamageCause.FALL){
-        		Double d = evt.getDamage();
-        		d = d / 2;
-        		d = d - 1;
-        		if (d < 0){
-        			d = 0.0;
-        			evt.setCancelled(true);
-        		}
-        		evt.setDamage(d);
-        	}
+
+
+    }
+
+    @EventHandler
+    public void onDmg(EntityDamageEvent evt) {
+        if (SkyUtils.IsInSky(evt.getEntity())) {
+            if (evt.getCause() == DamageCause.FALL) {
+                Double d = evt.getDamage();
+                d = d / 2;
+                d = d - 1;
+                if (d < 0) {
+                    d = 0.0;
+                    evt.setCancelled(true);
+                }
+                evt.setDamage(d);
+            }
         }
-	}
-	@EventHandler
-    public void onEntityExplod(EntityExplodeEvent  evt){
-		if (!SkyUtils.IsInSky(evt.getEntity())){return;}
-		Entity ent = evt.getEntity();
-		if (ent instanceof Creeper){
-			Creeper creep = (Creeper) ent;
-			//int blocks = Utils.NombreEntre(5, 205);
-			ArrayList<Location> sphereLocs = Utils.getSphereLocations(creep.getLocation(), 3.5D, false);
-			
-			for (Location l : sphereLocs){
-				Block blk = l.getBlock();
-				if (!blk.isEmpty()){continue;}
-				FallingBlock fallingBlock = creep.getWorld().spawnFallingBlock(
-						l.clone().add(new Vector(0, 3.5,0)), Material.SNOW_BLOCK, (byte) 0);
-				fallingBlock.setDropItem(false);
-				
-				//fallingBlock.setVelocity(Utils.CrearVector(l, location).setY(0).add(vr));
-				//fallingBlock.setVelocity(Vector.getRandom().subtract(Vector.getRandom()).add(new Vector(0,1,0)).multiply(0.5));
-				//b.setType(Material.AIR);
-				//blocks--;
-			}
-			evt.setYield(100);
-			evt.setCancelled(true);
-		}
-	}
+        if (evt.getEntity() instanceof Player && evt.getCause() == DamageCause.VOID) {
+        	SkyUtils.teleportPlayerToEarth((Player) evt.getEntity());
+        	evt.getEntity().setFallDistance(0);
+        }
+    }
+
+    @EventHandler
+    public void onEntityExplod(EntityExplodeEvent evt) {
+        if (!SkyUtils.IsInSky(evt.getEntity())) {
+            return;
+        }
+        Entity ent = evt.getEntity();
+        if (ent instanceof Creeper) {
+            Creeper creep = (Creeper) ent;
+            //int blocks = Utils.NombreEntre(5, 205);
+            ArrayList<Location> sphereLocs = Utils.getSphereLocations(creep.getLocation(), 3.5D, false);
+
+            for (Location l : sphereLocs) {
+                Block blk = l.getBlock();
+                if (!blk.isEmpty()) {
+                    continue;
+                }
+                FallingBlock fallingBlock = creep.getWorld().spawnFallingBlock(
+                        l.clone().add(new Vector(0, 3.5, 0)), Material.SNOW_BLOCK, (byte) 0);
+                fallingBlock.setDropItem(false);
+
+                //fallingBlock.setVelocity(Utils.CrearVector(l, location).setY(0).add(vr));
+                //fallingBlock.setVelocity(Vector.getRandom().subtract(Vector.getRandom()).add(new Vector(0,1,0)).multiply(0.5));
+                //b.setType(Material.AIR);
+                //blocks--;
+            }
+            evt.setYield(100);
+            evt.setCancelled(true);
+        }
+    }
 }
 
