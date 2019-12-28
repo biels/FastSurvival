@@ -312,7 +312,7 @@ public class OldTurret implements Listener, Serializable {
 			loc.getBlock().setType(Material.LEGACY_NETHER_FENCE);
 			TurretBlocks.add(loc.clone());
 			loc.setY(loc.getY() + 1);
-			loc.getBlock().setType(Material.LEGACY_REDSTONE_TORCH_ON);
+			loc.getBlock().setType(Material.REDSTONE_TORCH);
 			TurretBlocks.add(loc.clone());
 			resetArmorCD();
 			built = true;

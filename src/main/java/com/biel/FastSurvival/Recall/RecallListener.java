@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class RecallListener implements Listener {
 //Link
 //Teleport
-//Exemple - Material.LEGACY_WATCH
+//Exemple - Material.CLOCK
 	/* Recall - Linked
 	 * X: 605, Y: 72, Z: 562
 	 * Cast: 5s, Idle: 12s

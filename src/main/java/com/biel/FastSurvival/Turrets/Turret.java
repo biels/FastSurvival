@@ -414,7 +414,7 @@ public class Turret{
 		if (!d.getEnabled()){netherFence = Material.LEGACY_FENCE;}
 		loc.getBlock().setType(netherFence);
 		loc.setY(loc.getY() + 1);
-		Material redstoneTorchOn = Material.LEGACY_REDSTONE_TORCH_ON;
+		Material redstoneTorchOn = Material.REDSTONE_TORCH;
 		if(d.getTier() == 3){redstoneTorchOn = Material.TORCH;}
 		loc.getBlock().setType(redstoneTorchOn);
 		d.setBuilt(true);

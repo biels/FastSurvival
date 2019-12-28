@@ -172,7 +172,7 @@ public class SkyUtils {
 		m.add(Material.LEGACY_IRON_PLATE);
 		m.add(Material.LEGACY_NETHER_FENCE);
 		m.add(Material.FURNACE);
-		m.add(Material.LEGACY_REDSTONE_TORCH_ON);
+		m.add(Material.REDSTONE_TORCH);
 		m.add(Material.LEGACY_REDSTONE_TORCH_OFF);
 		m.add(Material.REDSTONE_BLOCK);
 		m.add(Material.STONE_BUTTON);

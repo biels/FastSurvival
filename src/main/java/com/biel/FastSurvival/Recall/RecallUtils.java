@@ -23,23 +23,23 @@ import java.util.UUID;
 public class RecallUtils {
 
 	public static void addRecallRecipe(){
-		ShapedRecipe r = new ShapedRecipe(getRecallItem(null));
+		ShapedRecipe r = new ShapedRecipe(new NamespacedKey(FastSurvival.getPlugin(), "recall"), getRecallItem(null));
 		r.shape("ERE", "RWR", "ERE");
-		r.setIngredient('W', Material.LEGACY_WATCH);
+		r.setIngredient('W', Material.CLOCK);
 		r.setIngredient('R', Material.REDSTONE_BLOCK);
 		r.setIngredient('E', Material.ENDER_PEARL);
 		Bukkit.getServer().addRecipe(r);
 
 	}
 	public static Boolean isValidRecallItem(ItemStack s){
-		if (!(s.getType() == Material.LEGACY_WATCH)){return false;}
+		if (!(s.getType() == Material.CLOCK)){return false;}
 		if (!s.hasItemMeta()){return false;}
 		ItemMeta itemMeta = s.getItemMeta();
 		if (!itemMeta.hasDisplayName()){return false;}
 		if (!itemMeta.hasLore()){return false;}
 		return true;
 	}
-	//Exemple - Material.LEGACY_WATCH
+	//Exemple - Material.CLOCK
 	/* Recall - Linked
 	 * X: 605, Y: 72, Z: 562
 	 * PiloWorld
@@ -49,7 +49,7 @@ public class RecallUtils {
 	 * Right click to link
 	 */
 	public static ItemStack getRecallItem(RecallLink link){
-		ItemStack itemStack = new ItemStack(Material.LEGACY_WATCH);
+		ItemStack itemStack = new ItemStack(Material.CLOCK);
 		//itemStack.addUnsafeEnchantment(Enchantment.ARROW_INFINITE, 1);
 		String name = "Recall" + " - ";
 		String line2 = ChatColor.YELLOW + "";
@@ -76,7 +76,7 @@ public class RecallUtils {
 
 	}
 	public static RecallLink getRecallLink(Player p, ItemStack stack){
-		if (stack.getType() != Material.LEGACY_WATCH || !stack.hasItemMeta()){
+		if (stack.getType() != Material.CLOCK || !stack.hasItemMeta()){
 			return null;
 		}
 		//Extract

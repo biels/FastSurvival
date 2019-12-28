@@ -19,7 +19,7 @@ public class TurretMenu {
 		Material mPlayers = Material.LEGACY_EYE_OF_ENDER;
 		String switchS = "off";
 		String plS = "on";
-		if (t.d.getEnabled()){switchM = Material.LEGACY_REDSTONE_TORCH_ON; switchS = "on";}
+		if (t.d.getEnabled()){switchM = Material.REDSTONE_TORCH; switchS = "on";}
 		if (t.d.getNoPlayers()){mPlayers = Material.ENDER_PEARL; plS = "off";}
 
 		IconMenu menu = new IconMenu("Turret menu", 9, new IconMenu.OptionClickEventHandler() {

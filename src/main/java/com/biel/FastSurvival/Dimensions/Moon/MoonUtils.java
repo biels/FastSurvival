@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
@@ -62,7 +63,7 @@ public class MoonUtils {
     }
 
     public static void spaceGlassRecipe() {
-        ShapedRecipe r = new ShapedRecipe(getSpaceGlass());
+        ShapedRecipe r = new ShapedRecipe(FastSurvival.getKey("spaceGlass"), getSpaceGlass());
         r.shape("GGG", "G G", "   ");
         r.setIngredient('G', Material.GLASS);
         Bukkit.getServer().addRecipe(r);

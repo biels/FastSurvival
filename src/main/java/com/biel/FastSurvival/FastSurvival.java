@@ -15,13 +15,9 @@ import com.biel.FastSurvival.Recall.RecallListener;
 import com.biel.FastSurvival.Recall.RecallUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItem;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
-import com.biel.FastSurvival.Turrets.Turret;
 import com.biel.FastSurvival.Turrets.TurretListener;
 import com.biel.FastSurvival.Turrets.TurretUtils;
-import com.biel.FastSurvival.Utils.GestorPropietats;
-import com.biel.FastSurvival.Utils.MazeGenerator;
-import com.biel.FastSurvival.Utils.Metrics;
-import com.biel.FastSurvival.Utils.Utils;
+import com.biel.FastSurvival.Utils.*;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -52,6 +48,7 @@ public final class FastSurvival extends JavaPlugin {
 			System.out.println("Metrics fail :-(");
 		}
 		if (!FastSurvival.getPlugin().getDataFolder().exists()){FastSurvival.getPlugin().getDataFolder().mkdirs();}
+		FileExtraction.extractResourcesFolder("Lang", false);
 //
 		getServer().getPluginManager().registerEvents(new EventListener(), this);
 		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
@@ -344,6 +341,9 @@ public final class FastSurvival extends JavaPlugin {
 		}
 
 		return (FastSurvival) plugin;
+	}
+	static public NamespacedKey getKey(String key){
+		return new NamespacedKey(getPlugin(), key + "FS");
 	}
 	//	@Override
 	//    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {

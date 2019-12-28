@@ -6,6 +6,9 @@ import com.biel.FastSurvival.Utils.GestorPropietats;
 import java.io.File;
 
 public class LanguageStrings {
+	public static void initializeLangs(){
+
+	}
 	public static String getString(String code){
 		GestorPropietats c = FastSurvival.Config();
 		String LanguageFileName = c.ObtenirPropietat("LanguageFileName");
