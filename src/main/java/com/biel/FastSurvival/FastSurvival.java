@@ -180,7 +180,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("t")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
 				Inventory i = p.getInventory();
 				int count = 0;
 				while (count < 2){
@@ -196,7 +196,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("moonmats")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(new ItemStack(Material.IRON_BLOCK, 8));
 				i.addItem(new ItemStack(Material.LEGACY_IRON_FENCE, 4));
@@ -210,7 +210,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("recall")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(RecallUtils.getRecallItem(null));
 
@@ -221,7 +221,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("wand")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per fer aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
 				Inventory i = p.getInventory();
 				i.addItem(BuilderWandUtils.getWandItem());
 

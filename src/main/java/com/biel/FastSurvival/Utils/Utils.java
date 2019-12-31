@@ -416,6 +416,7 @@ public class Utils {
     }
 
     public static ArrayList<LivingEntity> getNearbyEnemies(LivingEntity entity, Location center, double dist, boolean lineSight) {
+        Objects.requireNonNull(entity, "Tried to get nearby enemies of a null entity");
         ArrayList<LivingEntity> ents = new ArrayList<LivingEntity>();
         World world = entity.getWorld();
         //Bukkit.broadcastMessage(Integer.toString(world.getEntities().size()));

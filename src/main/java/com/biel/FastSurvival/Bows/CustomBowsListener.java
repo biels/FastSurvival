@@ -65,12 +65,12 @@ public class CustomBowsListener implements Listener {
 			break;
 		default:
 			break;
-		
+
 		}
-		
+
 	}
 	@EventHandler
-	public void onEntityShootBow(EntityShootBowEvent evt) {	
+	public void onEntityShootBow(EntityShootBowEvent evt) {
 		if (!(evt.getEntity() instanceof Player)){return;}
 		if (evt.getBow() == null){return;}
 		if (!(evt.getProjectile() instanceof Arrow)){return;}
@@ -113,12 +113,12 @@ public class CustomBowsListener implements Listener {
 		case MULTI:
 			multiShot(arr, p, type, f);
 			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 0.8f, 1F);
-			
+
 			break;
 		default:
 			break;
-		
-		
+
+
 		}
 	}
 	public void multiShot(Arrow arr, LivingEntity p, BowType type, float f) {
@@ -129,7 +129,7 @@ public class CustomBowsListener implements Listener {
 			double toRadians = Math.PI / 180;
 			//Location locSpawn = plyr.getLocation().add(0,1,0);
 			Location spawnpoint = p.getLocation().add(0,1.05,0).add(new Location(p.getWorld(),Math.cos(angle * toRadians), 0, Math.sin(angle * toRadians)));
-			
+
 			Vector dir2 = spawnpoint.toVector().subtract(p.getLocation().add(0,1,0).toVector()).normalize().multiply(0.5);
 			Arrow arrow = (Arrow)p.getWorld().spawnEntity(spawnpoint, EntityType.ARROW);
 			//Bukkit.broadcastMessage(Float.toString(plyr.getLocation().getYaw()));
@@ -140,11 +140,11 @@ public class CustomBowsListener implements Listener {
 			arrow.setMetadata("Force", new FixedMetadataValue(FastSurvival.getPlugin(), f));
 			arrow.setTicksLived(20 * 4 + 10);
 			i= i + 1;
-			
+
 		}
 	}
 	@EventHandler
-	public void onHit(ProjectileHitEvent evt) {	
+	public void onHit(ProjectileHitEvent evt) {
 		//WorldGuard danger
 		if (!(evt.getEntity() instanceof Arrow)){return;}
 		Arrow arr = (Arrow) evt.getEntity();
@@ -163,7 +163,7 @@ public class CustomBowsListener implements Listener {
 			FastSurvival.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 4 , (int) (28 * f));
 			break;
 		case EXPLOSIVE:
-			
+
 			//arr.remove();
 			break;
 		case MAGNETIC:
@@ -194,7 +194,7 @@ public class CustomBowsListener implements Listener {
 				Block b = l.getBlock();
 				if (b.getPistonMoveReaction() != PistonMoveReaction.BREAK && b.isEmpty() == false){break;}
 				if (b.isLiquid()){break;}
-				
+
 				b.setType(Material.WATER);
 				Utils.BreakBlockLater(b, (int)(20 * 2 * f), false);
 				arr.remove();
@@ -221,6 +221,7 @@ public class CustomBowsListener implements Listener {
 			    public void run() {
 			    	ultraStrike(lf, ff, p, 0.9F);
 			    	LivingEntity entityFromUUID = (LivingEntity)Utils.getEntityFromUUID(id, lf.getWorld());
+			    	if(entityFromUUID == null) return;
 					for(LivingEntity ent : Utils.getNearbyEnemies(entityFromUUID, lf, ff * 16, false)){
 						if(ent instanceof FallingBlock) return;;
 						int time = (int) (5 * 20 + ff * 3);
@@ -228,7 +229,7 @@ public class CustomBowsListener implements Listener {
 						ent.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, time, 0));
 						ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, time * 2, 0));
 						ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, time / 3, 0));
-						
+
 						ent.damage(5, entityFromUUID);;
 						ent.setFallDistance(0);
 						Vector vel = Utils.CrearVector(l, ent.getEyeLocation()).normalize().multiply(1.2);
@@ -245,23 +246,23 @@ public class CustomBowsListener implements Listener {
 				ent.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, time, 0));
 				ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, time * 2, 0));
 				ent.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, time / 3, 0));
-				
+
 				ent.damage(7, p);
 				ent.setFireTicks(20 * 2);
 				Vector vel = Utils.CrearVector(l, ent.getEyeLocation()).normalize().multiply(2.1);
 				vel.setY(0.5);
 				ent.setVelocity(vel);
 			}
-			
+
 			world.strikeLightningEffect(l);
 			break;
 		case MULTI:
 			break;
 		default:
 			break;
-		
-		
-		
+
+
+
 		}
 	}
 	private void ultraStrike(Location l, float f, LivingEntity p, float height) {
@@ -273,7 +274,7 @@ public class CustomBowsListener implements Listener {
 				Location lob = world.getHighestBlockAt(lo.getBlockX(), lo.getBlockZ()).getLocation();
 				Block b = lob.getBlock().getRelative(BlockFace.DOWN);
 				if (b.getPistonMoveReaction() == PistonMoveReaction.BREAK || TurretUtils.getTurretAt(b.getLocation()) != null){
-					b = b.getRelative(BlockFace.DOWN); 
+					b = b.getRelative(BlockFace.DOWN);
 				}
 				if(b.getPistonMoveReaction() == PistonMoveReaction.BLOCK || b.getPistonMoveReaction() == PistonMoveReaction.IGNORE) continue;
 				finalLocs.add(b);
@@ -292,7 +293,7 @@ public class CustomBowsListener implements Listener {
 							}
 						}
 					}
-					
+
 					FallingBlock fallingBlock = b.getWorld().spawnFallingBlock(
 							b.getLocation().add(new Vector(0.5, 1.5 ,0.5)), b.getBlockData());
 					fallingBlock.setDropItem(true);
@@ -306,11 +307,11 @@ public class CustomBowsListener implements Listener {
 		} catch (Exception e) {
 
 		}
-		
+
 	}
 	@EventHandler
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent evt) {	
-		
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent evt) {
+
 		if (evt.isCancelled()){return;}
 		evt.getEntity().setMetadata("LastDamager", new FixedMetadataValue(FastSurvival.getPlugin(), evt.getDamager().getUniqueId()));
 		//---
@@ -322,14 +323,14 @@ public class CustomBowsListener implements Listener {
 		LivingEntity damager = (LivingEntity) arr.getShooter();
 		Location l = arr.getLocation();
 		World world = l.getWorld();
-		
+
 		MetadataValue metadataType = Utils.getMetadata(arr, "BowType");
 		if(metadataType == null){return;}
 		BowType type = BowType.values()[metadataType.asInt()];
 		if(type == null){return;}
 		float f = Utils.getMetadata(arr, "Force").asFloat();
 		Double dmg = evt.getDamage();
-		
+
 		switch(type){
 		case ENDER:
 			damager.teleport(damaged.getLocation().clone().add(Vector.getRandom().add(new Vector(0,0.8,0))));
@@ -345,15 +346,15 @@ public class CustomBowsListener implements Listener {
 				}else{
 					ExplAcc = 0F;
 				}
-				
-				
+
+
 				ExplAcc = (float) (ExplAcc + (1.5 * f));
 				damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), ExplAcc));
 				FastSurvival.getWorld().playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
 				FastSurvival.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.4F);
-				
+
 				//world.createExplosion(damaged.getLocation(), fExplosion);
-			}		
+			}
 			break;
 		case MAGNETIC:
 			damaged.setVelocity(new Vector(0,0,0));
@@ -370,7 +371,7 @@ public class CustomBowsListener implements Listener {
 			dmg = dmg / 3;
 			break;
 		case BOUNCY:
-			if(true){ 
+			if(true){
 				ArrayList<LivingEntity> nearbyEnemies = Utils.getNearbyEnemies(damaged, 12 + (f * 6), true);
 				ArrayList<UUID> bouncedEnemies = new ArrayList<UUID>();
 				nearbyEnemies.remove(damager);
@@ -391,7 +392,7 @@ public class CustomBowsListener implements Listener {
 						}
 						bouncedEnemies.add(id);
 					}
-					
+
 				}
 				if(metadata2 != null){
 					times = metadata2.asInt();
@@ -423,7 +424,7 @@ public class CustomBowsListener implements Listener {
 					arrow.setMetadata("Force", new FixedMetadataValue(FastSurvival.getPlugin(), f));
 				}
 				break;
-			}			
+			}
 		case ICY:
 			if(true){
 //				int lvl = 0;
@@ -434,8 +435,8 @@ public class CustomBowsListener implements Listener {
 //						}
 //					}
 				//}
-				
-				
+
+
 //				dmg = dmg / 8;
 //				if(lvl < 2){break;}
 				//effect
@@ -455,14 +456,14 @@ public class CustomBowsListener implements Listener {
 				faces.add(BlockFace.WEST);
 				faces.add(BlockFace.EAST);
 				for (BlockFace face : faces){
-					
+
 					Block block = damaged.getLocation().getBlock().getRelative(face);
 					if (block.getPistonMoveReaction() == PistonMoveReaction.BREAK){
 						continue;
 					}
 					block.setType(Material.ICE);
 					Utils.BreakBlockLater(block, time, false);
-					
+
 				}
 				Location tpL = damaged.getLocation().getBlock().getLocation().add(new Vector(0.5,0,0.5));
 				tpL.setPitch(damaged.getLocation().getPitch());
@@ -473,8 +474,8 @@ public class CustomBowsListener implements Listener {
 					gblock.setType(Material.PACKED_ICE);
 					Utils.BreakBlockLater(gblock, time, false);
 				//}
-				
-				
+
+
 				//----
 				dmg = dmg / 2;
 				break;
@@ -520,15 +521,15 @@ public class CustomBowsListener implements Listener {
 			break;
 		default:
 			break;
-		
-		
-		
+
+
+
 		}
 		evt.setDamage(dmg);
 		//Bukkit.broadcastMessage(Double.toString(evt.getDamage()));
 	}
 	@EventHandler
-	public void onEntityDamage(EntityDamageEvent evt) {	
+	public void onEntityDamage(EntityDamageEvent evt) {
 		if(evt.isCancelled()){return;}
 		//Bukkit.broadcastMessage(Double.toString(evt.getDamage()));
 		if (!(evt.getEntity() instanceof LivingEntity)){return;}
@@ -540,17 +541,17 @@ public class CustomBowsListener implements Listener {
 		LivingEntity damager = (LivingEntity) lastDamageCause.getEntity();
 		BowType type = BowUtils.getBowType(Utils.getItemInHand(damager));
 		if (type != null){	if (type == BowType.EXPLOSIVE){return;}}
-		
+
 		MetadataValue metadataAcc = Utils.getMetadata(damaged, "ExplAcc");
-		if (metadataAcc == null){return;}	
-		//if (evt.getDamage() <= 5){return;}	
-		if (evt.getCause() == DamageCause.ENTITY_EXPLOSION || evt.getCause() == DamageCause.BLOCK_EXPLOSION) {evt.setDamage(evt.getDamage() * 0.6);return;}	
+		if (metadataAcc == null){return;}
+		//if (evt.getDamage() <= 5){return;}
+		if (evt.getCause() == DamageCause.ENTITY_EXPLOSION || evt.getCause() == DamageCause.BLOCK_EXPLOSION) {evt.setDamage(evt.getDamage() * 0.6);return;}
 		//Bukkit.broadcastMessage(evt.getCause().name());
 		float ExplAcc = metadataAcc.asFloat();
 		if (ExplAcc == 0F){return;}
 		w.createExplosion(damaged.getEyeLocation().toVector().toLocation(w), ExplAcc);
 		damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), 0F));
-		
+
 	}
 	@EventHandler
 	public void onEntityDamageWither(EntityDamageEvent evt) {
@@ -576,7 +577,7 @@ public class CustomBowsListener implements Listener {
 		//Bukkit.broadcastMessage("Curant el wither");
 	}
 	@EventHandler
-	public void onEntityDamageByEntityMark(EntityDamageByEntityEvent evt) {	
+	public void onEntityDamageByEntityMark(EntityDamageByEntityEvent evt) {
 		if(evt.isCancelled()){return;}
 		//if (evt.getDamager() == null){return;}
 		//Bukkit.broadcastMessage("MarkStart");
@@ -584,18 +585,18 @@ public class CustomBowsListener implements Listener {
 		if (evt.getDamager() instanceof Projectile){
 			//Bukkit.broadcastMessage("MarkProjectile");
 			Projectile arr = (Projectile) evt.getDamager();
-			
+
 			if (!(arr.getShooter() instanceof LivingEntity)){return;}
 			damager = (LivingEntity) arr.getShooter();
 			//Bukkit.broadcastMessage("MarkSetLivingEntity");
-			
+
 		}else{
 			//Bukkit.broadcastMessage("MarkElseDirect");
 			if (!(evt.getDamager() instanceof LivingEntity)){return;}
 			//Bukkit.broadcastMessage("MarkElseLivingEntity");
 			damager = (LivingEntity) evt.getDamager();
 		}
-		
+
 		evt.getEntity().setMetadata("LastDamager", new FixedMetadataValue(FastSurvival.getPlugin(), damager.getUniqueId()));
 		//---
 	}
@@ -604,7 +605,7 @@ public class CustomBowsListener implements Listener {
 //		
 //	}
 	@EventHandler
-	public void onLightningStrike(LightningStrikeEvent evt) {	
+	public void onLightningStrike(LightningStrikeEvent evt) {
 		if(evt.isCancelled()){return;}
 //		LightningStrike light = evt.getLightning();
 //		if (!light.isEffect()){
