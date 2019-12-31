@@ -284,6 +284,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("maze")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage(Utils.L("MUST_BE_IN_CREATIVE"));return true;}
 				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
 				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
 				MazeGenerator maze = new MazeGenerator(x, y);
