@@ -3,6 +3,7 @@ package com.biel.FastSurvival.Bows;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class BowUtils {
 	public enum BowType{TORCH, ENDER, MAGNETIC, EXPLOSIVE, BOUNCY, ICY, WITHER, WATER, MULTI, ELECTRIC}
@@ -14,15 +15,11 @@ public class BowUtils {
 		int id;
 		if(b.getType() != Material.BOW){return null;}
 		try {
-			loreid = b.getItemMeta().getLore().get(1);
+			ItemMeta itemMeta = b.getItemMeta();
+			if(itemMeta == null) return null;
+			loreid = itemMeta.getLore().get(1);
 		} catch (Exception e1) {
 			//Bukkit.broadcastMessage("No 1 lore");
-			return null;
-		}
-		try {
-			id = Integer.parseInt(loreid);
-		} catch (NumberFormatException e) {
-			Bukkit.broadcastMessage("N Format");
 			return null;
 		}
 		return getTypeFromIdString(loreid);

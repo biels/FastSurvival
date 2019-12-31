@@ -27,7 +27,7 @@ public class RecallListener implements Listener {
 	@EventHandler
     public void onInteract(PlayerInteractEvent evt) {
 		Player p = evt.getPlayer();
-		ItemStack i = p.getItemInHand();
+		ItemStack i = p.getInventory().getItemInMainHand();
 		Inventory inv = p.getInventory();
 		if(!RecallUtils.isValidRecallItem(i)){return;}
 		//Link

@@ -25,7 +25,7 @@ public class MoonListener implements Listener{
         if (b == null){return;}
         Block r = b.getRelative(evt.getBlockFace());
         Action a = evt.getAction();
-        if(p.getItemInHand() == MoonUtils.getSpaceGlass()){
+        if(p.getInventory().getItemInMainHand() == MoonUtils.getSpaceGlass()){
         	p.getEquipment().setHelmet(MoonUtils.getSpaceGlass());
         	evt.setCancelled(true);
         	return;
@@ -33,7 +33,7 @@ public class MoonListener implements Listener{
         if (MoonUtils.IsInMoon(p)){
         	
         	if (a == Action.RIGHT_CLICK_BLOCK){
-            	Material t = p.getItemInHand().getType();
+            	Material t = p.getInventory().getItemInMainHand().getType();
     			if (t == Material.WATER_BUCKET){
     				r.setType(Material.SNOW_BLOCK);
     				evt.setCancelled(true);   			
@@ -85,7 +85,7 @@ public class MoonListener implements Listener{
              }
         }
        
-		if(p.getItemInHand() == MoonUtils.getSpaceGlass()){
+		if(p.getInventory().getItemInMainHand() == MoonUtils.getSpaceGlass()){
         	p.getEquipment().setHelmet(MoonUtils.getSpaceGlass());
         }
 	}

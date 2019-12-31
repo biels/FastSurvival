@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TurretData {
 	int iId;
@@ -193,7 +194,7 @@ public class TurretData {
 	public static int getNextiId(){
 		File f = new File(getFolder());
 		int highest = 0;
-		for (File txt : f.listFiles()){
+		for (File txt : Objects.requireNonNull(f.listFiles())){
 			if (!txt.isDirectory()){
 				String name = txt.getName();
 
@@ -213,7 +214,7 @@ public class TurretData {
 	public static ArrayList<TurretData> getAllTurrets(){
 		ArrayList<TurretData> all = new ArrayList<TurretData>();
 		File f = new File(getFolder());
-		for (File txt : f.listFiles()){
+		for (File txt : Objects.requireNonNull(f.listFiles())){
 			if (!txt.isDirectory()){
 				String name = txt.getName();
 

@@ -899,7 +899,7 @@ public class OldTurret implements Listener, Serializable {
 		}
 		if (evt.getAction() == Action.RIGHT_CLICK_BLOCK){
 			if (containsTurretBlock){
-				if (plyr.getItemInHand().getType() == Material.LEGACY_EXP_BOTTLE){
+				if (plyr.getInventory().getItemInMainHand().getType() == Material.LEGACY_EXP_BOTTLE){
 					Learn(1000);
 					evt.setCancelled(true);
 					return;
@@ -917,7 +917,7 @@ public class OldTurret implements Listener, Serializable {
 		if (evt.getAction() == Action.LEFT_CLICK_BLOCK){
 			if (containsTurretBlock){
 				int dmg = 1;
-				switch (plyr.getItemInHand().getType()){
+				switch (plyr.getInventory().getItemInMainHand().getType()){
 
 				case DIAMOND_AXE:
 					dmg = 3;

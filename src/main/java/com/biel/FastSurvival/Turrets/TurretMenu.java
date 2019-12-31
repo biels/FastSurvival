@@ -16,7 +16,7 @@ public class TurretMenu {
 		Turret t = new Turret(iId);
 		final String name = p.getName();
 		Material switchM = Material.LEVER;
-		Material mPlayers = Material.LEGACY_EYE_OF_ENDER;
+		Material mPlayers = Material.ENDER_EYE;
 		String switchS = "off";
 		String plS = "on";
 		if (t.d.getEnabled()){switchM = Material.REDSTONE_TORCH; switchS = "on";}

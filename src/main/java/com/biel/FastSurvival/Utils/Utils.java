@@ -126,11 +126,11 @@ public class Utils {
 
     public static ItemStack getItemInHand(LivingEntity l) {
         if (l instanceof Player) {
-            return ((Player) l).getItemInHand();
+            return ((Player) l).getInventory().getItemInMainHand();
         }
         EntityEquipment eq = l.getEquipment();
         if (eq != null) {
-            return eq.getItemInHand();
+            return eq.getItemInMainHand();
         } else {
             return null;
         }

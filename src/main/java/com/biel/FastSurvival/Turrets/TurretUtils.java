@@ -16,6 +16,7 @@ import org.bukkit.metadata.MetadataValue;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TurretUtils {
     public static void addRecipes() {
@@ -165,7 +166,7 @@ public class TurretUtils {
     }
 
     public static void dropTurret(TurretData d, Location l) {
-        l.getWorld().dropItemNaturally(l, recreateItemStack(d.iId));
+        Objects.requireNonNull(l.getWorld()).dropItemNaturally(l, recreateItemStack(d.iId));
     }
 
     //FILTERS

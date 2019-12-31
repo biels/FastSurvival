@@ -39,7 +39,7 @@ public class KingSkeletonBossUtils {
 		EntityEquipment eq = sk.getEquipment();
 
 		assert eq != null;
-		eq.setHelmet(new ItemStack(Material.LEGACY_GOLD_HELMET));
+		eq.setHelmet(new ItemStack(Material.GOLDEN_HELMET));
 		Color c = Color.BLUE;
 		if (sk.getHealth() <= 100){
 			c = Color.ORANGE;
@@ -60,7 +60,7 @@ public class KingSkeletonBossUtils {
 			//On boss hit
 			updateEquipment(sk);
 			//Spell cycle
-			ItemStack it = sk.getEquipment().getItemInHand();
+			ItemStack it = sk.getEquipment().getItemInMainHand();
 			ItemStack nextit = null;
 			if (it.isSimilar(new ItemStack(Material.ENDER_PEARL))){
 				nextit = new ItemStack(Material.ENDER_EYE);

@@ -17,7 +17,7 @@ public class KnockUpListener implements Listener {
     public void onClick(PlayerInteractEvent event){
         final Player p = event.getPlayer();
        
-		if(p.getItemInHand().getType() == Material.FEATHER){
+		if(p.getInventory().getItemInMainHand().getType() == Material.FEATHER){
 			ArrayList<Player> pls = Utils.getNearbyPlayers(p, 32);
 			pls.add(p);
         	if(isInKnockUp(p)){

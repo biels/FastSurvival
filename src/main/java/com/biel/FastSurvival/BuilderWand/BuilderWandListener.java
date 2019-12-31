@@ -12,7 +12,7 @@ public class BuilderWandListener implements Listener {
 		Action a = evt.getAction();
 		Player ply = evt.getPlayer();
 		if (a == Action.RIGHT_CLICK_BLOCK){
-			if (BuilderWandUtils.isWandItem(ply.getItemInHand())){
+			if (BuilderWandUtils.isWandItem(ply.getInventory().getItemInMainHand())){
 				BuilderWandUtils.onWandUse(evt.getClickedBlock(), evt.getBlockFace(), ply);
 				evt.setCancelled(true);
 			}

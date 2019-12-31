@@ -194,7 +194,7 @@ public class SpecialItem implements Listener{
 		return getItemSlot(p) != -500;
 	}
 	public Boolean hasItemInHand(Player p){
-		return isItemStack(p.getItemInHand());
+		return isItemStack(p.getInventory().getItemInMainHand());
 	}
 	@SuppressWarnings("deprecation")
 	public void replaceItem(Player p, ItemStack newItem){

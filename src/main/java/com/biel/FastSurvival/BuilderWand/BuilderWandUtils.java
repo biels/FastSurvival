@@ -60,7 +60,7 @@ public class BuilderWandUtils {
 		//		for(Block b : getSelectionBlocks(cblk, face)){
 		//			b.setType(Material.GOLD_BLOCK);
 		//		}
-		if(!cblk.getType().isSolid()){return;}
+		if(cblk == null || !cblk.getType().isSolid()){return;}
 		if(cblk.getPistonMoveReaction() == PistonMoveReaction.BREAK){return;}
 
 		Long startingTime = System.currentTimeMillis();

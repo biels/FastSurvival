@@ -3,6 +3,7 @@ package com.biel.FastSurvival.SpecialItems;
 import com.biel.FastSurvival.Utils.GestorPropietats;
 
 import java.io.File;
+import java.util.Objects;
 
 public class SpecialItemData {
 	int iId;
@@ -80,7 +81,7 @@ public class SpecialItemData {
 	public static int getNextiId(){
 		File f = new File(getFolder());
 		int highest = 0;
-		for (File txt : f.listFiles()){
+		for (File txt : Objects.requireNonNull(f.listFiles())){
 			if (!txt.isDirectory()){
 				String name = txt.getName();
 

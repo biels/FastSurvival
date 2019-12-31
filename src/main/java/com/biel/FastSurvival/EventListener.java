@@ -80,7 +80,7 @@ public class EventListener implements Listener {
                 }
             }
             //--
-            ItemStack i = p.getItemInHand();
+            ItemStack i = p.getInventory().getItemInMainHand();
             if (blk.getType() == Material.SPONGE) {
                 evt.setCancelled(true);
                 evt.getBlock().setType(Material.AIR);
@@ -341,7 +341,7 @@ public class EventListener implements Listener {
         if (w.getHighestBlockAt(l).getY() > 80 && b.getType() == Material.LEGACY_LEAVES) {
             return;
         }
-        ItemStack i = p.getItemInHand();
+        ItemStack i = p.getInventory().getItemInMainHand();
         Material m = b.getType();
         if (!(m == Material.LEGACY_LOG || m == Material.LEGACY_LOG_2 || m == Material.AIR) && tree) {
             return;
@@ -371,7 +371,7 @@ public class EventListener implements Listener {
     public void onInteract(PlayerInteractEvent evt) {
 
         Player p = evt.getPlayer();
-        ItemStack i = p.getItemInHand();
+        ItemStack i = p.getInventory().getItemInMainHand();
         World world = FastSurvival.getPlugin().getServer().getWorlds().get(0);
         Inventory inv = p.getInventory();
 

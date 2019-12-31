@@ -136,7 +136,7 @@ public class RecallUtils {
 	}
 	public static void playerLinkItemInHand(Player p, Location l){
 		//Link - Replace item in hand
-		//RecallLink current = getRecallLink(p, p.getItemInHand());
+		//RecallLink current = getRecallLink(p, p.getInventory().getItemInMainHand());
 		RecallLink newLink = createLinkFromLocation(l);
 		if(newLink != null){
 			p.setItemInHand(getRecallItem(newLink));
@@ -147,8 +147,8 @@ public class RecallUtils {
 	}
 	public static void playerRecallClickItemInHand(Player p){
 		//Link - Replace item in hand
-		//RecallLink current = getRecallLink(p, p.getItemInHand());
-		ItemStack i = p.getItemInHand();
+		//RecallLink current = getRecallLink(p, p.getInventory().getItemInMainHand());
+		ItemStack i = p.getInventory().getItemInMainHand();
 		//Reecall link
 		RecallLink link = getRecallLink(p, i);
 		if (link == null){

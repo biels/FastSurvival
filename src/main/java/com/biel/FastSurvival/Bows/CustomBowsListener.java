@@ -34,7 +34,7 @@ public class CustomBowsListener implements Listener {
 		Arrow arr = (Arrow) evt.getEntity();
 		if (!(arr.getShooter() instanceof Skeleton)){return;}
 		Skeleton sk = (Skeleton) arr.getShooter();
-		ItemStack item = sk.getEquipment().getItemInHand();
+		ItemStack item = sk.getEquipment().getItemInMainHand();
 		BowType type = BowUtils.getBowType(item);
 		if(type == null){return;}
 		float f = 1F;

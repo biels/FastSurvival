@@ -104,8 +104,8 @@ public class MobListener implements Listener {
 				fet = true;
 			}
 			if (i != null && fet == true){
-				sk.getEquipment().setItemInHand(i);
-				sk.getEquipment().setItemInHandDropChance(0.08F);
+				sk.getEquipment().setItemInMainHand(i);
+				sk.getEquipment().setItemInMainHandDropChance(0.08F);
 			}
 
 			//Bukkit.broadcastMessage("SS");
@@ -131,7 +131,7 @@ public class MobListener implements Listener {
 			//					fet = true;
 			//				}
 			if (Utils.Possibilitat(6) && fet == false){
-				i = new ItemStack(Material.LEGACY_WOOD_SWORD);
+				i = new ItemStack(Material.WOODEN_SWORD);
 				sk.getEquipment().setChestplate(new ItemStack(Material.CHAINMAIL_CHESTPLATE));
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
 				fet = true;
@@ -283,7 +283,7 @@ public class MobListener implements Listener {
 			ItemStack i = null;
 			Boolean fet = false;
 			if (fet == false){
-				i = sk.getEquipment().getItemInHand();
+				i = sk.getEquipment().getItemInMainHand();
 				if (i != null){
 					if (i.getType() == Material.STICK){
 						damaged.setVelocity(new Vector(0,Utils.NombreEntre(1, 2) * 0.8,0));
@@ -303,7 +303,7 @@ public class MobListener implements Listener {
 		}
 		if (damager instanceof Enderman){
 			Enderman sk = (Enderman) damager;
-			ItemStack i = sk.getEquipment().getItemInHand();
+			ItemStack i = sk.getEquipment().getItemInMainHand();
 			Boolean fet = false;
 			if (fet == false){
 				if (damaged instanceof Player){
@@ -341,7 +341,7 @@ public class MobListener implements Listener {
 			if (damaged instanceof Zombie){
 				Zombie z = (Zombie) damaged;
 				if (Utils.Possibilitat(70)){
-					if (z.getHealth() != z.getMaxHealth() && sk2.getItemInHand() == null){
+					if (z.getHealth() != z.getMaxHealth() && sk2.getInventory().getItemInMainHand() == null){
 						damaged.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 20 * Utils.NombreEntre(1, 8), 1));
 					}
 				}

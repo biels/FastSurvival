@@ -25,6 +25,7 @@ import org.bukkit.util.BlockIterator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TurretListener implements Listener{
 	//	@EventHandler
@@ -58,20 +59,21 @@ public class TurretListener implements Listener{
 	public void onInteract(PlayerInteractEvent evt) {
 
 		Player p = evt.getPlayer();
-		ItemStack i = p.getItemInHand();
+		ItemStack i = p.getInventory().getItemInMainHand();
 		World world = FastSurvival.getPlugin().getServer().getWorlds().get(0);
 		Inventory inv = p.getInventory();
 
 
 		if (evt.getAction() == Action.RIGHT_CLICK_BLOCK){
 			Block clickedBlock = evt.getClickedBlock();
-			if (p.getItemInHand().getType() == Material.ARROW && TurretUtils.isTurret(i)){
+			assert clickedBlock != null;
+			if (p.getInventory().getItemInMainHand().getType() == Material.ARROW && TurretUtils.isTurret(i)){
 				Block blk = clickedBlock.getRelative(evt.getBlockFace());
 
 				Location l = blk.getLocation();
 				if(Turret.canBeBuiltAt(l.clone())){
 					TurretData data = TurretUtils.getItemStackData(i);
-					data.setLocation(blk.getLocation());
+					Objects.requireNonNull(data).setLocation(blk.getLocation());
 					data.setOwner(p.getName());
 					Turret t = new Turret(data);
 					t.Build();
@@ -93,6 +95,7 @@ public class TurretListener implements Listener{
 		}
 		if (evt.getAction() == Action.LEFT_CLICK_BLOCK){
 			Block clickedBlock = evt.getClickedBlock();
+			assert clickedBlock != null;
 			TurretData data = TurretUtils.getTurretAt(clickedBlock.getLocation());
 			if (data != null){
 				Turret t = new Turret(data);
