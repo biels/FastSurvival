@@ -101,7 +101,7 @@ public class TeleporterListener implements Listener {
         int cBlock = 0;
         for (Block b : blocks) {
             Material t = b.getType();
-            if (t == Material.OAK_BUTTON) {
+            if (Tag.WOODEN_BUTTONS.isTagged(t)) {
                 wButtons++;
             }
             if (t == Material.IRON_BLOCK) {
