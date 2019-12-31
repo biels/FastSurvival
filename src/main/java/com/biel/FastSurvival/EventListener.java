@@ -51,8 +51,6 @@ public class EventListener implements Listener {
         }
 
         if (MoonUtils.IsMoon(world)) {
-            world.getPopulators().add(new ClaySpiralPopulator());
-            world.getPopulators().add(new ElectricBossPopulator());
             world.setMonsterSpawnLimit(100);
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doFireTick", "false");

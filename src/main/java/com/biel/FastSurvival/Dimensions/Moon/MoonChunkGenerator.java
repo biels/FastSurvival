@@ -14,44 +14,80 @@ import java.util.Random;
 
 public class MoonChunkGenerator extends ChunkGenerator {
     private NoiseGenerator generator;
+    private NoiseGenerator slowGenerator;
+    private NoiseGenerator ultraSlowGenerator;
 
     private NoiseGenerator getGenerator(World world) {
         if (generator == null) {
             generator = new SimplexNoiseGenerator(world);
         }
-
         return generator;
     }
 
-    private int getHeight(World world, double x, double y, int variance) {
-        NoiseGenerator gen = getGenerator(world);
+    private NoiseGenerator getSlowGenerator(World world) {
+        if (slowGenerator == null) {
+            slowGenerator = new SimplexNoiseGenerator(world.getSeed() + 10);
+        }
+        return slowGenerator;
+    }
+    private NoiseGenerator getUltraSlowGenerator(World world) {
+        if (ultraSlowGenerator == null) {
+            ultraSlowGenerator = new SimplexNoiseGenerator(world.getSeed() + 20);
+        }
+        return ultraSlowGenerator;
+    }
 
-        double result = gen.noise(x, y);
-        result *= variance;
+    private int getHeight(World world, double x, double y, double variance, int baseline) {
+        NoiseGenerator gen = getGenerator(world);
+        NoiseGenerator slowGen = getSlowGenerator(world);
+        NoiseGenerator varGen = getSlowGenerator(world);
+
+        double varResult = (varGen.noise(x / 20, y / 20) / 1.8) + 0.8;
+        variance = variance * varResult;
+        int sigmoidHarshness = 35;
+        double slowResult = (slowGen.noise(x / 45, y / 45) - 0.5) * sigmoidHarshness;
+        double slowAfterSigmoid = sigmoid(slowResult);
+        double result = 0;
+        double effectiveVariance = slowAfterSigmoid < 0.6 ? variance : variance / 2.0;
+        result = gen.noise(x, y) * effectiveVariance;
+
+        result += (slowAfterSigmoid * 30);
+        result += baseline;
+
         return NoiseGenerator.floor(result);
     }
-
-    public byte[] generate(World world, Random random, int cx, int cz) {
-        byte[] result = new byte[32768];
-
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
-                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2) + 60;
-                for (int y = 0; y < height; y++) {
-                    result[(x * 16 + z) * 128 + y] = (byte) Material.LEGACY_STAINED_CLAY.getId();
-                }
-            }
-        }
-
-        return result;
+    private double sigmoid(double x){
+        double y;
+        if( x < -10 )
+            y = 0;
+        else if( x > 10 )
+            y = 1;
+        else
+            y = 1 / (1 + Math.exp(-x));
+        return y;
     }
+//
+//    public byte[] generate(World world, Random random, int cx, int cz) {
+//        byte[] result = new byte[32768];
+//
+//        for (int x = 0; x < 16; x++) {
+//            for (int z = 0; z < 16; z++) {
+//                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2, 60);
+//                for (int y = 0; y < height; y++) {
+//                    result[(x * 16 + z) * 128 + y] = (byte) Material.LEGACY_STAINED_CLAY.getId();
+//                }
+//            }
+//        }
+//
+//        return result;
+//    }
 
     @Override
     public ChunkData generateChunkData(World world, Random random, int cx, int cz, BiomeGrid biome) {
         ChunkData chunk = createChunkData(world);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2) + 60;
+                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2, 60);
                 int hardenedHeight = height - 15;
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -69,9 +105,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(
                 new MoonCraterPopulator(),
+                new ElectricBossPopulator(),
                 new FlagPopulator(),
-                new ClayColorPopulator(),
-                new MoonMagicTreePopulator()
+                new MoonMagicTreePopulator(),
+                new ClaySpiralPopulator()
+//                new ClayColorPopulator(),
 //                new MiniMazePopulator()
         );
     }

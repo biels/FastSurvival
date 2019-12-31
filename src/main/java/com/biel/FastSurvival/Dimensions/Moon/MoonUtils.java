@@ -59,7 +59,7 @@ public class MoonUtils {
     }
 
     public static ItemStack getSpaceGlass() {
-        return Utils.setItemNameAndLore(new ItemStack(Material.GLASS), ChatColor.AQUA + "Bombolla de vidre", ChatColor.WHITE + "Permet respirar a l'espai");
+        return Utils.setItemNameAndLore(new ItemStack(Material.GLASS), ChatColor.AQUA + "Glass bubble", ChatColor.WHITE + "Allows entities to breath in the moon");
     }
 
     public static void spaceGlassRecipe() {

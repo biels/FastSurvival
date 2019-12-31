@@ -71,7 +71,7 @@ public class TurretUtils {
         d.setBuilt(false);
         d.setTicks(0);
         d.setHealth(80);
-        d.setLocation(new Location(FastSurvival.getWorld(), 0, 0, 0));
+        d.setLocation(new Location(FastSurvival.getOverworld(), 0, 0, 0));
     }
 
     //public ItemStack

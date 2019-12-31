@@ -319,7 +319,7 @@ public final class FastSurvival extends JavaPlugin {
 	//		
 	//		return c;
 	//	}
-	static public World getWorld(){
+	static public World getOverworld(){
 		return Bukkit.getWorlds().get(0);
 	}
 	static public GestorPropietats Config(){

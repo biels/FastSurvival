@@ -159,15 +159,15 @@ public class CustomBowsListener implements Listener {
 		World world = l.getWorld();
 		switch(type){
 		case ENDER:
-			FastSurvival.getWorld().playSound(l, Sound.BLOCK_GLASS_BREAK, 10 * f, 1);
-			FastSurvival.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 4 , (int) (28 * f));
+			p.getWorld().playSound(l, Sound.BLOCK_GLASS_BREAK, 10 * f, 1);
+			p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 4 , (int) (28 * f));
 			break;
 		case EXPLOSIVE:
 
 			//arr.remove();
 			break;
 		case MAGNETIC:
-			FastSurvival.getWorld().playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
+			p.getWorld().playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
 			break;
 		case TORCH:
 			if (p instanceof Player){
@@ -207,7 +207,7 @@ public class CustomBowsListener implements Listener {
 						break;
 					}
 				}
-				FastSurvival.getWorld().createExplosion(l, 0.5F * f);
+				p.getWorld().createExplosion(l, 0.5F * f);
 			}
 			break;
 		case ELECTRIC:
@@ -350,8 +350,8 @@ public class CustomBowsListener implements Listener {
 
 				ExplAcc = (float) (ExplAcc + (1.5 * f));
 				damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), ExplAcc));
-				FastSurvival.getWorld().playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
-				FastSurvival.getWorld().playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.4F);
+				world.playEffect(l, Effect.SMOKE, 4 , (int) (28 * f));
+				world.playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.4F);
 
 				//world.createExplosion(damaged.getLocation(), fExplosion);
 			}

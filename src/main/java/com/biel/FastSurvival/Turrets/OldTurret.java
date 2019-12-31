@@ -320,7 +320,7 @@ public class OldTurret implements Listener, Serializable {
 
 	}
 	private World getWorld() {
-		return FastSurvival.getWorld();
+		return FastSurvival.getOverworld();
 	}
 	public void Destroy(){
 		if (headless == true){
