@@ -108,9 +108,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 new ElectricBossPopulator(),
                 new FlagPopulator(),
                 new MoonMagicTreePopulator(),
-                new ClaySpiralPopulator()
+                new ClaySpiralPopulator(),
 //                new ClayColorPopulator(),
-//                new MiniMazePopulator()
+                new MiniMazePopulator()
         );
     }
 

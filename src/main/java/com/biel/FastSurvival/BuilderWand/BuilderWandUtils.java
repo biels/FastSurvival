@@ -75,7 +75,9 @@ public class BuilderWandUtils {
 		if(p.getGameMode() == GameMode.SURVIVAL){
 			PlayerInventory inv = p.getInventory();
 			//noinspection deprecation
-			if (!inv.removeItem(new ItemStack(orig.getType(), 1, (byte)0, orig.getData())).isEmpty()){
+			ItemStack itemStack = new ItemStack(orig.getType(), 1);
+//			itemStack.setData(orig.g);
+			if (!inv.removeItem(itemStack).isEmpty()){
 				return false;
 			}
 

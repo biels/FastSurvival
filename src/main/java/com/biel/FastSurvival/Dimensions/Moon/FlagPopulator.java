@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.*;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
@@ -35,19 +36,19 @@ public class FlagPopulator extends BlockPopulator {
                 signBlock.setType(Material.BIRCH_WALL_SIGN);
                 BlockState state = signBlock.getState();
                 if (state instanceof Sign) {
-                    Sign sign = (Sign)state;
+                    Sign sign = (Sign) state;
                     org.bukkit.material.Sign data = (org.bukkit.material.Sign)state.getData();
 
                     data.setFacingDirection(direction);
-                    String name = "Tu";
+                    String name = "You";
                     List<Player> players = world.getPlayers();
                     if (players.size() != 0){
                         name = players.get(Utils.NombreEntre(0, players.size()-1)).getName();
                     }
                     sign.setLine(0, name);
-                    sign.setLine(1, "has arribat");
-                    sign.setLine(2, "a la");
-                    sign.setLine(3, "lluna :D");
+                    sign.setLine(1, "got to");
+                    sign.setLine(2, "the");
+                    sign.setLine(3, "moon :D");
                     sign.update(true);
                 }
             }else{

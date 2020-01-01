@@ -11,6 +11,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Lightable;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 
@@ -150,7 +153,10 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 		iblks.add(lampCenterLoc.getBlock());
 		for(Block b : iblks){
 			b.getRelative(BlockFace.DOWN).setType(Material.REDSTONE_BLOCK);
-			b.setType(Material.LEGACY_REDSTONE_LAMP_ON);
+			b.setType(Material.REDSTONE_LAMP);
+			Lightable blockData = (Lightable) b.getBlockData();
+			blockData.setLit(true);
+			b.setBlockData(blockData);
 			b.getRelative(BlockFace.UP, 7).setType(Material.AIR);
 		}
 	}
