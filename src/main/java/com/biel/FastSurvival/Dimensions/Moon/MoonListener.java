@@ -15,6 +15,7 @@ import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class MoonListener implements Listener{
 	@EventHandler
@@ -121,6 +122,13 @@ public class MoonListener implements Listener{
 			}
 			
 		
+		}
+	}
+	@EventHandler
+	public void onWeatherChange(WeatherChangeEvent evt) {
+		World w = evt.getWorld();
+		if (MoonUtils.IsMoon(w)){
+				evt.setCancelled(true);
 		}
 	}
 		

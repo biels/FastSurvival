@@ -23,13 +23,15 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 	Material treeMaterial = Material.BIRCH_WOOD;
 	@Override
 	public void populate(World world, Random random, Chunk source) {
-		if (!(random.nextInt(740) <= TREE_CHANCE)) {return;}
+		if (!(random.nextInt(700) <= TREE_CHANCE)) {return;} // 740
 		int centerX = (source.getX() << 4) + random.nextInt(16);
 		int centerZ = (source.getZ() << 4) + random.nextInt(16);
 		int centerY = world.getHighestBlockYAt(centerX, centerZ);
 		Location center = new Location(world, centerX, centerY, centerZ);
 		Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
 		//No sobreposar
+		if(Utils.getCuboidAround(bCenter.getLocation(), 1, 0, 1).getBlocks().stream().anyMatch(b -> !b.getType().isSolid()))
+			return;
 		if (bCenter.getType() != MoonUtils.getMoonSurfaceMaterial()){return;}
 		int radius = 2; //Utils.NombreEntre(2, 5);
 		Cuboid sc = generateCenterCuboid(center, 41, radius);
