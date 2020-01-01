@@ -1,6 +1,6 @@
 name: FastSurvival
 main: com.biel.FastSurvival.FastSurvival
-version: 3.9
+version: 3.10
 load: STARTUP
 #depend: [BKCommonLib]
 api-version: 1.15
