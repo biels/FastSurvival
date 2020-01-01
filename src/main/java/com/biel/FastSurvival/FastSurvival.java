@@ -152,18 +152,18 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("e")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aix�!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
 				Inventory i = p.getInventory();
 				ItemStack itemStacke = new ItemStack(Material.BOW);
 				itemStacke.addEnchantment(Enchantment.ARROW_DAMAGE, 3);
 				i.addItem(itemStacke);
 				ItemStack itemStack3 = new ItemStack(Material.DIAMOND_SWORD);
-				itemStack3.addEnchantment(Enchantment.DAMAGE_ALL, 2);
+				itemStack3.addEnchantment(Enchantment.DAMAGE_ALL, 3);
 				i.addItem(itemStack3);
 
 				i.addItem(new ItemStack(Material.DIAMOND_AXE));
 				ItemStack itemStack = new ItemStack(Material.DIAMOND_PICKAXE);
-				itemStack.addEnchantment(Enchantment.DIG_SPEED, 2);
+				itemStack.addEnchantment(Enchantment.DIG_SPEED, 3);
 				i.addItem(itemStack);
 				i.addItem(new ItemStack(Material.GOLD_ORE, 64));
 				i.addItem(new ItemStack(Material.GOLD_ORE, 64));
@@ -172,6 +172,7 @@ public final class FastSurvival extends JavaPlugin {
 				p.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
 				p.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
 				p.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+				i.addItem(new ItemStack(Material.ARROW, 64));
 				i.addItem(new ItemStack(Material.ARROW, 64));
 
 			}
