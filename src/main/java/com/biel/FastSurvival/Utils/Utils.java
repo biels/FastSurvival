@@ -803,5 +803,8 @@ public class Utils {
                 .average().getAsDouble();
         return y;
     }
+    public static List<Material> getBeaconMaterials(){
+        return Arrays.asList(Material.IRON_BLOCK,Material.GOLD_BLOCK,Material.DIAMOND_BLOCK,Material.EMERALD_BLOCK);
+    }
 
 }

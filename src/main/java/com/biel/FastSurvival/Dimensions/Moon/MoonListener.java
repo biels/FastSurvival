@@ -18,9 +18,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 public class MoonListener implements Listener{
-	@EventHandler
-    public void onClick(PlayerInteractEvent evt){
-		
+
+    public static void handlePlayerInteractEvent(PlayerInteractEvent evt){
         final Player p = evt.getPlayer();
         Block b = evt.getClickedBlock();
         if (b == null){return;}

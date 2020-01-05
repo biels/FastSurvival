@@ -4,6 +4,7 @@ import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
@@ -12,18 +13,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
 public class SkyListener implements Listener {
-    @EventHandler
-    public void onClick(PlayerInteractEvent evt) {
+
+    public static void handlePlayerInteractEvent(PlayerInteractEvent evt) {
 
         final Player p = evt.getPlayer();
         Block b = evt.getClickedBlock();
@@ -33,6 +36,11 @@ public class SkyListener implements Listener {
         Block r = b.getRelative(evt.getBlockFace());
         Action a = evt.getAction();
 
+        if (SkyUtils.IsEarth(p.getWorld())) {
+            if (a == Action.RIGHT_CLICK_BLOCK) {
+               SkyNexus.handleRightClickBlockInEarth(evt);
+            }
+        }
         if (SkyUtils.IsInSky(p)) {
 
             if (a == Action.RIGHT_CLICK_BLOCK) {
@@ -99,8 +107,8 @@ public class SkyListener implements Listener {
             }
         }
         if (evt.getEntity() instanceof Player && evt.getCause() == DamageCause.VOID) {
-        	SkyUtils.teleportPlayerToEarth((Player) evt.getEntity());
-        	evt.getEntity().setFallDistance(0);
+            SkyUtils.teleportPlayerToEarth((Player) evt.getEntity());
+            evt.getEntity().setFallDistance(0);
         }
     }
 
@@ -133,5 +141,16 @@ public class SkyListener implements Listener {
             evt.setCancelled(true);
         }
     }
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent evt) {
+        SkyNexus.handleEntityExplode(evt);
+    }
+
+        @EventHandler
+    public void onBlockBreak(BlockBreakEvent evt) {
+        Block b = evt.getBlock();
+        SkyNexus.handleBreakBlock(evt);
+    }
+
 }
 

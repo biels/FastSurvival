@@ -50,11 +50,21 @@ public class SkyUtils {
 		if (e == null){return false;}
 		return IsSky(e.getWorld());
 	}
-	public static ItemStack getSkyFeather(){
-		return Utils.setItemNameAndLore(new ItemStack(Material.GLASS), ChatColor.AQUA + "Bombolla de vidre", ChatColor.WHITE + "Permet respirar a l'espai");
+	public static ItemStack getSkyCrystal(){
+		return Utils.setItemNameAndLore(new ItemStack(Material.QUARTZ), ChatColor.AQUA + "Sky Crystal",
+				ChatColor.WHITE + "Fragment of sky nexus", ChatColor.GRAY + "Use on beacon block to make portal");
+	}
+	public static boolean isSkyCrystal(ItemStack it){
+		if(it.getType() != Material.QUARTZ) return false;
+		List<String> lore = it.getItemMeta().getLore();
+		if(lore.size() > 1) {
+			if (lore.get(0).equals(ChatColor.WHITE + "Fragment of sky nexus"))
+				return true;
+		}
+		return false;
 	}
 	public static void SkyFeatherRecipe(){
-		ShapedRecipe r = new ShapedRecipe(getSkyFeather());
+		ShapedRecipe r = new ShapedRecipe(getSkyCrystal());
 		r.shape("GGG", "G G", "   ");
 		r.setIngredient('G', Material.GLASS);
 		Bukkit.getServer().addRecipe(r);

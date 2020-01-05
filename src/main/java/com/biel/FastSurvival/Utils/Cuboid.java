@@ -8,6 +8,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class is a region/cuboid from one location to another. It can be used for blocks protection and things like WorldEdit.
@@ -490,13 +491,27 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 			throw new IllegalArgumentException("Invalid direction " + dir);
 		}
 	}
+	public List<Cuboid> getFaces(CuboidDirection... directions) {
+		return Arrays.stream(directions).map(this::getFace).collect(Collectors.toList());
+	}
+	public List<Cuboid> getWalls() {
+		return getFaces(CuboidDirection.walls());
+	}
+	public List<Cuboid> getCovers() {
+		return getFaces(CuboidDirection.covers());
+	}
 
-	/**
-	 * Check if the Cuboid contains only blocks of the given type
-	 * 
-	 * @param blockId - The block ID to check for
-	 * @return true if this Cuboid contains only blocks of the given type
-	 */
+
+
+
+
+
+		/**
+         * Check if the Cuboid contains only blocks of the given type
+         *
+         * @param blockId - The block ID to check for
+         * @return true if this Cuboid contains only blocks of the given type
+         */
 	public boolean containsOnly(int blockId) {
 		for (Block b : this) {
 			if (b.getType().getId() != blockId) return false;
@@ -648,6 +663,13 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 			default:
 				return Unknown;
 			}
+		}
+
+		static CuboidDirection[] walls(){
+			return  new CuboidDirection[]{North, East, South, West};
+		}
+		static CuboidDirection[] covers(){
+			return  new CuboidDirection[]{Up, Down};
 		}
 
 	}

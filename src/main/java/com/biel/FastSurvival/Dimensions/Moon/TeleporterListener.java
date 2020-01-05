@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeleporterListener implements Listener {
-    @EventHandler
-    public void onClick(PlayerInteractEvent event) {
+
+    public static void handlePlayerInteractEvent(PlayerInteractEvent event) {
         final Player p = event.getPlayer();
         Block b = event.getClickedBlock();
         if (b == null) {
@@ -71,7 +71,7 @@ public class TeleporterListener implements Listener {
             redstone = b.getRelative(blockFace);
             if (redstone.getType() == Material.REDSTONE_BLOCK) {
                 ArrayList<Player> pls = Utils.getNearbyPlayers(p, 32);
-                pls.add(p);
+//                pls.add(p);
                 pls.get(Utils.NombreEntre(0, pls.size() - 1)).setVelocity(new Vector(Utils.NombreEntre(-1, 1), Utils.NombreEntre(1, 2), Utils.NombreEntre(-1, 1)));
             }
         }
@@ -83,7 +83,7 @@ public class TeleporterListener implements Listener {
         return pls;
     }
 
-    public double detectMoonPortal(Location l) {
+    public static double detectMoonPortal(Location l) {
         List<Block> blocks = MoonUtils.detectMoonPortalBlocks(l);
         int wButtons = 0;
         int iBlocks = 0;

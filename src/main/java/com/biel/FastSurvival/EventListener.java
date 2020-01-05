@@ -1,6 +1,9 @@
 package com.biel.FastSurvival;
 
 import com.biel.FastSurvival.Dimensions.Moon.*;
+import com.biel.FastSurvival.Dimensions.Sky.SkyListener;
+import com.biel.FastSurvival.Dimensions.Sky.SkyNexus;
+import com.biel.FastSurvival.Dimensions.Sky.SkyUtils;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
 import com.biel.FastSurvival.OverworldStructures.*;
@@ -22,6 +25,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +34,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+
+import static org.bukkit.Bukkit.getLogger;
 
 public class EventListener implements Listener {
     @EventHandler
@@ -58,7 +64,7 @@ public class EventListener implements Listener {
             world.setTime(15000);
         }
 
-        if(Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)){
+        if (Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)) {
             world.getPopulators().add(new ChestCorePopulator());
             world.getPopulators().add(new NetherHutPopulator());
 
@@ -367,7 +373,8 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent evt) {
-
+        SkyListener.handlePlayerInteractEvent(evt);
+        MoonListener.handlePlayerInteractEvent(evt);
         Player p = evt.getPlayer();
         ItemStack i = p.getInventory().getItemInMainHand();
         World world = FastSurvival.getPlugin().getServer().getWorlds().get(0);
@@ -426,6 +433,13 @@ public class EventListener implements Listener {
         if (MoonUtils.IsEarth(evt.getBlock().getWorld()) && evt.getBlock().getLocation().getBlockY() > 90) {
             evt.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onServerLoad(ServerLoadEvent evt) {
+        SkyNexus.loadAll();
+        getLogger().info(" SkyNexus.loadAll()");
+
     }
 
 

@@ -9,6 +9,7 @@ import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.Dimensions.Moon.TeleporterListener;
 import com.biel.FastSurvival.Dimensions.Sky.KnockUpListener;
 import com.biel.FastSurvival.Dimensions.Sky.SkyListener;
+import com.biel.FastSurvival.Dimensions.Sky.SkyNexus;
 import com.biel.FastSurvival.Dimensions.Sky.SkyUtils;
 import com.biel.FastSurvival.MobIntelligence.MobListener;
 import com.biel.FastSurvival.Recall.RecallListener;
@@ -47,9 +48,14 @@ public final class FastSurvival extends JavaPlugin {
 			// Failed to submit the stats :-(
 			System.out.println("Metrics fail :-(");
 		}
-		if (!FastSurvival.getPlugin().getDataFolder().exists()){FastSurvival.getPlugin().getDataFolder().mkdirs();}
+		if (!FastSurvival.getPlugin().getDataFolder().exists()) FastSurvival.getPlugin().getDataFolder().mkdirs();
+		File nexusesFolderPath = new File(SkyNexus.getSkyNexusFolderPath());
+		if (!nexusesFolderPath.exists()) nexusesFolderPath.mkdirs();
+
 		FileExtraction.extractResourcesFolder("Lang", false);
 //
+		System.out.println("AAAA onEnable");
+
 		getServer().getPluginManager().registerEvents(new EventListener(), this);
 		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
 		getServer().getPluginManager().registerEvents(new MobListener(), this);
@@ -85,9 +91,10 @@ public final class FastSurvival extends JavaPlugin {
 				MoonUtils.spaceGlassRecipe();
 				BuilderWandUtils.addWandRecipe();
 				TurretUtils.addRecipes();
+
 				getLogger().info("Added all recipes to server");
 			}
-		}, 20 * 10);
+		}, 20 * 5);
 //		MoonUtils.loadMoon();
 //		Turret.loadInstances();
 
@@ -109,7 +116,7 @@ public final class FastSurvival extends JavaPlugin {
 
 			}
 			return true;
-		} //If this has happened the function will return true. 
+		} //If this has happened the function will return true.
 		if(cmd.getName().equalsIgnoreCase("load")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
@@ -118,7 +125,7 @@ public final class FastSurvival extends JavaPlugin {
 
 			}
 			return true;
-		} //If this has happened the function will return true. 
+		} //If this has happened the function will return true.
 		if(cmd.getName().equalsIgnoreCase("moon")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
@@ -133,7 +140,7 @@ public final class FastSurvival extends JavaPlugin {
 
 			}
 			return true;
-		} //If this has happened the function will return true. 
+		} //If this has happened the function will return true.
 		if(cmd.getName().equalsIgnoreCase("sky")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
@@ -148,7 +155,7 @@ public final class FastSurvival extends JavaPlugin {
 
 			}
 			return true;
-		} //If this has happened the function will return true. 
+		} //If this has happened the function will return true.
 		if(cmd.getName().equalsIgnoreCase("e")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
@@ -188,8 +195,8 @@ public final class FastSurvival extends JavaPlugin {
 					i.addItem(TurretUtils.createNewItemStack(Utils.NombreEntre(1, 3)));
 					count++;
 				}
-				
-				
+
+
 
 			}
 			return true;
@@ -234,7 +241,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("it")){
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				
+
 				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to do this!");return true;}
 				ArrayList<SpecialItem> registeredSpecialItems = SpecialItemsUtils.getRegisteredSpecialItems();
 				Inventory i;
@@ -273,7 +280,7 @@ public final class FastSurvival extends JavaPlugin {
 						i.addItem(s.createNewItemStack());
 					}
 				}
-				
+
 				if(args.length == 0 || fet == true){
 					p.openInventory(i);
 				}
@@ -312,15 +319,26 @@ public final class FastSurvival extends JavaPlugin {
 
 			}
 			return true;
-		} //If this has happened the function will return true. 
+		} //If this has happened the function will return true.
+		 if(cmd.getName().equalsIgnoreCase("skycrystals")){ // If the player typed /basic then do the following...
+			if (sender instanceof Player){
+				Player p = (Player) sender;
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage(Utils.L("MUST_BE_IN_CREATIVE"));return true;}
+				Inventory i = p.getInventory();
+				ItemStack skyCrystals = SkyUtils.getSkyCrystal();
+				skyCrystals.setAmount(64);
+				i.addItem(skyCrystals);
+			}
+			return true;
+		} //If this has happened the function will return true.
 		// If this hasn't happened the a value of false will be returned.
-		return false; 
+		return false;
 	}
 	//	@Override
 	//	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
 	//		// TODO Auto-generated method stub
 	//		ChunkGenerator c = super.getDefaultWorldGenerator(worldName, id);
-	//		
+	//
 	//		return c;
 	//	}
 	static public World getOverworld(){
