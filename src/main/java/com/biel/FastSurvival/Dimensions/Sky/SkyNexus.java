@@ -61,7 +61,7 @@ public class SkyNexus {
         location = p.ObtenirLocation("location");
         beaconLevel = p.ObtenirPropietatInt("beaconLevel");
         crystalLevel = p.ObtenirPropietatInt("crystalLevel");
-        if (location == null) throw new RuntimeException("SkyNexus file does not contain location");
+        if (location == null) return;
         getRealBeaconLevel();
         refreshBuildState(false);
     }
@@ -74,7 +74,12 @@ public class SkyNexus {
 //            String name = f.getName();
 //            String locationString = name.substring(0, name.length() - 4);
             SkyNexus skyNexus = load(f);
-            registerInstance(skyNexus);
+            if (skyNexus.location != null) {
+                registerInstance(skyNexus);
+            }else{
+                skyNexus.delete();
+                Bukkit.broadcastMessage("Sky nexus found without location and removed");
+            }
         }
     }
 
@@ -105,7 +110,9 @@ public class SkyNexus {
 
     public static List<SkyNexus> getSkyNexusesNearby(Location location, float distance) {
         return allInstances.entrySet().stream()
-                .filter(e -> e.getKey().distance(location.toVector()) < distance)
+                .filter(sn -> sn.getValue().getBeaconLevel() > 0)
+                .sorted(Comparator.comparingDouble(n -> n.getKey().distanceSquared(location.toVector())))
+//                .filter(e -> e.getKey().distance(location.toVector()) < distance)
                 .map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
@@ -126,6 +133,28 @@ public class SkyNexus {
         Cuboid c = Utils.getCuboidAround(location.clone().add(0, ringIndex * -1, 0), ringIndex + 1, 0, ringIndex + 1);
         return c;
     }
+
+    public Cuboid getBeaconLayerCuboid(int beaconIndex) {
+        Cuboid c = Utils.getCuboidAround(location.clone().add(0, (beaconIndex * -1) - 1, 0), beaconIndex + 1, 0, beaconIndex + 1);
+        return c;
+    }
+
+    public int getRealBeaconLevel() {
+        int maxLayers = 4;
+        for (int i = 0; i < maxLayers; i++) {
+            Cuboid layer = getBeaconLayerCuboid(i);
+            boolean allMatch = layer.getBlocks().stream().allMatch(b -> Utils.getBeaconMaterials().contains(b.getType()));
+            if (!allMatch) return i;
+        }
+        return maxLayers;
+    }
+
+    //    int getRealBeaconLevel() {
+//        Block block = location.getBlock();
+//        if (block.getType() != Material.BEACON) return 0;
+//        Beacon beaconState = (Beacon) block.getState();
+//        return beaconState.getTier();
+//    }
 
     static void dropRingItem(Location l) {
         l.getWorld().dropItemNaturally(l, SkyUtils.getSkyCrystal());
@@ -148,11 +177,15 @@ public class SkyNexus {
         c.getWalls()
                 .forEach(w -> {
                     w.getBlocks().forEach(b -> {
-                        if(b.getType() != Material.AIR && !isRingMaterial(b.getType())) b.breakNaturally();
+                        Material typeBefore = b.getType();
+                        if (typeBefore != Material.AIR && !isRingMaterial(typeBefore)) b.breakNaturally();
                         b.setType(Material.QUARTZ_PILLAR);
                         Orientable orientable = (Orientable) b.getBlockData();
                         orientable.setAxis((i.get() % 2 != 0) ? Axis.X : Axis.Z);
                         b.setBlockData(orientable);
+                        if(Utils.getBeaconMaterials().contains(typeBefore)){
+                            getNearestSkyNexus(b.getLocation(), 10).ifPresent(sn2 -> sn2.refreshBeaconLevel());
+                        }
                     });
                     i.getAndIncrement();
                 });
@@ -182,11 +215,34 @@ public class SkyNexus {
         for (int i = 0; i < numberOfRings(); i++) {
             ensureRingState(i, shouldRingIndexBeBuilt(i), drop);
         }
+        Block glassBlock = getLocation().clone().add(0, 1, 0).getBlock();
+        if (crystalLevel == getRealBeaconLevel() + 1) {
+            glassBlock.setType(Material.LIGHT_BLUE_STAINED_GLASS);
+        } else glassBlock.setType(Material.AIR);
+    }
+
+    void delete() {
+        if(location != null){
+            refreshBeaconLevel();
+            setCrystalLevel(0, true);
+            refreshBuildState(false);
+        }
+        allInstances.remove(location.toVector());
+        p.deleteFile();
+        Bukkit.broadcastMessage("Deleted sky nexus at " + location.toVector().toString());
     }
 
     static Optional<Block> getNearestBeaconBlock(Location l) {
         Cuboid c = Utils.getCuboidAround(l, 5);
-        return c.getBlocks().stream().filter(b -> b.getType() == Material.BEACON).findFirst();
+        return c.getBlocks().stream()
+                .filter(b -> b.getType() == Material.BEACON)
+                .min(Comparator.comparingDouble(b -> b.getLocation().distance(l)));
+    }
+    static List<Block> getBeaconBlocksNearby(Location l) {
+        Cuboid c = Utils.getCuboidAround(l, 5);
+        return c.getBlocks().stream()
+                .filter(b -> b.getType() == Material.BEACON)
+                .sorted(Comparator.comparingDouble(b -> b.getLocation().distance(l))).collect(Collectors.toList());
     }
 
     static void handleEntityExplode(EntityExplodeEvent evt) {
@@ -213,24 +269,30 @@ public class SkyNexus {
         Material m = b.getType();
         boolean ringMaterial = isRingMaterial(m);
         boolean beaconMaterial = Utils.getBeaconMaterials().contains(m);
-        if (!ringMaterial && !beaconMaterial) return;
+        boolean beaconBlock = m == Material.BEACON;
+        if (!ringMaterial && !beaconMaterial && !beaconBlock) return;
         Optional<SkyNexus> nearestSkyNexus = getNearestSkyNexus(b.getLocation(), 10);
+        if (beaconBlock) {
+            nearestSkyNexus.ifPresent(sn -> sn.delete());
+        }
         if (ringMaterial) {
             nearestSkyNexus.ifPresent(sn -> {
-                sn.setCrystalLevel(sn.getCrystalLevel() - 1, false);
-                dropRingItem(b.getLocation());
-                if(sn.getCrystalLevel() > 0) evt.setCancelled(true);
+                int oldCrystalLevel = sn.getCrystalLevel();
+                sn.setCrystalLevel(oldCrystalLevel - 1, false);
+                if (sn.getCrystalLevel() < oldCrystalLevel) dropRingItem(b.getLocation());
+                if (sn.getCrystalLevel() > 0) evt.setCancelled(true);
             });
         }
         if (beaconMaterial) {
-//            Bukkit.broadcastMessage("Broken beacon material");
+            Bukkit.broadcastMessage("Broken beacon material");
             nearestSkyNexus.ifPresent(sn -> {
-                Bukkit.getScheduler().runTaskLater(FastSurvival.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        sn.refreshBeaconLevel();
-                    }
-                }, 20 * 2);
+//                Bukkit.getScheduler().runTaskLater(FastSurvival.getPlugin(), new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        sn.refreshBeaconLevel();
+//                    }
+//                }, 20 * 2);
+                sn.refreshBeaconLevel();
                 sn.setCrystalLevel(0, true);
             });
         }
@@ -244,12 +306,6 @@ public class SkyNexus {
         return getRingMaterials().contains(m);
     }
 
-    int getRealBeaconLevel() {
-        Block block = location.getBlock();
-        if (block.getType() != Material.BEACON) return 0;
-        Beacon beaconState = (Beacon) block.getState();
-        return beaconState.getTier();
-    }
 
     void refreshBeaconLevel() {
         int realBeaconLevel = getRealBeaconLevel();
@@ -296,12 +352,24 @@ public class SkyNexus {
                 SkyNexus skyNexus = SkyNexus.load(beaconBlk.getLocation());
                 skyNexus.refreshBeaconLevel();
                 int crystalLevel = skyNexus.getCrystalLevel();
+                getBeaconBlocksNearby(beaconBlk.getLocation()).stream()
+                        .filter(otherBeacon -> !otherBeacon.equals(beaconBlk))
+                        .forEach(otherBeacon-> {
+                            if(allInstances.containsKey(otherBeacon.getLocation().toVector())){
+                                getNearestSkyNexus(otherBeacon.getLocation(), 10).ifPresent(sn -> {
+                                    sn.delete();
+                                });
+                                otherBeacon.breakNaturally();
+
+                            }
+                        });
                 if (skyNexus.getBeaconLevel() != 0 && crystalLevel < skyNexus.getBeaconLevel() + 1) {
                     skyNexus.setCrystalLevel(crystalLevel + 1, true);
                     ItemStack it = item.clone();
                     it.setAmount(1);
                     p.getInventory().removeItem(it);
                 }
+
                 evt.setCancelled(true);
                 evt.setUseInteractedBlock(Event.Result.DENY);
                 evt.setUseItemInHand(Event.Result.ALLOW);
