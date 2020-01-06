@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -17,6 +18,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -24,11 +27,14 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import static com.biel.FastSurvival.Dimensions.Sky.SkyUtils.*;
+
 public class SkyNexus {
     int id;
     Location location;
     int beaconLevel;
     int crystalLevel;
+    boolean activated = false;
     GestorPropietats p;
     static Map<Vector, SkyNexus> allInstances;
 
@@ -76,7 +82,7 @@ public class SkyNexus {
             SkyNexus skyNexus = load(f);
             if (skyNexus.location != null) {
                 registerInstance(skyNexus);
-            }else{
+            } else {
                 skyNexus.delete();
                 Bukkit.broadcastMessage("Sky nexus found without location and removed");
             }
@@ -183,7 +189,7 @@ public class SkyNexus {
                         Orientable orientable = (Orientable) b.getBlockData();
                         orientable.setAxis((i.get() % 2 != 0) ? Axis.X : Axis.Z);
                         b.setBlockData(orientable);
-                        if(Utils.getBeaconMaterials().contains(typeBefore)){
+                        if (Utils.getBeaconMaterials().contains(typeBefore)) {
                             getNearestSkyNexus(b.getLocation(), 10).ifPresent(sn2 -> sn2.refreshBeaconLevel());
                         }
                     });
@@ -222,7 +228,7 @@ public class SkyNexus {
     }
 
     void delete() {
-        if(location != null){
+        if (location != null) {
             refreshBeaconLevel();
             setCrystalLevel(0, true);
             refreshBuildState(false);
@@ -238,6 +244,7 @@ public class SkyNexus {
                 .filter(b -> b.getType() == Material.BEACON)
                 .min(Comparator.comparingDouble(b -> b.getLocation().distance(l)));
     }
+
     static List<Block> getBeaconBlocksNearby(Location l) {
         Cuboid c = Utils.getCuboidAround(l, 5);
         return c.getBlocks().stream()
@@ -270,10 +277,18 @@ public class SkyNexus {
         boolean ringMaterial = isRingMaterial(m);
         boolean beaconMaterial = Utils.getBeaconMaterials().contains(m);
         boolean beaconBlock = m == Material.BEACON;
-        if (!ringMaterial && !beaconMaterial && !beaconBlock) return;
+        boolean blueGlassBlock = m == Material.LIGHT_BLUE_STAINED_GLASS;
+        if (!ringMaterial && !beaconMaterial && !beaconBlock && !blueGlassBlock) return;
         Optional<SkyNexus> nearestSkyNexus = getNearestSkyNexus(b.getLocation(), 10);
         if (beaconBlock) {
             nearestSkyNexus.ifPresent(sn -> sn.delete());
+        }
+        if (blueGlassBlock) {
+            nearestSkyNexus.ifPresent(sn -> {
+                if(evt.getBlock().getRelative(BlockFace.DOWN).getType() != Material.BEACON) return;
+                sn.activatePortal();
+                evt.setCancelled(true);
+            });
         }
         if (ringMaterial) {
             nearestSkyNexus.ifPresent(sn -> {
@@ -322,6 +337,10 @@ public class SkyNexus {
         return getBeaconLevel() > 0;
     }
 
+    boolean isReady() {
+        return getCrystalLevel() >= getBeaconLevel() + 1;
+    }
+
     static PlayerInteractEvent lastPlayerInteractEvent = null;
     static int playerInteractEventIndex = 0;
 
@@ -354,8 +373,8 @@ public class SkyNexus {
                 int crystalLevel = skyNexus.getCrystalLevel();
                 getBeaconBlocksNearby(beaconBlk.getLocation()).stream()
                         .filter(otherBeacon -> !otherBeacon.equals(beaconBlk))
-                        .forEach(otherBeacon-> {
-                            if(allInstances.containsKey(otherBeacon.getLocation().toVector())){
+                        .forEach(otherBeacon -> {
+                            if (allInstances.containsKey(otherBeacon.getLocation().toVector())) {
                                 getNearestSkyNexus(otherBeacon.getLocation(), 10).ifPresent(sn -> {
                                     sn.delete();
                                 });
@@ -376,6 +395,69 @@ public class SkyNexus {
             }
         });
         lastPlayerInteractEvent = evt;
+    }
+
+    List<Player> getPlayersInRange() {
+        return Utils.getNearbyPlayers(location, 16);
+    }
+
+    void activatePortal() {
+        if (!isActive() || !isReady()) return;
+        location.clone().add(0, 1, 0).getBlock().setType(Material.MAGENTA_STAINED_GLASS);
+        List<Player> players = getPlayersInRange();
+        players.forEach(p -> {
+            Vector playerToBeacon = Utils.CrearVector(
+                    p.getLocation().clone(),
+                    location.clone().add(0.5, 0.5, 0.5)
+            );
+            playerToBeacon.setY(0);
+            Vector ac = playerToBeacon.multiply(1);
+            Vector al = ac.clone().crossProduct(new Vector(0, 1, 0));
+            Vector a = ac.clone().add(al).normalize().multiply(0.2);
+            p.setVelocity(p.getVelocity().add(al.clone().multiply(1.1)).add(new Vector(0, 1.6, 0)));
+            p.setAllowFlight(true);
+        });
+
+        loadSkyIfNecessary();
+        int accelerationTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(FastSurvival.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                players.forEach(p -> {
+                    Vector playerToBeacon = Utils.CrearVector(
+                            p.getLocation().clone(),
+                            location.clone().add(0.5, 0.5, 0.5)
+                    );
+                    playerToBeacon.setY(0);
+                    Vector ac = playerToBeacon.multiply(0.1);
+                    Vector al = ac.clone().crossProduct(new Vector(0, 1, 0));
+                    Vector a = ac.clone().add(al).normalize().multiply(0.2);
+//                    System.out.println(a.toString());
+                    double x = ((p.getLocation().getY() - (location.getY() - 1)) * 4.1); // wrt  player Y
+                    double powerCurve = 0.00015 * x * x - 0.03 * x + 1 + 0.01;
+                    if (powerCurve > 1.5) powerCurve = 1.5;
+                    Vector nextVelocity = p.getVelocity().add(ac).add(al.clone().multiply(0.27 * powerCurve));
+                    nextVelocity.setY(0.6);
+                    p.setVelocity(nextVelocity);
+//                    p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 25, 15, false, false, false));
+                });
+            }
+        }, 1, 1);
+        int finishTaskId = Bukkit.getScheduler().scheduleSyncDelayedTask(FastSurvival.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                Bukkit.getScheduler().cancelTask(accelerationTaskId);
+                players.forEach(p -> {
+                    Location skyLocation = getSkyLocation(p.getLocation(), 10);
+                    p.teleport(skyLocation);
+                    teleportPlayerToSky(p);
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 60, 0, false, false, false));
+                    p.sendMessage("To the sky!");
+                    p.setAllowFlight(false);
+                });
+                activated = false;
+                setCrystalLevel(getCrystalLevel() - Utils.NombreEntre(1, getCrystalLevel()), false);
+            }
+        }, 20 * 9);
     }
 
 }
