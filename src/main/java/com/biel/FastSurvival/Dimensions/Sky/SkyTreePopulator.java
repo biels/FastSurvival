@@ -27,7 +27,7 @@ public class SkyTreePopulator extends BlockPopulator {
         boolean generated = world.generateTree(center, TreeType.ACACIA);
         if (generated) {
             Cuboid cuboidAround = Utils.getCuboidAround(center, 7);
-            cuboidAround.expand(Cuboid.CuboidDirection.Up, 10);
+            cuboidAround.expand(Cuboid.CuboidDirection.Up, 12);
             cuboidAround.getBlocks().forEach(b -> {
                 if (b.getType() == Material.ACACIA_LEAVES) {
                     b.setType(Material.WHITE_STAINED_GLASS);
