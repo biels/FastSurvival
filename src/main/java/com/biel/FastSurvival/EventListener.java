@@ -3,6 +3,7 @@ package com.biel.FastSurvival;
 import com.biel.FastSurvival.Dimensions.Moon.*;
 import com.biel.FastSurvival.Dimensions.Sky.SkyListener;
 import com.biel.FastSurvival.Dimensions.Sky.SkyNexus;
+import com.biel.FastSurvival.Dimensions.Sky.SkyTreePopulator;
 import com.biel.FastSurvival.Dimensions.Sky.SkyUtils;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
@@ -56,6 +57,9 @@ public class EventListener implements Listener {
             world.setMonsterSpawnLimit(80);
         }
 
+        if (SkyUtils.IsSky(world)) {
+            world.getPopulators().add(new SkyTreePopulator());
+        }
         if (MoonUtils.IsMoon(world)) {
             world.setMonsterSpawnLimit(100);
             world.setGameRuleValue("doDaylightCycle", "false");
