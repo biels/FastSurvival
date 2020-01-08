@@ -33,7 +33,6 @@ public class SkyUtils {
 		WorldCreator wc = new WorldCreator("Sky");
 		wc.type(WorldType.NORMAL);
 		wc.environment(Environment.NORMAL);
-		
 		wc.generator(new SkyChunkGenerator());
 		//wc.generator(new BasicChunkGenerator());
 		Bukkit.getServer().createWorld(wc);

@@ -296,7 +296,7 @@ public class SkyNexus {
             });
         }
         if (beaconMaterial) {
-            Bukkit.broadcastMessage("Broken beacon material");
+//            Bukkit.broadcastMessage("Broken beacon material");
             nearestSkyNexus.ifPresent(sn -> {
 //                Bukkit.getScheduler().runTaskLater(FastSurvival.getPlugin(), new Runnable() {
 //                    @Override
@@ -384,7 +384,8 @@ public class SkyNexus {
                     ItemStack it = item.clone();
                     it.setAmount(1);
                     p.getInventory().removeItem(it);
-                    p.getLocation().getWorld().playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 100, (float) 1);
+                    Sound levelUpSound = Sound.BLOCK_END_PORTAL_FRAME_FILL;
+                    p.getLocation().getWorld().playSound(p.getLocation(), levelUpSound, SoundCategory.MASTER, 100, 1F + (0.2F * crystalLevel));
                 }
                 if (skyNexus.getBeaconLevel() != 0 && crystalLevel == skyNexus.getBeaconLevel()){
                     p.getLocation().getWorld().playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100, (float) 1.4);
@@ -418,8 +419,13 @@ public class SkyNexus {
             p.setVelocity(p.getVelocity().add(al.clone().multiply(1.1)).add(new Vector(0, 1.6, 0)));
             p.setAllowFlight(true);
         });
+        Bukkit.getScheduler().scheduleSyncDelayedTask(FastSurvival.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                loadSkyIfNecessary();
+            }
+        }, 10);
 
-        loadSkyIfNecessary();
         int accelerationTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(FastSurvival.getPlugin(), new Runnable() {
             @Override
             public void run() {
@@ -436,7 +442,8 @@ public class SkyNexus {
                     double x = ((p.getLocation().getY() - (location.getY() - 1)) * 4.1); // wrt  player Y
                     double powerCurve = 0.00015 * x * x - 0.03 * x + 1 + 0.01;
                     if (powerCurve > 1.5) powerCurve = 1.5;
-                    Vector nextVelocity = p.getVelocity().add(ac).add(al.clone().multiply(0.27 * powerCurve));
+                    if (powerCurve < -0.35) powerCurve = -0.35;
+                    Vector nextVelocity = p.getVelocity().add(ac).add(al.clone().multiply(0.29 * powerCurve));
                     nextVelocity.setY(0.6);
                     p.setVelocity(nextVelocity);
 //                    p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 25, 15, false, false, false));
