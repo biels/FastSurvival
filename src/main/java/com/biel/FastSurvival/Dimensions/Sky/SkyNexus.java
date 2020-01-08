@@ -4,10 +4,7 @@ import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.GestorPropietats;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.Axis;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Beacon;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -387,6 +384,10 @@ public class SkyNexus {
                     ItemStack it = item.clone();
                     it.setAmount(1);
                     p.getInventory().removeItem(it);
+                    p.getLocation().getWorld().playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_FRAME_FILL, 100, (float) 1);
+                }
+                if (skyNexus.getBeaconLevel() != 0 && crystalLevel == skyNexus.getBeaconLevel()){
+                    p.getLocation().getWorld().playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100, (float) 1.4);
                 }
 
                 evt.setCancelled(true);
