@@ -282,7 +282,7 @@ public class SkyNexus {
         }
         if (blueGlassBlock) {
             nearestSkyNexus.ifPresent(sn -> {
-                if(evt.getBlock().getRelative(BlockFace.DOWN).getType() != Material.BEACON) return;
+                if (evt.getBlock().getRelative(BlockFace.DOWN).getType() != Material.BEACON) return;
                 sn.activatePortal();
                 evt.setCancelled(true);
             });
@@ -387,7 +387,7 @@ public class SkyNexus {
                     Sound levelUpSound = Sound.BLOCK_END_PORTAL_FRAME_FILL;
                     p.getLocation().getWorld().playSound(p.getLocation(), levelUpSound, SoundCategory.MASTER, 100, 1F + (0.2F * crystalLevel));
                 }
-                if (skyNexus.getBeaconLevel() != 0 && crystalLevel == skyNexus.getBeaconLevel()){
+                if (skyNexus.getBeaconLevel() != 0 && crystalLevel == skyNexus.getBeaconLevel()) {
                     p.getLocation().getWorld().playSound(p.getLocation(), Sound.BLOCK_END_PORTAL_SPAWN, SoundCategory.MASTER, 100, (float) 1.4);
                 }
 
@@ -405,7 +405,8 @@ public class SkyNexus {
 
     void activatePortal() {
         if (!isActive() || !isReady()) return;
-        location.clone().add(0, 1, 0).getBlock().setType(Material.MAGENTA_STAINED_GLASS);
+        Block glassBlock = location.clone().add(0, 1, 0).getBlock();
+        glassBlock.setType(Material.MAGENTA_STAINED_GLASS);
         List<Player> players = getPlayersInRange();
         players.forEach(p -> {
             Vector playerToBeacon = Utils.CrearVector(
@@ -416,15 +417,25 @@ public class SkyNexus {
             Vector ac = playerToBeacon.multiply(1);
             Vector al = ac.clone().crossProduct(new Vector(0, 1, 0));
             Vector a = ac.clone().add(al).normalize().multiply(0.2);
-            p.setVelocity(p.getVelocity().add(al.clone().multiply(1.1)).add(new Vector(0, 1.6, 0)));
+            p.setVelocity(p.getVelocity().add(al.clone().multiply(1.1)).add(new Vector(0, 1.5, 0)));
             p.setAllowFlight(true);
         });
-        Bukkit.getScheduler().scheduleSyncDelayedTask(FastSurvival.getPlugin(), new Runnable() {
-            @Override
-            public void run() {
-                loadSkyIfNecessary();
-            }
-        }, 10);
+        repositionPlayersInPortal(players);
+        players.forEach(player -> player.setNoDamageTicks(10 * 20));
+        if (getSky() == null) {
+            glassBlock.setType(Material.GREEN_STAINED_GLASS);
+            players.forEach(player -> player.sendMessage(ChatColor.GREEN + "Opening connection to the sky..."));
+            Bukkit.getScheduler().scheduleSyncDelayedTask(FastSurvival.getPlugin(), new Runnable() {
+                @Override
+                public void run() {
+
+                    loadSkyIfNecessary();
+                    players.forEach(player -> player.sendMessage(ChatColor.GREEN + "Done!"));
+                    glassBlock.setType(Material.MAGENTA_STAINED_GLASS);
+                    repositionPlayersInPortal(players);
+                }
+            }, 10);
+        }
 
         int accelerationTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(FastSurvival.getPlugin(), new Runnable() {
             @Override
@@ -442,9 +453,14 @@ public class SkyNexus {
                     double x = ((p.getLocation().getY() - (location.getY() - 1)) * 4.1); // wrt  player Y
                     double powerCurve = 0.00015 * x * x - 0.03 * x + 1 + 0.01;
                     if (powerCurve > 1.5) powerCurve = 1.5;
-                    if (powerCurve < -0.35) powerCurve = -0.35;
-                    Vector nextVelocity = p.getVelocity().add(ac).add(al.clone().multiply(0.29 * powerCurve));
-                    nextVelocity.setY(0.6);
+                    if (powerCurve < -0.33) powerCurve = -0.33;
+                    Vector nextVelocity = p.getVelocity().add(ac).add(al.clone().multiply(0.295 * powerCurve));
+                    Vector velocitySample = nextVelocity.clone();
+                    velocitySample.setY(0);
+                    if (velocitySample.length() > 1.4) velocitySample.multiply(0.9);
+                    nextVelocity.setY(0.15 + 0.0045 * x);
+                    nextVelocity.setX(velocitySample.getX());
+                    nextVelocity.setZ(velocitySample.getZ());
                     p.setVelocity(nextVelocity);
 //                    p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 25, 15, false, false, false));
                 });
@@ -466,6 +482,18 @@ public class SkyNexus {
                 setCrystalLevel(getCrystalLevel() - Utils.NombreEntre(1, getCrystalLevel()), false);
             }
         }, 20 * 9);
+    }
+
+    private void repositionPlayersInPortal(List<Player> players) {
+        players.forEach(p -> {
+            Vector relativeVec = Utils.CrearVector(SkyNexus.this.location, p.getLocation());
+            double relLength = relativeVec.length();
+            if (!((!(relLength > 5)) || (!(relLength < 1)))) return;
+            relativeVec.normalize().multiply(Utils.NombreEntre(4, 6));
+            Location absoluteLoc = SkyNexus.this.location.clone().add(relativeVec);
+            Location relocationTarget = SkyNexus.this.location.getWorld().getHighestBlockAt(absoluteLoc).getLocation().add(0, 4, 0);
+            p.teleport(relocationTarget);
+        });
     }
 
 }
