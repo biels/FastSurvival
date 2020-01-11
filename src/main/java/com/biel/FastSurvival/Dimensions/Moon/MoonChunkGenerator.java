@@ -121,4 +121,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
         int y = world.getHighestBlockYAt(x, z);
         return new Location(world, x, y, z);
     }
+    @Override
+    public boolean isParallelCapable() {
+        return true;
+    }
 }

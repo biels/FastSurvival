@@ -5,6 +5,12 @@ version = '3.10'
 
 repositories {
     mavenCentral()
+    maven {
+        url "https://hub.spigotmc.org/nexus/content/repositories/snapshots"
+    }
+    maven {
+        url = "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
 }
 //def defaultEncoding = 'UTF-8'
 //compileJava {
@@ -14,8 +20,13 @@ repositories {
 //    options.encoding = defaultEncoding
 //}
 dependencies {
-    compile fileTree(dir: 'lib', include: '*.jar')
+//    compile fileTree(dir: 'lib', include: '*.jar')
     compile group: 'com.google.guava', name: 'guava', version: '19.0'
+    compile 'org.apache.commons:commons-io:1.3.2'
+    compileOnly 'org.projectlombok:lombok:1.18.10'
+    compileOnly "org.bukkit:bukkit:1.15.1-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT"
+    testCompileOnly "org.spigotmc:spigot-api:1.15.1-R0.1-SNAPSHOT"
     testCompileOnly(
             'junit:junit:4.12'
     )
@@ -28,8 +39,18 @@ dependencies {
             'org.junit.platform:junit-platform-launcher:1.1.0',
             'org.junit.platform:junit-platform-runner:1.1.0'
     )
+    implementation 'org.jetbrains:annotations:15.0'
 }
 
 test {
     useJUnitPlatform()
+}
+idea {
+    project{
+        languageLevel '1.8'
+    }
+    module {
+        downloadJavadoc = true // defaults to false
+        downloadSources = true
+    }
 }

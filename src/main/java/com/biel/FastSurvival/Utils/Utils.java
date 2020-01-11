@@ -2,8 +2,6 @@ package com.biel.FastSurvival.Utils;
 
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Translations.LanguageStrings;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtCompound;
-import com.biel.FastSurvival.Utils.NbtFactory.NbtList;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -700,18 +698,7 @@ public class Utils {
         return new Location(w, x, y, z);
     }
 
-    public static ItemStack addEnchantmentGlow(ItemStack i) {
-        ItemStack stack = NbtFactory.getCraftItemStack(i);
-        NbtCompound other = NbtFactory.fromItemTag(stack);
 
-        // Do whatever
-        NbtList createList = NbtFactory.createList(NbtFactory.createCompound());
-        createList.clear();
-        other.putPath("ench", createList);
-        //other.putPath("display.Lore", NbtFactory.createList("Line 1", "Line 2"));
-        NbtFactory.setItemTag(stack, other);
-        return stack;
-    }
 
     //	public static ArrayList<?> getEnumArrayFromIntArray(ArrayList<Integer> arr){
     //		ArrayList<Enum> list = new ArrayList<Enum>();

@@ -1,7 +1,7 @@
 package com.biel.FastSurvival.Utils;
 
 import com.biel.FastSurvival.FastSurvival;
-import org.bukkit.craftbukkit.libs.org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.net.URISyntaxException;

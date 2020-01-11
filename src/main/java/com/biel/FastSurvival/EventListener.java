@@ -418,6 +418,9 @@ public class EventListener implements Listener {
             p.sendMessage(msg);
         }
         //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
+        if(DebugOptions.skyGenerationMode()){
+            SkyUtils.teleportPlayerToSky(p);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

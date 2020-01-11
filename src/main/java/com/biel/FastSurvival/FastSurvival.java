@@ -61,7 +61,7 @@ public final class FastSurvival extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new MobListener(), this);
 		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
 		getServer().getPluginManager().registerEvents(new MoonListener(), this);
-		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
+//		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
 		getServer().getPluginManager().registerEvents(new SkyListener(), this);
 		getServer().getPluginManager().registerEvents(new RecallListener(), this);
 		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
@@ -93,12 +93,19 @@ public final class FastSurvival extends JavaPlugin {
 				TurretUtils.addRecipes();
 
 				getLogger().info("Added all recipes to server");
+
+				// DEBUG (Load worlds)
+				if(DebugOptions.skyGenerationMode()){
+					SkyUtils.loadSkyIfNecessary();
+				}
 			}
 		}, 20 * 5);
 //		MoonUtils.loadMoon();
 //		Turret.loadInstances();
 
 		getLogger().info("FastSurvival Finished enabled");
+
+
 
 	}
 
