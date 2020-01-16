@@ -1,6 +1,7 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -83,12 +84,14 @@ public class SkyChunkGenerator extends ChunkGenerator {
         return generator;
     }
 
-    private int getHeight(World world, double x, double y, int variance) {
+    private double getHeight(World world, double x, double y) {
         NoiseGenerator gen = getGenerator(world);
 
-        double result = gen.noise(x / 3, y / 3);
-        result *= variance;
-        return NoiseGenerator.floor(result);
+        double result = gen.noise(x / 8, y / 8);
+        double resultFast = gen.noise(x / 4, y / 4);
+        resultFast *= 0.5;
+        result *= 1.0;
+        return result + resultFast;
     }
 
     //Unused
@@ -124,19 +127,28 @@ public class SkyChunkGenerator extends ChunkGenerator {
 //        if (bucket == 2) material = Material.BIRCH_WOOD;
 //        if (bucket == 3) material = Material.IRON_ORE;
 //        System.out.println(bucket);
+        int baseHeight = 60;
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                int height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 4) + 50;
-                for (int y = 46; y < height; y++) {
-                    Biome biome1 = biome.getBiome(x, 50, z);
+
+                Vector chunkDist = new Vector(cx, 0, cz);
+                chunkDist.multiply(16).add(new Vector(x, 0, z));
+                int variance = 5;// (int) (5 + chunkDist.length() / (16 * 3));
+                double rawHeight = Utils.sigmoid(getHeight(world, cx + x * 0.0625, cz + z * 0.0625) * 1.4 + 0.10);
+                int scaledHeight = NoiseGenerator.floor(rawHeight * variance);
+                int height = scaledHeight + baseHeight;
+//                if (rawHeight < -0.9) continue;
+                for (int y = baseHeight - scaledHeight + 1 ; y < height; y++) {
                     material = Material.SNOW_BLOCK;
-                    if (biome1 == Biome.PLAINS) material = Material.GRASS_BLOCK;
-                    if (biome1 == Biome.DARK_FOREST) material = Material.COAL_BLOCK;
-                    if (biome1 == Biome.RIVER) material = Material.LAPIS_BLOCK;
-                    if (biome1 == Biome.BEACH) material = Material.GOLD_BLOCK;
-                    if (biome1 == Biome.COLD_OCEAN) material = Material.BLUE_ICE;
+                    if (rawHeight == 0) material = Material.WHITE_STAINED_GLASS;
+//                    if (biome1 == Biome.PLAINS) material = Material.GRASS_BLOCK;
+//                    if (biome1 == Biome.DARK_FOREST) material = Material.COAL_BLOCK;
+//                    if (biome1 == Biome.RIVER) material = Material.LAPIS_BLOCK;
+//                    if (biome1 == Biome.BEACH) material = Material.GOLD_BLOCK;
+//                    if (biome1 == Biome.COLD_OCEAN) material = Material.BLUE_ICE;
 //                    if (isCenter) material = Material.SLIME_BLOCK;
                     chunk.setBlock(x, y, z, material);
+
 //                    if (y != 48) {
 //
 //                    } else {

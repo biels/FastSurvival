@@ -793,5 +793,18 @@ public class Utils {
     public static List<Material> getBeaconMaterials(){
         return Arrays.asList(Material.IRON_BLOCK,Material.GOLD_BLOCK,Material.DIAMOND_BLOCK,Material.EMERALD_BLOCK);
     }
+    public static double sigmoid(double x){
+        return sigmoid(x, 10);
+    }
+    public static double sigmoid(double x, double calcTreshold){
+        double y;
+        if( x < -1 * calcTreshold )
+            y = 0;
+        else if( x > calcTreshold )
+            y = 1;
+        else
+            y = 1 / (1 + Math.exp(-x));
+        return y;
+    }
 
 }

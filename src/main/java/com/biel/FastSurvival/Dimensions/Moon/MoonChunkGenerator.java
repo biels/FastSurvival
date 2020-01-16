@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -8,6 +9,7 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
 
+import javax.rmi.CORBA.Util;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -46,7 +48,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
         variance = variance * varResult;
         int sigmoidHarshness = 35;
         double slowResult = (slowGen.noise(x / 45, y / 45) - 0.5) * sigmoidHarshness;
-        double slowAfterSigmoid = sigmoid(slowResult);
+        double slowAfterSigmoid = Utils.sigmoid(slowResult);
         double result = 0;
         double effectiveVariance = slowAfterSigmoid < 0.6 ? variance : variance / 2.0;
         result = gen.noise(x, y) * effectiveVariance;
@@ -56,16 +58,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         return NoiseGenerator.floor(result);
     }
-    private double sigmoid(double x){
-        double y;
-        if( x < -10 )
-            y = 0;
-        else if( x > 10 )
-            y = 1;
-        else
-            y = 1 / (1 + Math.exp(-x));
-        return y;
-    }
+
 //
 //    public byte[] generate(World world, Random random, int cx, int cz) {
 //        byte[] result = new byte[32768];

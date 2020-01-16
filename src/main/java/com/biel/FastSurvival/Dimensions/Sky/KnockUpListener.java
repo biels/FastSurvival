@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 
-@Deprecated
+
 public class KnockUpListener implements Listener {
 	@EventHandler
     public void onClick(PlayerInteractEvent event){
