@@ -24,6 +24,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.server.ServerLoadEvent;
@@ -407,6 +408,13 @@ public class EventListener implements Listener {
         Block b = evt.getBlock();
         if (e instanceof Enderman) {
             evt.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onEntityDies(EntityDeathEvent evt) {
+        Entity e = evt.getEntity();
+        if(e instanceof Ghast && Utils.NombreEntre(0, 100) <= 50){
+            e.getLocation().getWorld().dropItemNaturally(e.getLocation(), SkyUtils.getSkyCrystal());
         }
     }
 
