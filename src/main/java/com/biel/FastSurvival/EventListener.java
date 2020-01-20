@@ -4,6 +4,7 @@ import com.biel.FastSurvival.Dimensions.Moon.*;
 import com.biel.FastSurvival.Dimensions.Sky.SkyListener;
 import com.biel.FastSurvival.Dimensions.Sky.SkyNexus;
 import com.biel.FastSurvival.Dimensions.Sky.SkyTreePopulator;
+import com.biel.FastSurvival.Dimensions.Sky.IcyArchPopulator;
 import com.biel.FastSurvival.Dimensions.Sky.SkyUtils;
 import com.biel.FastSurvival.NetherStructures.ChestCorePopulator;
 import com.biel.FastSurvival.NetherStructures.NetherHutPopulator;
@@ -60,6 +61,7 @@ public class EventListener implements Listener {
 
         if (SkyUtils.IsSky(world)) {
             world.getPopulators().add(new SkyTreePopulator());
+            world.getPopulators().add(new IcyArchPopulator());
         }
         if (MoonUtils.IsMoon(world)) {
             world.setMonsterSpawnLimit(100);
