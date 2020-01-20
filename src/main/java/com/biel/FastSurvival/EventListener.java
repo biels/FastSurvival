@@ -105,7 +105,7 @@ public class EventListener implements Listener {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_INGOT));
                 }
                 if (Utils.Possibilitat(4)) {
-                    p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.LEGACY_IRON_FENCE));
+                    p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_BARS));
                 }
                 if (Utils.Possibilitat(3)) {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.GOLD_NUGGET, 1));
@@ -124,7 +124,7 @@ public class EventListener implements Listener {
                     }
                 }
             }
-            if (blk.getType() == Material.LEGACY_MOB_SPAWNER) {
+            if (blk.getType() == Material.SPAWNER) {
                 p.damage(1);
                 if (Utils.Possibilitat(80)) {
                     if (Utils.Possibilitat(62)) {
@@ -134,7 +134,7 @@ public class EventListener implements Listener {
                     }
                 }
                 p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_INGOT, Utils.NombreEntre(1, 10)));
-                p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.LEGACY_IRON_FENCE, 6));
+                p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.IRON_BARS, 6));
                 if (Utils.Possibilitat(1)) {
                     p.getWorld().dropItemNaturally(blk.getLocation(), new ItemStack(Material.DIAMOND));
                     //p.setFireTicks(20 * 24);
@@ -250,6 +250,9 @@ public class EventListener implements Listener {
                     }
 
                     if (!(b.getType() == Material.STONE
+                            || b.getType() == Material.DIORITE
+                            || b.getType() == Material.GRANITE
+                            || b.getType() == Material.ANDESITE
                             || b.getType() == Material.GRASS
                             || b.getType() == Material.DIRT
                             || b.getType() == Material.GRAVEL
