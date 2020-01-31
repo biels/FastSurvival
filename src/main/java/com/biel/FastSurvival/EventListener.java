@@ -60,8 +60,8 @@ public class EventListener implements Listener {
         }
 
         if (SkyUtils.IsSky(world)) {
-            world.getPopulators().add(new SkyTreePopulator());
-            world.getPopulators().add(new IcyArchPopulator());
+//            world.getPopulators().add(new SkyTreePopulator());
+//            world.getPopulators().add(new IcyArchPopulator());
         }
         if (MoonUtils.IsMoon(world)) {
             world.setMonsterSpawnLimit(100);
