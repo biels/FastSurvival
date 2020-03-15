@@ -3,6 +3,7 @@ package com.biel.FastSurvival.Dimensions.Sky.hexgen;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
@@ -24,16 +25,21 @@ public class SkyHexChunkGenerator extends ChunkGenerator {
             for (int z = 0; z < 16; z++) {
                 int x1 = cx * 16 + x;
                 int z1 = cz * 16 + z;
+
                 HexCell cell = hexGrid.getCell(HexCoordinates.fromPosition(new Vector3i(x1, 0, z1)));
+                if(cell.biome == null) cell.biome = biome.getBiome(z, 60, z);
                 Material material;
+//                if(cell.type == -1) cell.type = (biome.getBiome(x, 0 , z).ordinal() * 6) / (Biome.values().length );
                 material = Material.SNOW_BLOCK;
                 int type = cell.type;
-                if (type == 0) material = Material.DIRT;
-                if (type == 1) material = Material.STONE;
-                if (type == 2) material = Material.BIRCH_WOOD;
-                if (type == 3) material = Material.IRON_ORE;
+                if (cell.biome == Biome.RIVER) material = Material.AIR;
+                if (cell.biome == Biome.OCEAN) material = Material.LAPIS_BLOCK;
+                if (cell.biome == Biome.PLAINS) material = Material.GRASS_BLOCK;
+                if (type == 3) material = cell.material;
+                if (type == 4) material = Material.SNOW_BLOCK;
+                if (type == 5) material = Material.SNOW_BLOCK;
 //                if(cell.coordinates.getCenter().distanceSquared(new Vector(x1, 0, z1)) < 5) material = Material.GOLD_BLOCK;
-                for (int y = 60 + 1; y < 70 + type; y++) {
+                for (int y = 60 + 1; y < 80 + type; y++) {
                     chunk.setBlock(x, y, z, material);
                 }
             }

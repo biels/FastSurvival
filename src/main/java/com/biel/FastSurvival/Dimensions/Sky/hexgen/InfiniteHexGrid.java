@@ -98,9 +98,9 @@ public class InfiniteHexGrid {
                 if (scheduledCells.isEmpty()) {
                     generateAreaAroundLocation(world.getSpawnLocation(), 16 * 20);
                     world.getPlayers().forEach(p -> generateAreaAroundLocation(p.getLocation(), 16 * 32));
-                    if(!scheduledCells.isEmpty())System.out.println("Finished batch, adding " + scheduledCells.size() + " more cells");
+                    if(!scheduledCells.isEmpty()) System.out.println("Finished batch, adding " + scheduledCells.size() + " more cells");
                 }
-                reschedulePopulationTask(scheduledCells.isEmpty() ? 50 : 10);
+                reschedulePopulationTask(scheduledCells.isEmpty() ? 60 : 12);
             }
         }, timeout);
     }
