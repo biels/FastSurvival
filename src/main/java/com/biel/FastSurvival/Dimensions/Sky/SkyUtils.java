@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Sky;
 
+import com.biel.FastSurvival.Dimensions.Sky.biomegen.BasicChunkGenerator;
 import com.biel.FastSurvival.Dimensions.Sky.hexgen.SkyHexChunkGenerator;
 import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.Cuboid;
@@ -34,7 +35,7 @@ public class SkyUtils {
 		WorldCreator wc = new WorldCreator("Sky");
 		wc.type(WorldType.NORMAL);
 		wc.environment(Environment.NORMAL);
-		wc.generator(new SkyHexChunkGenerator());
+		wc.generator(new SkyChunkGenerator());
 		//wc.generator(new BasicChunkGenerator());
 		Bukkit.getServer().createWorld(wc);
 	}

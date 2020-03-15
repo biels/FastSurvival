@@ -49,7 +49,7 @@ public class EventListener implements Listener {
         if (MoonUtils.IsEarth(world)) {
             world.setGameRuleValue("doFireTick", "false");
             //evt.getWorld().getPopulators().add(new SlimeBossPopulator());
-            world.getPopulators().add(new NetherPopulator());
+           // world.getPopulators().add(new NetherPopulator());
             world.getPopulators().add(new LogPopulator());
             evt.getWorld().getPopulators().add(new MoonMagicTreePopulator());
             world.getPopulators().add(new GraveyardPopulator());
@@ -60,7 +60,7 @@ public class EventListener implements Listener {
         }
 
         if (SkyUtils.IsSky(world)) {
-//            world.getPopulators().add(new SkyTreePopulator());
+            world.getPopulators().add(new SkyTreePopulator());
 //            world.getPopulators().add(new IcyArchPopulator());
         }
         if (MoonUtils.IsMoon(world)) {
@@ -415,10 +415,11 @@ public class EventListener implements Listener {
             evt.setCancelled(true);
         }
     }
+
     @EventHandler
     public void onEntityDies(EntityDeathEvent evt) {
         Entity e = evt.getEntity();
-        if(e instanceof Ghast && Utils.NombreEntre(0, 100) <= 50){
+        if (e instanceof Ghast && Utils.NombreEntre(0, 100) <= 50) {
             e.getLocation().getWorld().dropItemNaturally(e.getLocation(), SkyUtils.getSkyCrystal());
         }
     }
@@ -431,7 +432,7 @@ public class EventListener implements Listener {
             p.sendMessage(msg);
         }
         //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
-        if(DebugOptions.skyGenerationMode()){
+        if (DebugOptions.skyGenerationMode()) {
             SkyUtils.teleportPlayerToSky(p);
         }
     }
