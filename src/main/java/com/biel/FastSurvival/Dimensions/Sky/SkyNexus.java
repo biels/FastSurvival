@@ -160,7 +160,8 @@ public class SkyNexus {
 //    }
 
     static void dropRingItem(Location l) {
-        l.getWorld().dropItemNaturally(l, SkyUtils.getSkyCrystal());
+        // FIXME Ensure no accidental drops
+        // l.getWorld().dropItemNaturally(l, SkyUtils.getSkyCrystal());
     }
 
     void destroyRing(Cuboid c, boolean drop) {
