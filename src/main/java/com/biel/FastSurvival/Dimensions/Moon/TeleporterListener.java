@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeleporterListener implements Listener {
-
+    @EventHandler
     public static void handlePlayerInteractEvent(PlayerInteractEvent event) {
         final Player p = event.getPlayer();
         Block b = event.getClickedBlock();
@@ -41,15 +41,15 @@ public class TeleporterListener implements Listener {
                 if (!p.getName().equalsIgnoreCase(pl.getName())) {
                     pName = "(" + ChatColor.YELLOW + p.getName() + ChatColor.WHITE + ")";
                 }
-                pl.sendMessage(Utils.L("D_MOON_TELEPORTER_ENERGY") + ": (" + energy + "/" + Maxenergy + ") " + Integer.toString((int) Math.round(ratio * 100)) + "%" + pName);
+                pl.sendMessage("Teleporter energy" + ": (" + energy + "/" + Maxenergy + ") " + Integer.toString((int) Math.round(ratio * 100)) + "%" + pName);
             }
             if (ratio >= 1) {
 
                 if (MoonUtils.IsInMoon(p)) {
-                    Bukkit.broadcastMessage(Utils.L("D_TOEARTH"));
+                    Bukkit.broadcastMessage("To the earth!");
                     MoonUtils.portalActivateToEarth(pls, b);
                 } else {
-                    Bukkit.broadcastMessage(Utils.L("D_TOMOON"));
+                    Bukkit.broadcastMessage("To the moon!");
                     MoonUtils.portalActivateToMoon(pls, b);
                 }
 

@@ -98,7 +98,7 @@ public class BowRecipeGenerator {
         r.setIngredient('R', Material.REDSTONE_BLOCK);
         r.setIngredient('W', Material.STONE_SWORD);
         r.setIngredient('G', Material.GOLD_INGOT);
-        r.setIngredient('S', Material.LEGACY_SKULL_ITEM);
+        r.setIngredient('S', Material.WITHER_SKELETON_SKULL);
         Bukkit.getServer().addRecipe(r);
 	}
 	static void waterRecipe(){
