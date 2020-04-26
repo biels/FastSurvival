@@ -54,7 +54,7 @@ public class CustomBowsListener implements Listener {
 		case MAGNETIC:
 			break;
 		case MULTI:
-			multiShot(arr, sk, type, f);
+			multiShotVector(arr, sk, type, f);
 			break;
 		case TORCH:
 			break;
@@ -111,8 +111,8 @@ public class CustomBowsListener implements Listener {
 		case ELECTRIC:
 			break;
 		case MULTI:
-			multiShot(arr, p, type, f);
-			p.getWorld().playSound(p.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, 0.8f, 1F);
+			multiShotVector(arr, p, type, f);
+			p.getWorld().playSound(p.getLocation(), Sound.ITEM_CROSSBOW_SHOOT, 0.8f, 1.1F);
 
 			break;
 		default:
@@ -142,6 +142,41 @@ public class CustomBowsListener implements Listener {
 			i= i + 1;
 
 		}
+	}
+	public void multiShotVector(Arrow arr, LivingEntity p, BowType type, float f) {
+
+		Vector center = p.getLocation().add(0, 1.05, 0).toVector();
+		double toRadians = Math.PI / 180;
+		float radius = (float) (1.1f * Math.sqrt(f));
+		Vector direction = p.getLocation().getDirection();
+		Vector frontSpawnPoint = direction.clone().multiply(radius);
+		float spacingAngle = 5.5f - f * 1.4f;
+		if(f >= 1.0f) spacingAngle -= 0.6f;
+		int numArrows = (int) (2 * (Math.floor(5 * (f - 0.10) / 0.9f)) + 1);
+//		Bukkit.broadcastMessage("numArrows " + numArrows);
+//		Bukkit.broadcastMessage("dmg " + arr.getDamage());
+		Vector lateralAxis = direction.getCrossProduct(new Vector(0, 1, 0)).normalize();
+		Vector headAxis = direction.getCrossProduct(lateralAxis);
+//		Bukkit.broadcastMessage("lateralAxis: " + lateralAxis.toString());
+//		Bukkit.broadcastMessage("headAxis: " + headAxis.toString());
+		for (int j = 0; j < numArrows; j++) {
+			Location spawnPoint = direction.clone().multiply(radius)
+					.rotateAroundAxis(headAxis, spacingAngle * toRadians * (j - Math.floor(numArrows / 2.0f))).toLocation(p.getWorld());
+			Location spawnLoc = spawnPoint.clone().add(center);
+//			spawnLoc.getBlock().setType(Material.GOLD_BLOCK);
+//			spawnPointFlat.clone().add(center).toLocation(p.getWorld()).getBlock().setType(Material.REDSTONE_BLOCK);
+			Arrow arrow = (Arrow) p.getWorld().spawnEntity(spawnLoc, EntityType.ARROW);
+			arrow.setShooter(p);
+			arrow.setFireTicks((int) (20));
+
+			arrow.setDamage(2.5f);
+			arrow.setVelocity(spawnPoint.toVector().normalize().clone().add(new Vector(0, 0.05, 0)).normalize().multiply(3f * f));
+			arrow.setMetadata("BowType", new FixedMetadataValue(FastSurvival.getPlugin(), type.ordinal()));
+			arrow.setMetadata("Force", new FixedMetadataValue(FastSurvival.getPlugin(), f));
+			arrow.setTicksLived(20 * 4 + 10);
+			arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+		}
+		arr.remove();
 	}
 	@EventHandler
 	public void onHit(ProjectileHitEvent evt) {
@@ -257,6 +292,8 @@ public class CustomBowsListener implements Listener {
 			world.strikeLightningEffect(l);
 			break;
 		case MULTI:
+			Entity hitEntity = evt.getHitEntity();
+			if(hitEntity != null) hitEntity.setFireTicks(4);
 			break;
 		default:
 			break;
@@ -372,10 +409,10 @@ public class CustomBowsListener implements Listener {
 			break;
 		case BOUNCY:
 			if(true){
-				ArrayList<LivingEntity> nearbyEnemies = Utils.getNearbyEnemies(damaged, 12 + (f * 6), true);
+				ArrayList<LivingEntity> nearbyEnemies = Utils.getNearbyEnemies(damaged, 15 + (f * 6), true);
 				ArrayList<UUID> bouncedEnemies = new ArrayList<UUID>();
 				nearbyEnemies.remove(damager);
-				int initialtimes = (int) (30 + (f * 3));
+				int initialtimes = (int) (10 + (f * 3));
 				int times = initialtimes;
 				//Bukkit.broadcastMessage(Integer.toString(times) + " - " + nearbyEnemies.size());
 				MetadataValue metadata = Utils.getMetadata(arr, "Bounced");
@@ -398,20 +435,22 @@ public class CustomBowsListener implements Listener {
 					times = metadata2.asInt();
 
 				}
-				dmg = (double) (10 * f);
-					//First obj
-					dmg = (dmg * 0.8)*(6/(initialtimes - times + 1));
+				int actualtimes = initialtimes - times;
 
+					//First obj
+					dmg = 2.5 + ((actualtimes * 2.4));
+//					Bukkit.broadcastMessage("times: " + times + ", dmg: " + dmg);
 				if (damaged instanceof Player && dmg > 7){
 					dmg = 6.2;
 				}
-				LivingEntity bounced = Utils.getNearestEntity(damaged.getLocation(), nearbyEnemies);
-				if (bounced != null && times >= 0){
-					Vector v = Utils.CrearVector(damaged.getLocation(), bounced.getLocation());
+			     	LivingEntity bounced = Utils.getNearestEntity(damaged.getLocation(), nearbyEnemies);
+			     if (bounced != null && times >= 0){
+
+					Vector v = Utils.CrearVector(damaged.getEyeLocation().clone().add(new Vector(0, damaged.getEyeHeight() / 3.0, 0)), bounced.getEyeLocation());
 					double lv = v.length();
 					double yOffset = 0.6 + (lv / 40);
 					v.add(new Vector(0,yOffset,0));
-					Location spawnLoc = damaged.getLocation().add(v.clone().normalize().multiply(1.5D));
+					Location spawnLoc = damaged.getLocation().add(v.clone().normalize().multiply(1.1D));
 					Arrow arrow = (Arrow)world.spawnEntity(spawnLoc, EntityType.ARROW);
 					arrow.setShooter(damager);
 					//arrow.setFireTicks(20000);

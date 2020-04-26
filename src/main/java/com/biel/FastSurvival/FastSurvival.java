@@ -136,7 +136,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("moon")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aixo! Construeix un teletransportador per fer-ho legalment en superviv�ncia!");return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command. Build a teleporter to go there in survival.");return true;}
 				if (MoonUtils.IsInMoon(p)){
 					MoonUtils.teleportPlayerToEarth(p);
 					getLogger().info("Teleported to earth!");
@@ -299,7 +299,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("maze")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage(Utils.L("MUST_BE_IN_CREATIVE"));return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
 				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
 				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
 //				MazeGenerator maze = new MazeGenerator(x, y);
@@ -313,7 +313,7 @@ public final class FastSurvival extends JavaPlugin {
 		if(cmd.getName().equalsIgnoreCase("b")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage(Utils.L("MUST_BE_IN_CREATIVE"));return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
 				Inventory i = p.getInventory();
 				Iterator<Recipe> itr = Bukkit.recipeIterator();
 				while(itr.hasNext()) {
@@ -330,7 +330,7 @@ public final class FastSurvival extends JavaPlugin {
 		 if(cmd.getName().equalsIgnoreCase("skycrystals")){ // If the player typed /basic then do the following...
 			if (sender instanceof Player){
 				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage(Utils.L("MUST_BE_IN_CREATIVE"));return true;}
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
 				Inventory i = p.getInventory();
 				ItemStack skyCrystals = SkyUtils.getSkyCrystal();
 				skyCrystals.setAmount(64);

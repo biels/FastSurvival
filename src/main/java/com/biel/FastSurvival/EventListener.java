@@ -433,7 +433,8 @@ public class EventListener implements Listener {
         }
         //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
         if (DebugOptions.skyGenerationMode()) {
-            SkyUtils.teleportPlayerToSky(p);
+            Bukkit.broadcastMessage("holaaaa");
+//            SkyUtils.teleportPlayerToSky(p);
         }
     }
 
