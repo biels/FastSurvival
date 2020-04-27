@@ -40,7 +40,7 @@ public class MobListener implements Listener {
 				sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.LIME));
 				fet = true;
 			}
-			if (Utils.Possibilitat(4) && fet == false){
+			if (Utils.Possibilitat(2) && fet == false){
 				i = BowRecipeGenerator.getBow(BowType.ELECTRIC);
 				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.WHITE));
 				sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.WHITE));
@@ -71,7 +71,7 @@ public class MobListener implements Listener {
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
 				fet = true;
 			}
-			if (Utils.Possibilitat(8) && fet == false){
+			if (Utils.Possibilitat(9) && fet == false){
 				i = BowRecipeGenerator.getBow(BowType.ICY);
 				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.AQUA));
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 1));
@@ -85,7 +85,7 @@ public class MobListener implements Listener {
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200 * 20, 1));
 				fet = true;
 			}
-			if (Utils.Possibilitat(6) && fet == false){
+			if (Utils.Possibilitat(7) && fet == false){
 				i = BowRecipeGenerator.getBow(BowType.MAGNETIC);
 				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.BLUE));
 				sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, Color.BLUE));
@@ -97,7 +97,7 @@ public class MobListener implements Listener {
 				sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.BLACK));
 				fet = true;
 			}
-			if (Utils.Possibilitat(4) && fet == false){
+			if (Utils.Possibilitat(3) && fet == false){
 				i = BowRecipeGenerator.getBow(BowType.TORCH);
 				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.ORANGE));
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
@@ -105,7 +105,7 @@ public class MobListener implements Listener {
 			}
 			if (i != null && fet == true){
 				sk.getEquipment().setItemInMainHand(i);
-				sk.getEquipment().setItemInMainHandDropChance(0.08F);
+				sk.getEquipment().setItemInMainHandDropChance(0.008F);
 			}
 
 			//Bukkit.broadcastMessage("SS");
@@ -485,9 +485,9 @@ public class MobListener implements Listener {
 						evt.getDrops().add(new ItemStack(Material.MAGMA_CREAM, 1));
 					break;
 				case ELECTRIC:
-					if (Utils.Possibilitat(30))
+					if (Utils.Possibilitat(15))
 						evt.getDrops().add(SpecialItemsUtils.getRandomSpecialItem(1));
-					if (Utils.Possibilitat(10))
+					if (Utils.Possibilitat(15))
 						evt.getDrops().add(new ItemStack(Material.DIAMOND, 1));
 					break;
 				case ENDER:
