@@ -28,6 +28,7 @@ public class BowRecipeGenerator {
 		multiRecipe();
 		electricRecipe();
 		skyExplosiveRecipe();
+		skyJetRecipe();
 	}
 	static void enderRecipe(){
 
@@ -134,6 +135,16 @@ public class BowRecipeGenerator {
 	}
 	static void skyExplosiveRecipe(){
 		ShapedRecipe r = new ShapedRecipe(getKey("skyexplosive"), Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.DARK_BLUE + Utils.L("BOW_NAME_SKY_EXPLOSIVE"), ChatColor.WHITE + Utils.L("BOW_DESC_SKY_EXPLOSIVE"), getID(BowType.SKY_EXPLOSIVE)));
+		r.shape(" D ", "VBV", "RLR");
+		r.setIngredient('B', Material.BOW);
+		r.setIngredient('R', Material.REDSTONE);
+		r.setIngredient('V', Material.LEGACY_IRON_FENCE);
+		r.setIngredient('D', Material.DIAMOND);
+		r.setIngredient('L', Material.DIAMOND_BLOCK);
+		Bukkit.getServer().addRecipe(r);
+	}
+	static void skyJetRecipe(){
+		ShapedRecipe r = new ShapedRecipe(getKey("skyjet"), Utils.setItemNameAndLore(new ItemStack(Material.BOW), ChatColor.AQUA + Utils.L("BOW_NAME_SKY_JET"), ChatColor.WHITE + Utils.L("BOW_DESC_SKY_JET"), getID(BowType.SKY_JET)));
 		r.shape(" D ", "VBV", "RLR");
 		r.setIngredient('B', Material.BOW);
 		r.setIngredient('R', Material.REDSTONE);

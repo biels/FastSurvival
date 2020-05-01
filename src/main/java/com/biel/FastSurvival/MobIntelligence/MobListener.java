@@ -103,6 +103,15 @@ public class MobListener implements Listener {
 				sk.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
 				fet = true;
 			}
+			if (Utils.Possibilitat(2) && fet == false){
+				i = BowRecipeGenerator.getBow(BowType.SKY_EXPLOSIVE);
+				sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.fromRGB(255, 36, 36)));
+				Color skyBlue = Color.fromRGB(122, 173, 255);
+				sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, skyBlue));
+				sk.getEquipment().setLeggings(Utils.createColoredArmor(Material.LEATHER_LEGGINGS, skyBlue));
+				sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, skyBlue));
+				fet = true;
+			}
 			if (i != null && fet == true){
 				sk.getEquipment().setItemInMainHand(i);
 				sk.getEquipment().setItemInMainHandDropChance(0.08F);

@@ -341,7 +341,7 @@ public class EventListener implements Listener {
                 || b == Material.LEGACY_GLOWING_REDSTONE_ORE
                 || b == Material.DIAMOND_ORE
                 || b == Material.LAPIS_ORE
-                || b == Material.LEGACY_QUARTZ_ORE
+                || b == Material.NETHER_QUARTZ_ORE
                 || b == Material.EMERALD_ORE;
     }
 
@@ -433,7 +433,6 @@ public class EventListener implements Listener {
         }
         //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
         if (DebugOptions.skyGenerationMode()) {
-            Bukkit.broadcastMessage("holaaaa");
 //            SkyUtils.teleportPlayerToSky(p);
         }
     }

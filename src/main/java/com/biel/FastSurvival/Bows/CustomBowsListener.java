@@ -135,10 +135,12 @@ public class CustomBowsListener implements Listener {
                 break;
             case SKY_EXPLOSIVE:
                 break;
+            case SKY_JET:
+                makeSnowJet(arr, p, type, f);
+                break;
             case MULTI:
                 multiShotVector(arr, p, type, f);
                 p.getWorld().playSound(p.getLocation(), Sound.ITEM_CROSSBOW_SHOOT, 0.8f, 1.1F);
-
                 break;
             default:
                 break;
@@ -221,17 +223,20 @@ public class CustomBowsListener implements Listener {
                     .rotateAroundAxis(direction, ((i * (360.0 - lowerAngle) / tntNum) - lowerAngle / 2) * toRadians).toLocation(p.getWorld());
             Location spawnLoc = spawnPoint.clone().add(center);
             Block b = spawnLoc.getBlock();
-            if(!b.isEmpty() || !b.getRelative(BlockFace.DOWN).isPassable()) continue;
+            if (!b.isEmpty() || !b.getRelative(BlockFace.DOWN).isPassable()) continue;
             tntLocs.add(spawnLoc);
             b.setType(Material.TNT);
         }
         Collections.shuffle(tntLocs);
         @NotNull BukkitTask tntRunnable = new BukkitRunnable() {
-            int tntIndex = -1;
             TNTPrimed activeTnt;
-            public void clearTnts(){
+            int tntIndex = -1;
+            int engineOffTicks = 3;
+
+            public void clearTnts() {
                 tntLocs.forEach(l -> l.getBlock().setType(Material.AIR));
             }
+
             @Override
             public void run() {
                 if (activeTnt == null) {
@@ -251,33 +256,42 @@ public class CustomBowsListener implements Listener {
                     Location location = hitEntity.getEyeLocation();
 
                     Vector toPlayer = Utils.CrearVector(activeTnt.getLocation(), location);
-                    if(toPlayer.length() > 8){
+                    if (toPlayer.length() > 8) {
                         toPlayer = Utils.CrearVector(activeTnt.getLocation(), location.clone().add(0, 1, 0));
                     }
-                    if(toPlayer.length() < 1){
+                    if (toPlayer.length() < 1) {
                         activeTnt.setFuseTicks(0);
                     }
                     double gravity = -0.01;
-                    if (!activeTnt.getLocation().clone().add(0, -4, 0).getBlock().isPassable()){
+                    if (!activeTnt.getLocation().clone().add(0, -4, 0).getBlock().isPassable()) {
                         gravity = 0.035;
                     }
-                    if (!activeTnt.getLocation().clone().add(0, -2, 0).getBlock().isPassable()){
+                    if (!activeTnt.getLocation().clone().add(0, -2, 0).getBlock().isPassable()) {
                         gravity = 0.095;
                     }
-                    Vector acceleration = toPlayer.clone().add(new Vector(0, gravity, 0)).normalize().multiply(0.1);
-
-                    Vector newVelocity = activeTnt.getVelocity().add(acceleration);
-                    if (newVelocity.length() > 2) {
-                        newVelocity.normalize().multiply(2);
+                    Vector acceleration = toPlayer.clone().add(new Vector(0, gravity, 0)).normalize().multiply(0.01);
+                    if (engineOffTicks == 1) {
+                        acceleration.multiply(4);
                     }
-                    if (activeTnt.isOnGround()){
+                    if (engineOffTicks > 0 && engineOffTicks != 1) {
+                        acceleration.multiply(0);
+                        engineOffTicks--;
+                    }
+                    if (toPlayer.angle(activeTnt.getVelocity()) / toRadians > 45 && engineOffTicks <= 0) {
+                        engineOffTicks = 12;
+                    }
+                    Vector newVelocity = activeTnt.getVelocity().add(acceleration);
+                    if (newVelocity.length() > 3.5) {
+                        newVelocity.normalize().multiply(3.2);
+                    }
+                    if (activeTnt.isOnGround()) {
                         activeTnt.setFuseTicks(0);
                     }
                     activeTnt.setVelocity(newVelocity);
                     if (activeTnt.isDead()) {
-						activeTnt = null;
+                        activeTnt = null;
                     }
-                    if(hitEntity.isDead()){
+                    if (hitEntity.isDead()) {
                         clearTnts();
                         cancel();
                         return;
@@ -286,6 +300,81 @@ public class CustomBowsListener implements Listener {
 
             }
         }.runTaskTimer(FastSurvival.getPlugin(), 1, 1);
+    }
+
+    public void makeSnowJet(Arrow arr, LivingEntity p, BowType type, float f) {
+        List<Location> snowLocs = new ArrayList<>();
+        List<Vector> snowVels = new ArrayList<>();
+        @NotNull BukkitTask tntRunnable = new BukkitRunnable() {
+            int removingIndex = 0;
+            int teleportingIndex = 0;
+            int count = 0;
+            int step = 0;
+            int goToBlockTicks = 10;
+            Vector normal = null;
+
+            @Override
+            public void run() {
+//                if (hasBeenOnGround || count > 500) cancel();
+                switch (step) {
+                    case 0:
+                        // Create trail
+                        Vector loc = arr.getLocation().toVector();
+                        double length = arr.getVelocity().length();
+                        Location currentLocation = arr.getVelocity().clone().normalize().multiply(-1 * (length + 1))
+                                .add(loc).toLocation(p.getWorld());
+                        List<Vector> line = Utils.getLine(currentLocation.toVector(), arr.getVelocity().normalize(), (int) Math.round(length));
+                        line.forEach(b -> {
+                            b.toLocation(p.getWorld()).getBlock().setType(count % 2 == 0 ? Material.SNOW_BLOCK : Material.SNOW_BLOCK);
+                            snowLocs.add(b.toLocation(p.getWorld()));
+                            snowVels.add(arr.getVelocity().clone());
+                        });
+                        arr.setVelocity(arr.getVelocity().add(Vector.getRandom().normalize().multiply(0.01)));
+                        // Next
+                        if (arr.isOnGround() || arr.isDead()) {
+                            step = 1;
+                            Vector playerToMid = Utils.CrearVector(p.getLocation(), snowLocs.get(snowLocs.size() / 2));
+                            Vector playerToLast = Utils.CrearVector(p.getLocation(), snowLocs.get(snowLocs.size() - 1));
+                            normal = playerToMid.getCrossProduct(playerToLast);
+                        }
+                        break;
+                    case 1:
+                        // Transport player
+                        Vector arcNormal = normal.getCrossProduct(arr.getVelocity()).normalize().multiply(-1.4);
+                        Location target = snowLocs.get(teleportingIndex).clone().add(arcNormal);
+
+//                        p.setVelocity(vel);
+
+                        if (goToBlockTicks > 0) {
+                            p.setVelocity(Utils.CrearVector(p.getLocation(), target));
+                        } else {
+//                            target.setDirection(p.getLocation().getDirection());
+//                            p.teleport(target.clone().add(0, 1, 0));
+//                            Vector vel = snowVels.get(teleportingIndex);
+                            p.setVelocity(Utils.CrearVector(p.getLocation(), target));
+                        }
+                        goToBlockTicks--;
+                        // Next
+                        if (teleportingIndex >= snowLocs.size() - 1) {
+                            step = 2;
+                            Collections.shuffle(snowLocs);
+                        }
+                        teleportingIndex++;
+                        break;
+                    case 2:
+                        // Remove trail
+                        snowLocs.get(removingIndex).getBlock().setType(Material.AIR);
+                        removingIndex++;
+                        if (removingIndex >= snowLocs.size()) {
+                            cancel();
+                            return;
+                        }
+                        break;
+                }
+                count++;
+
+            }
+        }.runTaskTimer(FastSurvival.getPlugin(), 3, 1);
     }
 
     @EventHandler
