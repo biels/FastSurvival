@@ -13,6 +13,8 @@ commands:
      description:  Imperatively laod the turrets data. Deprecated.
    maze:
      description: Test command.
+   temple:
+     description: Test command.
    skycrystals:
      description: Get a stack of sky crystals.
    recall:
