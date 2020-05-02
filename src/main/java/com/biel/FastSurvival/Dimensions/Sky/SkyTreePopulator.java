@@ -24,7 +24,7 @@ public class SkyTreePopulator extends BlockPopulator {
         Block bCenter = center.getBlock().getRelative(BlockFace.DOWN);
         Material bCenterType = bCenter.getType();
         bCenter.setType(Material.DIRT);
-        boolean gold = Utils.Possibilitat(10);
+        boolean gold = Utils.Possibilitat(1);
         boolean generated = world.generateTree(center, TreeType.ACACIA);
         if (generated) {
             Cuboid cuboidAround = Utils.getCuboidAround(center, 7);
