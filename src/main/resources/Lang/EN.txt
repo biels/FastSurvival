@@ -1,6 +1,7 @@
 BOW_NAME_TELEPORT=Teleport bow
 BOW_NAME_MAGNETIC=Magnetic bow
 BOW_NAME_EXPLOSIVE=Explosive bow
+BOW_NAME_SKY_JET=Sky jet bow
 BOW_NAME_ILLUMINATOR=Illuminator bow
 BOW_NAME_BOUNCY=Bouncy bow
 BOW_NAME_ICY=Icy bow

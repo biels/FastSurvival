@@ -33,6 +33,7 @@ import java.util.UUID;
 public class CustomBowsListener implements Listener {
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent evt) {
+        // Skeletons only
         if (evt.isCancelled()) {
             return;
         }
@@ -74,6 +75,9 @@ public class CustomBowsListener implements Listener {
                 break;
             case WATER:
                 break;
+            case SKY_JET:
+                makeSnowJet(arr, sk, type, f);
+                break;
             case WITHER:
                 Utils.healDamageable(sk, 3.2);
                 break;
@@ -86,6 +90,7 @@ public class CustomBowsListener implements Listener {
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent evt) {
+        // Players (no skeletons)
         if (!(evt.getEntity() instanceof Player)) {
             return;
         }
@@ -247,42 +252,45 @@ public class CustomBowsListener implements Listener {
                         return;
                     }
                     Location loc = tntLocs.get(tntIndex);
-                    loc.getBlock().setType(Material.AIR);
-                    activeTnt = (TNTPrimed) p.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
-                    activeTnt.setYield(1.5f);
-                    activeTnt.setVelocity(new Vector(0, 0.6, 0));
-                    activeTnt.setGravity(false);
+                    if (loc.getBlock().getType() == Material.TNT){
+                        loc.getBlock().setType(Material.AIR);
+                        activeTnt = (TNTPrimed) p.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
+                        activeTnt.setYield(1.5f);
+                        activeTnt.setVelocity(new Vector(0, 0.6, 0));
+                        activeTnt.setGravity(false);
+                    }
                 } else {
                     Location location = hitEntity.getEyeLocation();
 
                     Vector toPlayer = Utils.CrearVector(activeTnt.getLocation(), location);
                     if (toPlayer.length() > 8) {
-                        toPlayer = Utils.CrearVector(activeTnt.getLocation(), location.clone().add(0, 1, 0));
+                        toPlayer = Utils.CrearVector(activeTnt.getLocation(), location.clone().add(location.getDirection()).add(0, -0.5, 0));
                     }
-                    if (toPlayer.length() < 1) {
+                    if (toPlayer.length() < 1.4) {
                         activeTnt.setFuseTicks(0);
                     }
-                    double gravity = -0.01;
+                    double gravity = -0.000;
                     if (!activeTnt.getLocation().clone().add(0, -4, 0).getBlock().isPassable()) {
                         gravity = 0.035;
                     }
-                    if (!activeTnt.getLocation().clone().add(0, -2, 0).getBlock().isPassable()) {
-                        gravity = 0.095;
+                    if (toPlayer.length() > 1.4 && !activeTnt.getLocation().clone().add(0, -2, 0).getBlock().isPassable()) {
+                        gravity = 0.18;
                     }
-                    Vector acceleration = toPlayer.clone().add(new Vector(0, gravity, 0)).normalize().multiply(0.01);
-                    if (engineOffTicks == 1) {
-                        acceleration.multiply(4);
+                    Vector acceleration = toPlayer.clone().add(new Vector(0, gravity, 0)).normalize().multiply(0.44);
+                    if (engineOffTicks == -1) {
+                        acceleration.multiply(2.5);
+
                     }
                     if (engineOffTicks > 0 && engineOffTicks != 1) {
-                        acceleration.multiply(0);
+                        acceleration.multiply(-0.3);
+                    }
                         engineOffTicks--;
+                    if (toPlayer.angle(activeTnt.getVelocity()) / toRadians > 10 && engineOffTicks < -4) {
+                        engineOffTicks = 5;
                     }
-                    if (toPlayer.angle(activeTnt.getVelocity()) / toRadians > 45 && engineOffTicks <= 0) {
-                        engineOffTicks = 12;
-                    }
-                    Vector newVelocity = activeTnt.getVelocity().add(acceleration);
-                    if (newVelocity.length() > 3.5) {
-                        newVelocity.normalize().multiply(3.2);
+                    Vector newVelocity = activeTnt.getVelocity().clone().add(acceleration);
+                    if (newVelocity.length() > 1.8 && engineOffTicks != -1) {
+                        newVelocity.normalize().multiply(1.8);
                     }
                     if (activeTnt.isOnGround()) {
                         activeTnt.setFuseTicks(0);
@@ -340,23 +348,38 @@ public class CustomBowsListener implements Listener {
                         break;
                     case 1:
                         // Transport player
-                        Vector arcNormal = normal.getCrossProduct(arr.getVelocity()).normalize().multiply(-1.4);
+                        Vector arcNormal = normal.getCrossProduct(arr.getVelocity()).normalize().multiply(-1.8);
                         Location target = snowLocs.get(teleportingIndex).clone().add(arcNormal);
 
 //                        p.setVelocity(vel);
 
-                        if (goToBlockTicks > 0) {
-                            p.setVelocity(Utils.CrearVector(p.getLocation(), target));
+                        Vector toTarget = Utils.CrearVector(p.getLocation(), target);
+                        if (toTarget.length() > 0) p.setVelocity(toTarget);
+                        if (goToBlockTicks == 0) {
+                            p.teleport(target);
                         } else {
 //                            target.setDirection(p.getLocation().getDirection());
-//                            p.teleport(target.clone().add(0, 1, 0));
 //                            Vector vel = snowVels.get(teleportingIndex);
-                            p.setVelocity(Utils.CrearVector(p.getLocation(), target));
+//                            p.setVelocity(toTarget);
                         }
                         goToBlockTicks--;
                         // Next
                         if (teleportingIndex >= snowLocs.size() - 1) {
                             step = 2;
+                            // Splash on ground
+                            Utils.getSphereLocations(p.getLocation(), f * 6.0, false).forEach(b -> {
+                                Block block = b.getBlock();
+                                if (Utils.Possibilitat(18) && b.getBlockX() + b.getBlockY() + b.getBlockZ() % 2 == 0) {
+                                    if (block.getType() == Material.ICE) block.setType(Material.PACKED_ICE);
+                                    if (block.getType() == Material.SNOW_BLOCK) block.setType(Material.ICE);
+                                }
+                            });
+                            // Knockback and damage
+                            Utils.getNearbyEnemies(p, p.getLocation(), (6 * f) + 3, false).forEach(enemy -> {
+                                enemy.damage(4.8f, p);
+                                enemy.setVelocity(Utils.CrearVector(p.getLocation(), enemy.getLocation()).normalize().multiply(1.1).add(new Vector(0, 0.6, 0)));
+                            });
+
                             Collections.shuffle(snowLocs);
                         }
                         teleportingIndex++;
