@@ -195,7 +195,7 @@ public class ElectricBossPopulator extends BlockPopulator {
                     case ICY:
                         st = EntityType.SKELETON;
                         for (Block b : internalZone) {
-                            if (Utils.Possibilitat(25)) {
+                            if (Utils.Possibilitat(20)) {
                                 if (b.isEmpty()) {
                                     b.setType(Material.PACKED_ICE);
                                 }

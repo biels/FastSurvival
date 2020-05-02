@@ -135,7 +135,7 @@ public class SkyChunkGenerator extends ChunkGenerator {
                 chunkDist.multiply(16).add(new Vector(x, 0, z));
                 int variance = 5;// (int) (5 + chunkDist.length() / (16 * 3));
                 double rawHeight = Utils.sigmoid(getHeight(world, cx + x * 0.0625, cz + z * 0.0625) * 1.4 + 0.10);
-                int scaledHeight = NoiseGenerator.floor(rawHeight * variance);
+                int scaledHeight = NoiseGenerator.floor(rawHeight * variance) + 1;
                 int height = scaledHeight + baseHeight;
 //                if (rawHeight < -0.9) continue;
                 for (int y = baseHeight - scaledHeight + 1 ; y < height; y++) {

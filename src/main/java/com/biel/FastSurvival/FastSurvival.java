@@ -7,10 +7,7 @@ import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
 import com.biel.FastSurvival.Dimensions.Moon.MoonListener;
 import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
 import com.biel.FastSurvival.Dimensions.Moon.TeleporterListener;
-import com.biel.FastSurvival.Dimensions.Sky.KnockUpListener;
-import com.biel.FastSurvival.Dimensions.Sky.SkyListener;
-import com.biel.FastSurvival.Dimensions.Sky.SkyNexus;
-import com.biel.FastSurvival.Dimensions.Sky.SkyUtils;
+import com.biel.FastSurvival.Dimensions.Sky.*;
 import com.biel.FastSurvival.MobIntelligence.MobListener;
 import com.biel.FastSurvival.Recall.RecallListener;
 import com.biel.FastSurvival.Recall.RecallUtils;
@@ -307,6 +304,17 @@ public final class FastSurvival extends JavaPlugin {
 				SimpleMazeGenerator generator = new SimpleMazeGenerator();
 				generator.generateMaze(x);
 				generator.build(p.getLocation(), 1, 1, Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE, Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
+			}
+
+		}
+		if(cmd.getName().equalsIgnoreCase("temple")){ // If the player typed /basic then do the following...
+			if (sender instanceof Player){
+				Player p = (Player) sender;
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
+				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
+				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+				SkyTemplePopulator generator = new SkyTemplePopulator();
+				generator.generate(p.getLocation().add(0, -1, 0));
 			}
 
 		}

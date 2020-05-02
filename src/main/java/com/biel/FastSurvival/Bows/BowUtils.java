@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class BowUtils {
-	public enum BowType{TORCH, ENDER, MAGNETIC, EXPLOSIVE, BOUNCY, ICY, WITHER, WATER, MULTI, ELECTRIC}
+	public enum BowType{TORCH, ENDER, MAGNETIC, EXPLOSIVE, BOUNCY, ICY, WITHER, WATER, MULTI, ELECTRIC, SKY_EXPLOSIVE, SKY_JET}
 	static BowType getTypeFromIdString(String s){
 		return BowType.values()[Integer.parseInt(s)];
 	}

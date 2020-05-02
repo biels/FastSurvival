@@ -806,5 +806,18 @@ public class Utils {
             y = 1 / (1 + Math.exp(-x));
         return y;
     }
+    public static Location getNearestFloor(Location from){
+        return getNearestWall(from, new Vector(0, -1, 0));
+    }
+    public static Location getNearestWall(Location from, Vector direction){
+        Location current = from.clone();
+        int limit = 50;
+        while (current.getBlock().isPassable() && limit > 0) {
+            current.add(direction);
+            limit--;
+        }
+        if (limit <= 0) return current.getWorld().getHighestBlockAt(current).getLocation();
+        return current;
+    }
 
 }
