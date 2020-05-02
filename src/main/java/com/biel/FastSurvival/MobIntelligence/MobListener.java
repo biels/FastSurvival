@@ -220,7 +220,7 @@ public class MobListener implements Listener {
             if (Utils.Possibilitat(24) && fet == false) { // 15
                 Skeleton s = (Skeleton) evt.getEntity().getWorld().spawnEntity(sk.getLocation(), EntityType.SKELETON);
                 s.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 1));
-                s.getEquipment().setItemInHand(i);
+//                s.getEquipment().setItemInHand(i);
                 sk.setPassenger(s);
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
                 fet = true;
