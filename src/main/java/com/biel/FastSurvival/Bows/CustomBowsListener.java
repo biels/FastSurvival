@@ -571,7 +571,7 @@ public class CustomBowsListener implements Listener {
 
     private void ultraStrike(Location l, float f, LivingEntity p, float height) {
         electricShots++;
-        if(electricShots <= 18) return;
+        if(electricShots <= 40) return;
         electricShots = 0;
         World world = l.getWorld();
         Location location = world.getHighestBlockAt(l.getBlockX(), l.getBlockZ()).getLocation();
