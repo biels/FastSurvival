@@ -125,7 +125,7 @@ public class MobListener implements Listener {
             }
             if (i != null && fet == true) {
                 sk.getEquipment().setItemInMainHand(i);
-                sk.getEquipment().setItemInMainHandDropChance(0.08F);
+                sk.getEquipment().setItemInMainHandDropChance(isInMoon ? 0.05F : 0.001F);
             }
 
             //Bukkit.broadcastMessage("SS");

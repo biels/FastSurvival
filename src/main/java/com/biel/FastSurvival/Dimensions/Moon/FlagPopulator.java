@@ -33,24 +33,25 @@ public class FlagPopulator extends BlockPopulator {
 
         if (Utils.Possibilitat(30)){
             if (Utils.Possibilitat(20)){
-                signBlock.setType(Material.BIRCH_WALL_SIGN);
-                BlockState state = signBlock.getState();
-                if (state instanceof Sign) {
-                    Sign sign = (Sign) state;
-                    org.bukkit.material.Sign data = (org.bukkit.material.Sign)state.getData();
-
-                    data.setFacingDirection(direction);
-                    String name = "You";
-                    List<Player> players = world.getPlayers();
-                    if (players.size() != 0){
-                        name = players.get(Utils.NombreEntre(0, players.size()-1)).getName();
-                    }
-                    sign.setLine(0, name);
-                    sign.setLine(1, "got to");
-                    sign.setLine(2, "the");
-                    sign.setLine(3, "moon :D");
-                    sign.update(true);
-                }
+//                signBlock.setType(Material.BIRCH_WALL_SIGN);
+//                BlockState state = signBlock.getState();
+//                if (state instanceof Sign) {
+//                    Sign sign = (Sign) state;
+//                    org.bukkit.block.data.type.Sign data = (org.bukkit.block.data.type.Sign) state.getBlockData();
+//
+//                    data.setRotation(direction);
+//                    sign.setBlockData(data);
+//                    String name = "You";
+//                    List<Player> players = world.getPlayers();
+//                    if (players.size() != 0){
+//                        name = players.get(Utils.NombreEntre(0, players.size()-1)).getName();
+//                    }
+//                    sign.setLine(0, name);
+//                    sign.setLine(1, "got to");
+//                    sign.setLine(2, "the");
+//                    sign.setLine(3, "moon :D");
+//                    sign.update(true);
+//                }
             }else{
                 signBlock.setType(Material.REDSTONE_LAMP);
             }

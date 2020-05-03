@@ -253,10 +253,10 @@ public class CustomBowsListener implements Listener {
                         return;
                     }
                     Location loc = tntLocs.get(tntIndex);
-                    if (loc.getBlock().getType() == Material.TNT){
+                    if (loc.getBlock().getType() == Material.TNT) {
                         loc.getBlock().setType(Material.AIR);
                         activeTnt = (TNTPrimed) p.getWorld().spawnEntity(loc, EntityType.PRIMED_TNT);
-                        activeTnt.setYield(1f);
+                        activeTnt.setYield(1.5f);
                         activeTnt.setVelocity(new Vector(0, 0.6, 0));
                         activeTnt.setGravity(false);
                     }
@@ -285,7 +285,7 @@ public class CustomBowsListener implements Listener {
                     if (engineOffTicks > 0 && engineOffTicks != 1) {
                         acceleration.multiply(-0.3);
                     }
-                        engineOffTicks--;
+                    engineOffTicks--;
                     if (toPlayer.angle(activeTnt.getVelocity()) / toRadians > 10 && engineOffTicks < -4) {
                         engineOffTicks = 5;
                     }
@@ -323,6 +323,7 @@ public class CustomBowsListener implements Listener {
             int goToBlockTicks = 10;
             Vector normal = null;
             Vector randomFlat = Vector.getRandom().setY(0);
+
             @Override
             public void run() {
 //                if (hasBeenOnGround || count > 500) cancel();
@@ -365,7 +366,7 @@ public class CustomBowsListener implements Listener {
 //                            p.setVelocity(toTarget);
                         }
                         goToBlockTicks--;
-                        if(goToBlockTicks > 0) break;
+                        if (goToBlockTicks > 0) break;
                         // Next
                         if (teleportingIndex >= snowLocs.size() - 1) {
                             step = 2;
@@ -374,9 +375,9 @@ public class CustomBowsListener implements Listener {
                             Location location = Utils.getNearestFloor(arr.getLocation());
                             location.getBlock().setType(Material.PACKED_ICE);
 
-                            Utils.getOuterCylBlocks(location.clone().add(0, -1, 0), (int)(f * 5.0), 2, false).forEach(b -> {
+                            Utils.getOuterCylBlocks(location.clone().add(0, -1, 0), (int) (f * 5.0), 2, false).forEach(b -> {
                                 Block block = b;
-                                if(snowLocs.contains(b)) return;
+                                if (snowLocs.contains(b)) return;
                                 if (Utils.Possibilitat(50)) {
                                     if (block.getType() == Material.ICE) block.setType(Material.PACKED_ICE);
                                     if (block.getType() == Material.SNOW_BLOCK) block.setType(Material.ICE);
@@ -384,11 +385,11 @@ public class CustomBowsListener implements Listener {
                             });
                             int n = Utils.NombreEntre(3, 6);
                             for (int i = 0; i < n; i++) {
-                                Vector vector = randomFlat.rotateAroundY((360/n + Utils.NombreEntre(-5, 5)) * toRadians);
+                                Vector vector = randomFlat.rotateAroundY((360 / n + Utils.NombreEntre(-5, 5)) * toRadians);
                                 List<Vector> line1 = Utils.getLine(location.toVector(), vector.normalize(), Utils.NombreEntre(4, 6));
                                 line1.forEach(b -> {
                                     Block block = b.toLocation(p.getWorld()).getBlock();
-                                    if(snowLocs.contains(b)) return;
+                                    if (snowLocs.contains(b)) return;
                                     if (Utils.Possibilitat(70)) {
                                         if (block.getType() == Material.ICE) block.setType(Material.PACKED_ICE);
                                         if (block.getType() == Material.SNOW_BLOCK) block.setType(Material.ICE);
@@ -566,7 +567,12 @@ public class CustomBowsListener implements Listener {
         }
     }
 
+    int electricShots = 0;
+
     private void ultraStrike(Location l, float f, LivingEntity p, float height) {
+        electricShots++;
+        if(electricShots <= 18) return;
+        electricShots = 0;
         World world = l.getWorld();
         Location location = world.getHighestBlockAt(l.getBlockX(), l.getBlockZ()).getLocation();
         ArrayList<Block> finalLocs = new ArrayList<Block>();
@@ -623,7 +629,6 @@ public class CustomBowsListener implements Listener {
         } catch (Exception e) {
 
         }
-
     }
 
     @EventHandler
