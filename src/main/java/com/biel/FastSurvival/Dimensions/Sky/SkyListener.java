@@ -46,8 +46,8 @@ public class SkyListener implements Listener {
             if (a == Action.RIGHT_CLICK_BLOCK) {
                 Material t = p.getInventory().getItemInMainHand().getType();
                 if (t == Material.WATER_BUCKET) {
-                    r.setType(Material.SNOW_BLOCK);
-                    evt.setCancelled(true);
+//                    r.setType(Material.SNOW_BLOCK);
+//                    evt.setCancelled(true);
                 }
                 if (t == Material.LAVA_BUCKET) {
                     if (Utils.Possibilitat(30)) {

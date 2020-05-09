@@ -5,6 +5,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.util.*;
@@ -280,13 +281,34 @@ public class Cuboid implements Iterable<Block>, Cloneable, ConfigurationSerializ
 		return res;
 	}
 
-	/**
-	 * Expand the Cuboid in the given direction by the given amount.  Negative amounts will shrink the Cuboid in the given direction.  Shrinking a cuboid's face past the opposite face is not an error and will return a valid Cuboid.
-	 * 
-	 * @param dir - The direction in which to expand
-	 * @param amount - The number of blocks by which to expand
-	 * @return A new Cuboid expanded by the given direction and amount
-	 */
+	public List<Block> faceCorners(BlockFace face) {
+		List<Block> res = new ArrayList<>();
+		World w = this.getWorld();
+		if(face == BlockFace.DOWN || face == BlockFace.WEST || face == BlockFace.NORTH) res.add(w.getBlockAt(this.x1, this.y1, this.z1));
+		if(face == BlockFace.DOWN || face == BlockFace.WEST || face == BlockFace.SOUTH) res.add(w.getBlockAt(this.x1, this.y1, this.z2));
+		if(face == BlockFace.UP || face == BlockFace.WEST || face == BlockFace.NORTH) res.add(w.getBlockAt(this.x1, this.y2, this.z1));
+		if(face == BlockFace.UP || face == BlockFace.WEST || face == BlockFace.SOUTH) res.add(w.getBlockAt(this.x1, this.y2, this.z2));
+		if(face == BlockFace.DOWN || face == BlockFace.EAST || face == BlockFace.NORTH) res.add(w.getBlockAt(this.x2, this.y1, this.z1));
+		if(face == BlockFace.DOWN || face == BlockFace.EAST || face == BlockFace.SOUTH) res.add(w.getBlockAt(this.x2, this.y1, this.z2));
+		if(face == BlockFace.UP || face == BlockFace.EAST || face == BlockFace.NORTH) res.add(w.getBlockAt(this.x2, this.y2, this.z1));
+		if(face == BlockFace.UP || face == BlockFace.EAST || face == BlockFace.SOUTH) res.add(w.getBlockAt(this.x2, this.y2, this.z2));
+		return res;
+	}
+	public List<Block> upCorners() {
+		return faceCorners(BlockFace.UP);
+	}
+	public List<Block> downCorners() {
+		return faceCorners(BlockFace.DOWN);
+	}
+
+
+		/**
+         * Expand the Cuboid in the given direction by the given amount.  Negative amounts will shrink the Cuboid in the given direction.  Shrinking a cuboid's face past the opposite face is not an error and will return a valid Cuboid.
+         *
+         * @param dir - The direction in which to expand
+         * @param amount - The number of blocks by which to expand
+         * @return A new Cuboid expanded by the given direction and amount
+         */
 	public Cuboid expand(CuboidDirection dir, int amount) {
 		switch (dir) {
 		case North:
