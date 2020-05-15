@@ -101,13 +101,18 @@ public final class FastSurvival extends JavaPlugin {
 //		Turret.loadInstances();
 
 		getLogger().info("FastSurvival Finished enabled");
-
-
+		if (DebugOptions.isDebugEnabled()) {
+			HotReload.startWatching();
+			Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] RELOADED main");
+		}
 
 	}
 
 	public void onDisable(){
 		getLogger().info("onDisable has been invoked!");
+		if (DebugOptions.isDebugEnabled()) {
+			HotReload.stopWatching();
+		}
 		//Turret.saveInstances();
 
 	}
@@ -314,6 +319,17 @@ public final class FastSurvival extends JavaPlugin {
 				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
 				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
 				SkyTemplePopulator generator = new SkyTemplePopulator();
+				generator.generate(p.getLocation().add(0, -1, 0));
+			}
+
+		}
+		if(cmd.getName().equalsIgnoreCase("theater")){ // If the player typed /basic then do the following...
+			if (sender instanceof Player){
+				Player p = (Player) sender;
+				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
+				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
+				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+				SkyTheaterPopulator generator = new SkyTheaterPopulator();
 				generator.generate(p.getLocation().add(0, -1, 0));
 			}
 

@@ -508,6 +508,7 @@ public class Utils {
     }
 
     public static ArrayList<Block> getCylBlocks(Location loc, int r, int height, Boolean fill) {
+        loc = loc.toVector().toBlockVector().toLocation(loc.getWorld());
         ArrayList<Block> blks = new ArrayList<Block>();
         int heightDone = 0;
         while (heightDone < height) {
@@ -519,8 +520,9 @@ public class Utils {
                 if (fill == true) {
                     isValid = (dist <= r);
                 }
+                double epsilon = 0.8;
                 if (fill == false) {
-                    isValid = (dist == r);
+                    isValid = (dist <= r && dist >= r - epsilon);
                 }
                 if (isValid) {
                     //b.setType(mat);
