@@ -294,9 +294,11 @@ public class Utils {
     public static BlockFace getRandomFaceNSEW(Random random) {
         return getRandom(getFacesNSEW(), random);
     }
-    public static <T> T getRandom(ArrayList<T> list, Random random){
+
+    public static <T> T getRandom(ArrayList<T> list, Random random) {
         return list.get(random.nextInt(list.size()));
     }
+
     public static ArrayList<BlockFace> getAdjacentFaces(Block b, ArrayList<BlockFace> fToCheck) {
         return getAdjacentFaces(b, fToCheck, 1);
     }
@@ -323,6 +325,10 @@ public class Utils {
     //	}
     public static Vector CrearVector(Location inici, Location fi) {
         return fi.toVector().subtract(inici.toVector());
+    }
+
+    public static Vector CrearVector(Vector inici, Vector fi) {
+        return fi.subtract(inici);
     }
 
     public static ArrayList<Location> getLocationsCircle(Location center, Double radius, int espai) {
@@ -508,7 +514,6 @@ public class Utils {
     }
 
     public static ArrayList<Block> getCylBlocks(Location loc, int r, int height, Boolean fill) {
-        loc = loc.toVector().toBlockVector().toLocation(loc.getWorld());
         ArrayList<Block> blks = new ArrayList<Block>();
         int heightDone = 0;
         while (heightDone < height) {
@@ -520,9 +525,8 @@ public class Utils {
                 if (fill == true) {
                     isValid = (dist <= r);
                 }
-                double epsilon = 0.8;
                 if (fill == false) {
-                    isValid = (dist <= r && dist >= r - epsilon);
+                    isValid = (dist >= r - 1 && dist <= r);
                 }
                 if (isValid) {
                     //b.setType(mat);
@@ -701,7 +705,6 @@ public class Utils {
     }
 
 
-
     //	public static ArrayList<?> getEnumArrayFromIntArray(ArrayList<Integer> arr){
     //		ArrayList<Enum> list = new ArrayList<Enum>();
     //		for (Integer s : arr){
@@ -717,7 +720,7 @@ public class Utils {
         return list;
     }
 
-    public static List<Vector> getLine(Vector origin, Vector direction, int length){
+    public static List<Vector> getLine(Vector origin, Vector direction, int length) {
         ArrayList<Vector> l = new ArrayList<>();
         Vector current = origin.clone();
         for (int i = 0; i < length; i++) {
@@ -726,13 +729,29 @@ public class Utils {
         }
         return l;
     }
-    public static List<Vector> get2dRectangleAround(Vector center, Vector up, Vector front, int xw, int zw){
+
+    public static List<Vector> getLineBetween(Vector origin, Vector end) {
+        Vector direction = Utils.CrearVector(origin, end);
+        double length = Math.round(direction.length());
+        if (length < 1) length = 1;
+        return getLine(origin, direction.clone().normalize(), (int) length);
+    }
+
+    public static List<Vector> getLineBetween(Location origin, Location end) {
+        return getLineBetween(origin.toVector(), end.toVector());
+    }
+
+    public static List<Vector> getLineBetween(Block origin, Block end) {
+        return getLineBetween(origin.getLocation().toVector(), end.getLocation().toVector());
+    }
+
+    public static List<Vector> get2dRectangleAround(Vector center, Vector up, Vector front, int xw, int zw) {
         ArrayList<Vector> l = new ArrayList<>();
         up = up.normalize();
         front = front.normalize();
         //Vector corner = center.clone().add(new Vector(-1 * xw / 2, 0, -1 * zw / 2));
         Vector direction = front.clone().crossProduct(up).normalize().multiply(-1);
-        Vector corner = center.clone().add(front.clone().multiply(-1 * zw / 2)).add(direction.clone().multiply(-1 * xw/2));
+        Vector corner = center.clone().add(front.clone().multiply(-1 * zw / 2)).add(direction.clone().multiply(-1 * xw / 2));
         Vector current = corner.clone();
         for (int i = 0; i < 4; i++) {
             int w = i % 2 == 0 ? xw : zw;
@@ -744,6 +763,7 @@ public class Utils {
         }
         return l.stream().distinct().collect(Collectors.toList());
     }
+
     public static Vector rotateVectorCC(Vector vec, Vector axis, double theta) {
         double x = vec.getX();
         double y = vec.getY();
@@ -756,9 +776,11 @@ public class Utils {
         double zPrime = w * (u * x + v * y + w * z) * (1.0D - Math.cos(theta)) + z * Math.cos(theta) + (-v * x + u * y) * Math.sin(theta);
         return new Vector(xPrime, yPrime, zPrime);
     }
-    public static ItemStack getWitherSkull(){
+
+    public static ItemStack getWitherSkull() {
         return new ItemStack(Material.LEGACY_SKULL_ITEM, 1, (byte) 1);
     }
+
     private static final Collector<Double, double[], Double> VARIANCE_COLLECTOR = Collector.of( // See https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance
             () -> new double[3], // {count, mean, M2}
             (acu, d) -> { // See chapter about Welford's online algorithm and https://math.stackexchange.com/questions/198336/how-to-calculate-standard-deviation-with-streaming-inputs
@@ -777,6 +799,7 @@ public class Utils {
             },
             acu -> acu[2] / (acu[0] - 1.0), // Var = M2 / (count - 1)
             UNORDERED);
+
     public static double getCornerHeightVariance(Cuboid cuboid) {
         Block[] corners = cuboid.corners();
         Double variance = Arrays.stream(corners)
@@ -792,26 +815,31 @@ public class Utils {
                 .average().getAsDouble();
         return y;
     }
-    public static List<Material> getBeaconMaterials(){
-        return Arrays.asList(Material.IRON_BLOCK,Material.GOLD_BLOCK,Material.DIAMOND_BLOCK,Material.EMERALD_BLOCK);
+
+    public static List<Material> getBeaconMaterials() {
+        return Arrays.asList(Material.IRON_BLOCK, Material.GOLD_BLOCK, Material.DIAMOND_BLOCK, Material.EMERALD_BLOCK);
     }
-    public static double sigmoid(double x){
+
+    public static double sigmoid(double x) {
         return sigmoid(x, 10);
     }
-    public static double sigmoid(double x, double calcTreshold){
+
+    public static double sigmoid(double x, double calcTreshold) {
         double y;
-        if( x < -1 * calcTreshold )
+        if (x < -1 * calcTreshold)
             y = 0;
-        else if( x > calcTreshold )
+        else if (x > calcTreshold)
             y = 1;
         else
             y = 1 / (1 + Math.exp(-x));
         return y;
     }
-    public static Location getNearestFloor(Location from){
+
+    public static Location getNearestFloor(Location from) {
         return getNearestWall(from, new Vector(0, -1, 0));
     }
-    public static Location getNearestWall(Location from, Vector direction){
+
+    public static Location getNearestWall(Location from, Vector direction) {
         Location current = from.clone();
         int limit = 50;
         while (current.getBlock().isPassable() && limit > 0) {

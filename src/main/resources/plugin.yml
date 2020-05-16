@@ -46,3 +46,6 @@ commands:
    sky:
      description: Teleports you to the sky
      aliases: [cel]
+   testarea:
+     description: Test area commands
+     aliases: [ta]

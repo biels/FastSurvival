@@ -34,236 +34,261 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public final class FastSurvival extends JavaPlugin {
-	public GestorPropietats pTemp = new GestorPropietats("pTemp.txt");
-	public void onEnable(){
+    public GestorPropietats pTemp = new GestorPropietats("pTemp.txt");
 
-		getLogger().info("FastSurvival onEnable has been invoked!");
-		try {
-			Metrics metrics = new Metrics(this);
-			metrics.start();
-		} catch (IOException e) {
-			// Failed to submit the stats :-(
-			System.out.println("Metrics fail :-(");
-		}
-		if (!FastSurvival.getPlugin().getDataFolder().exists()) FastSurvival.getPlugin().getDataFolder().mkdirs();
-		File nexusesFolderPath = new File(SkyNexus.getSkyNexusFolderPath());
-		if (!nexusesFolderPath.exists()) nexusesFolderPath.mkdirs();
+    public void onEnable() {
 
-		FileExtraction.extractResourcesFolder("Lang", false);
+        getLogger().info("FastSurvival onEnable has been invoked!");
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit the stats :-(
+            System.out.println("Metrics fail :-(");
+        }
+        if (!FastSurvival.getPlugin().getDataFolder().exists()) FastSurvival.getPlugin().getDataFolder().mkdirs();
+        File nexusesFolderPath = new File(SkyNexus.getSkyNexusFolderPath());
+        if (!nexusesFolderPath.exists()) nexusesFolderPath.mkdirs();
+
+        FileExtraction.extractResourcesFolder("Lang", false);
 //
-		System.out.println("AAAA onEnable");
+        System.out.println("AAAA onEnable");
 
-		getServer().getPluginManager().registerEvents(new EventListener(), this);
-		getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
-		getServer().getPluginManager().registerEvents(new MobListener(), this);
-		getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
-		getServer().getPluginManager().registerEvents(new MoonListener(), this);
+        getServer().getPluginManager().registerEvents(new EventListener(), this);
+        getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
+        getServer().getPluginManager().registerEvents(new MobListener(), this);
+        getServer().getPluginManager().registerEvents(new TeleporterListener(), this);
+        getServer().getPluginManager().registerEvents(new MoonListener(), this);
 //		getServer().getPluginManager().registerEvents(new KnockUpListener(), this);
-		getServer().getPluginManager().registerEvents(new SkyListener(), this);
-		getServer().getPluginManager().registerEvents(new RecallListener(), this);
-		getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
-		getServer().getPluginManager().registerEvents(new TurretListener(), this);
-		SpecialItemsUtils.registerItemListeners();
+        getServer().getPluginManager().registerEvents(new SkyListener(), this);
+        getServer().getPluginManager().registerEvents(new RecallListener(), this);
+        getServer().getPluginManager().registerEvents(new BuilderWandListener(), this);
+        getServer().getPluginManager().registerEvents(new TurretListener(), this);
+        SpecialItemsUtils.registerItemListeners();
 //		//
-		BukkitTask loadWorldsTask = getServer().getScheduler().runTaskLater(this, new Runnable() {
-			@Override
-			public void run() {
+        BukkitTask loadWorldsTask = getServer().getScheduler().runTaskLater(this, new Runnable() {
+            @Override
+            public void run() {
 //				MoonUtils.loadMoon();
 //				SkyUtils.loadSky();
 //				Bukkit.broadcastMessage("Addtitional worlds loaded!");
 //				TurretUtils.startTurretLogicTask();
 //				Bukkit.broadcastMessage("Turret logic started!");
-			}
-		}, 1);
+            }
+        }, 1);
 
 //		getServer().getPluginManager().registerEvents(new MobTracker(), this);
-		// TODO Enable recipes
+        // TODO Enable recipes
 
-		getServer().getScheduler().runTaskLater(this, new Runnable() {
-			@Override
-			public void run() {
-				BowRecipeGenerator.addBowRecipes();
-				ToolRecipeGenerator.addToolRecipes();
-				RecallUtils.addRecallRecipe();
-				MoonUtils.spaceGlassRecipe();
-				BuilderWandUtils.addWandRecipe();
-				TurretUtils.addRecipes();
+        getServer().getScheduler().runTaskLater(this, new Runnable() {
+            @Override
+            public void run() {
+                BowRecipeGenerator.addBowRecipes();
+                ToolRecipeGenerator.addToolRecipes();
+                RecallUtils.addRecallRecipe();
+                MoonUtils.spaceGlassRecipe();
+                BuilderWandUtils.addWandRecipe();
+                TurretUtils.addRecipes();
 
-				getLogger().info("Added all recipes to server");
+                getLogger().info("Added all recipes to server");
 
-				// DEBUG (Load worlds)
-				if(DebugOptions.skyGenerationMode()){
-					SkyUtils.loadSkyIfNecessary();
-				}
-			}
-		}, 20 * 5);
+                // DEBUG (Load worlds)
+                if (DebugOptions.skyGenerationMode()) {
+                    SkyUtils.loadSkyIfNecessary();
+                }
+            }
+        }, 20 * 5);
 //		MoonUtils.loadMoon();
 //		Turret.loadInstances();
 
-		getLogger().info("FastSurvival Finished enabled");
-		if (DebugOptions.isDebugEnabled()) {
-			HotReload.startWatching();
-			Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] RELOADED main");
-		}
+        getLogger().info("FastSurvival Finished enabled");
+        if (DebugOptions.isDebugEnabled()) {
+            HotReload.startWatching();
+            Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] RELOADED main");
+        }
 
-	}
+    }
 
-	public void onDisable(){
-		getLogger().info("onDisable has been invoked!");
-		if (DebugOptions.isDebugEnabled()) {
-			HotReload.stopWatching();
-		}
-		//Turret.saveInstances();
+    public void onDisable() {
+        getLogger().info("onDisable has been invoked!");
+        if (DebugOptions.isDebugEnabled()) {
+            HotReload.stopWatching();
+        }
+        //Turret.saveInstances();
 
-	}
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		if(cmd.getName().equalsIgnoreCase("save")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				//Turret.saveInstances();
-				getLogger().info("Turrets saved!");
+    }
 
-			}
-			return true;
-		} //If this has happened the function will return true.
-		if(cmd.getName().equalsIgnoreCase("load")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				//Turret.loadInstances();
-				getLogger().info("Turrets loaded!");
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (cmd.getName().equalsIgnoreCase("save")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                //Turret.saveInstances();
+                getLogger().info("Turrets saved!");
 
-			}
-			return true;
-		} //If this has happened the function will return true.
-		if(cmd.getName().equalsIgnoreCase("moon")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command. Build a teleporter to go there in survival.");return true;}
-				if (MoonUtils.IsInMoon(p)){
-					MoonUtils.teleportPlayerToEarth(p);
-					getLogger().info("Teleported to earth!");
-					return true;
-				}
-				MoonUtils.teleportPlayerToMoon(p);
-				getLogger().info("Teleported to moon!");
+            }
+            return true;
+        } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("load")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                //Turret.loadInstances();
+                getLogger().info("Turrets loaded!");
 
-			}
-			return true;
-		} //If this has happened the function will return true.
-		if(cmd.getName().equalsIgnoreCase("sky")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("Has d'estar en creatiu per per aix�! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en superviv�ncia!");return true;}
-				if (SkyUtils.IsInSky(p)){
-					SkyUtils.teleportPlayerToEarth(p);
-					getLogger().info("Teleported to earth!");
-					return true;
-				}
-				SkyUtils.teleportPlayerToSky(p);
-				getLogger().info("Teleported to Sky!");
+            }
+            return true;
+        } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("moon")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command. Build a teleporter to go there in survival.");
+                    return true;
+                }
+                if (MoonUtils.IsInMoon(p)) {
+                    MoonUtils.teleportPlayerToEarth(p);
+                    getLogger().info("Teleported to earth!");
+                    return true;
+                }
+                MoonUtils.teleportPlayerToMoon(p);
+                getLogger().info("Teleported to moon!");
 
-			}
-			return true;
-		} //If this has happened the function will return true.
-		if(cmd.getName().equalsIgnoreCase("e")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
-				Inventory i = p.getInventory();
-				ItemStack itemStacke = new ItemStack(Material.BOW);
-				itemStacke.addEnchantment(Enchantment.ARROW_DAMAGE, 3);
-				i.addItem(itemStacke);
-				ItemStack itemStack3 = new ItemStack(Material.DIAMOND_SWORD);
-				itemStack3.addEnchantment(Enchantment.DAMAGE_ALL, 3);
-				i.addItem(itemStack3);
+            }
+            return true;
+        } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("sky")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("Has d'estar en creatiu per per aix�! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en superviv�ncia!");
+                    return true;
+                }
+                if (SkyUtils.IsInSky(p)) {
+                    SkyUtils.teleportPlayerToEarth(p);
+                    getLogger().info("Teleported to earth!");
+                    return true;
+                }
+                SkyUtils.teleportPlayerToSky(p);
+                getLogger().info("Teleported to Sky!");
 
-				i.addItem(new ItemStack(Material.DIAMOND_AXE));
-				ItemStack itemStack = new ItemStack(Material.DIAMOND_PICKAXE);
-				itemStack.addEnchantment(Enchantment.DIG_SPEED, 3);
-				i.addItem(itemStack);
-				i.addItem(new ItemStack(Material.GOLD_ORE, 64));
-				i.addItem(new ItemStack(Material.GOLD_ORE, 64));
-				i.addItem(new ItemStack(Material.COOKED_BEEF, 64));
-				p.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
-				p.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
-				p.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
-				p.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
-				i.addItem(new ItemStack(Material.ARROW, 64));
-				i.addItem(new ItemStack(Material.ARROW, 64));
+            }
+            return true;
+        } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("e")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command!");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                ItemStack itemStacke = new ItemStack(Material.BOW);
+                itemStacke.addEnchantment(Enchantment.ARROW_DAMAGE, 3);
+                i.addItem(itemStacke);
+                ItemStack itemStack3 = new ItemStack(Material.DIAMOND_SWORD);
+                itemStack3.addEnchantment(Enchantment.DAMAGE_ALL, 3);
+                i.addItem(itemStack3);
 
-			}
-			return true;
-		}
-		if(cmd.getName().equalsIgnoreCase("t")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
-				Inventory i = p.getInventory();
-				int count = 0;
-				while (count < 2){
-					i.addItem(TurretUtils.createNewItemStack(Utils.NombreEntre(1, 3)));
-					count++;
-				}
+                i.addItem(new ItemStack(Material.DIAMOND_AXE));
+                ItemStack itemStack = new ItemStack(Material.DIAMOND_PICKAXE);
+                itemStack.addEnchantment(Enchantment.DIG_SPEED, 3);
+                i.addItem(itemStack);
+                i.addItem(new ItemStack(Material.GOLD_ORE, 64));
+                i.addItem(new ItemStack(Material.GOLD_ORE, 64));
+                i.addItem(new ItemStack(Material.COOKED_BEEF, 64));
+                p.getEquipment().setHelmet(new ItemStack(Material.DIAMOND_HELMET));
+                p.getEquipment().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
+                p.getEquipment().setLeggings(new ItemStack(Material.DIAMOND_LEGGINGS));
+                p.getEquipment().setBoots(new ItemStack(Material.DIAMOND_BOOTS));
+                i.addItem(new ItemStack(Material.ARROW, 64));
+                i.addItem(new ItemStack(Material.ARROW, 64));
 
-
-
-			}
-			return true;
-		}
-		if(cmd.getName().equalsIgnoreCase("moonmats")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
-				Inventory i = p.getInventory();
-				i.addItem(new ItemStack(Material.IRON_BLOCK, 8));
-				i.addItem(new ItemStack(Material.LEGACY_IRON_FENCE, 4));
-				i.addItem(new ItemStack(Material.LEGACY_WOOD_BUTTON, 2));
-				i.addItem(new ItemStack(Material.STONE_BUTTON, 1));
+            }
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("t")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command!");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                int count = 0;
+                while (count < 2) {
+                    i.addItem(TurretUtils.createNewItemStack(Utils.NombreEntre(1, 3)));
+                    count++;
+                }
 
 
-			}
-			return true;
-		}
-		if(cmd.getName().equalsIgnoreCase("recall")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
-				Inventory i = p.getInventory();
-				i.addItem(RecallUtils.getRecallItem(null));
+            }
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("moonmats")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command!");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                i.addItem(new ItemStack(Material.IRON_BLOCK, 8));
+                i.addItem(new ItemStack(Material.LEGACY_IRON_FENCE, 4));
+                i.addItem(new ItemStack(Material.LEGACY_WOOD_BUTTON, 2));
+                i.addItem(new ItemStack(Material.STONE_BUTTON, 1));
 
 
-			}
-			return true;
-		}
-		if(cmd.getName().equalsIgnoreCase("wand")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command!");return true;}
-				Inventory i = p.getInventory();
-				i.addItem(BuilderWandUtils.getWandItem());
+            }
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("recall")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command!");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                i.addItem(RecallUtils.getRecallItem(null));
 
 
-			}
-			return true;
-		}
+            }
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("wand")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command!");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                i.addItem(BuilderWandUtils.getWandItem());
 
-		if(cmd.getName().equalsIgnoreCase("it")){
-			if (sender instanceof Player){
-				Player p = (Player) sender;
 
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to do this!");return true;}
-				ArrayList<SpecialItem> registeredSpecialItems = SpecialItemsUtils.getRegisteredSpecialItems();
-				Inventory i;
-				if(args.length == 0){
-					int rows = 1;
-					while(rows * 9 < registeredSpecialItems.size()){
-						rows++;
-					}
-					i = Bukkit.createInventory(p, 9 * rows, ChatColor.RED + "Special items - Creative mode");
-				}else{
-					i = p.getInventory();
-				}
-				boolean fet = false;
+            }
+            return true;
+        }
+
+        if (cmd.getName().equalsIgnoreCase("it")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to do this!");
+                    return true;
+                }
+                ArrayList<SpecialItem> registeredSpecialItems = SpecialItemsUtils.getRegisteredSpecialItems();
+                Inventory i;
+                if (args.length == 0) {
+                    int rows = 1;
+                    while (rows * 9 < registeredSpecialItems.size()) {
+                        rows++;
+                    }
+                    i = Bukkit.createInventory(p, 9 * rows, ChatColor.RED + "Special items - Creative mode");
+                } else {
+                    i = p.getInventory();
+                }
+                boolean fet = false;
 //				if(args.length == 1){
 //					try {
 //						int parseInt = Integer.parseInt(args[1]);
@@ -284,123 +309,161 @@ public final class FastSurvival extends JavaPlugin {
 //					} catch (IllegalArgumentException e) {
 //					}
 //				}
-				if (fet == false){
-					for (SpecialItem s : registeredSpecialItems){
-						i.addItem(s.createNewItemStack());
-					}
-				}
+                if (fet == false) {
+                    for (SpecialItem s : registeredSpecialItems) {
+                        i.addItem(s.createNewItemStack());
+                    }
+                }
 
-				if(args.length == 0 || fet == true){
-					p.openInventory(i);
-				}
+                if (args.length == 0 || fet == true) {
+                    p.openInventory(i);
+                }
 
-				//p.setGameMode(GameMode.SURVIVAL);
-			}
-			return true;
-		}
-		if(cmd.getName().equalsIgnoreCase("maze")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
-				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
-				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+                //p.setGameMode(GameMode.SURVIVAL);
+            }
+            return true;
+        }
+        if (cmd.getName().equalsIgnoreCase("testarea")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                String op = args[0];
+                TestArea testArea = DebugOptions.getTestArea(((Player) sender).getWorld());
+                if (op.equalsIgnoreCase("create")) {
+                    int radius = args.length >= 2 ? Integer.parseInt(args[1]) : 10;
+                    testArea.create(((Player) sender).getLocation(), radius);
+                }
+                if (op.equalsIgnoreCase("clear")) {
+                    testArea.clear();
+                }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("maze")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
+                int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
 //				MazeGenerator maze = new MazeGenerator(x, y);
 //				maze.display(p.getLocation());
-				SimpleMazeGenerator generator = new SimpleMazeGenerator();
-				generator.generateMaze(x);
-				generator.build(p.getLocation(), 1, 1, Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE, Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
-			}
+                SimpleMazeGenerator generator = new SimpleMazeGenerator();
+                generator.generateMaze(x);
+                generator.build(p.getLocation(), 1, 1, Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE, Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
+            }
 
-		}
-		if(cmd.getName().equalsIgnoreCase("temple")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
-				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
-				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
-				SkyTemplePopulator generator = new SkyTemplePopulator();
-				generator.generate(p.getLocation().add(0, -1, 0));
-			}
+        }
+        if (cmd.getName().equalsIgnoreCase("temple")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
+                int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+                SkyTemplePopulator generator = new SkyTemplePopulator();
+                generator.generate(p.getLocation().add(0, -1, 0));
+            }
 
-		}
-		if(cmd.getName().equalsIgnoreCase("theater")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
-				int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
-				int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
-				SkyTheaterPopulator generator = new SkyTheaterPopulator();
-				generator.generate(p.getLocation().add(0, -1, 0));
-			}
+        }
+        if (cmd.getName().equalsIgnoreCase("theater")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
+                int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+                SkyTheaterPopulator generator = new SkyTheaterPopulator();
+                generator.generate(p.getLocation().add(0, -1, 0));
+            }
 
-		}
-		if(cmd.getName().equalsIgnoreCase("b")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
-				Inventory i = p.getInventory();
-				Iterator<Recipe> itr = Bukkit.recipeIterator();
-				while(itr.hasNext()) {
-					Recipe element = itr.next();
-					if(element.getResult().getType() == Material.BOW && element.getResult().getItemMeta().hasLore()){
-						i.addItem(element.getResult());
-					}
-				}
-				i.addItem(new ItemStack(Material.ARROW, 64));
+        }
+        if (cmd.getName().equalsIgnoreCase("b")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                Iterator<Recipe> itr = Bukkit.recipeIterator();
+                while (itr.hasNext()) {
+                    Recipe element = itr.next();
+                    if (element.getResult().getType() == Material.BOW && element.getResult().getItemMeta().hasLore()) {
+                        i.addItem(element.getResult());
+                    }
+                }
+                i.addItem(new ItemStack(Material.ARROW, 64));
 
-			}
-			return true;
-		} //If this has happened the function will return true.
-		 if(cmd.getName().equalsIgnoreCase("skycrystals")){ // If the player typed /basic then do the following...
-			if (sender instanceof Player){
-				Player p = (Player) sender;
-				if (!(p.getGameMode() == GameMode.CREATIVE)){p.sendMessage("You must be in creative to use this command.");return true;}
-				Inventory i = p.getInventory();
-				ItemStack skyCrystals = SkyUtils.getSkyCrystal();
-				skyCrystals.setAmount(64);
-				i.addItem(skyCrystals);
-			}
-			return true;
-		} //If this has happened the function will return true.
-		// If this hasn't happened the a value of false will be returned.
-		return false;
-	}
-	//	@Override
-	//	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-	//		// TODO Auto-generated method stub
-	//		ChunkGenerator c = super.getDefaultWorldGenerator(worldName, id);
-	//
-	//		return c;
-	//	}
-	static public World getOverworld(){
-		return Bukkit.getWorlds().get(0);
-	}
-	static public GestorPropietats Config(){
-		File f = new File(FastSurvival.getPlugin().getDataFolder().getAbsolutePath() + ((String)  File.separator) + "Config.txt");
-		if (!f.exists()){
-			//Default settings
-			GestorPropietats g = new GestorPropietats(f.getAbsolutePath());
-			g.EstablirPropietat("LanguageFileName", "EN");
-			g.EstablirPropietat("AutomaticToolsRequireRedstone", false);
-		}
+            }
+            return true;
+        } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("skycrystals")) { // If the player typed /basic then do the following...
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                Inventory i = p.getInventory();
+                ItemStack skyCrystals = SkyUtils.getSkyCrystal();
+                skyCrystals.setAmount(64);
+                i.addItem(skyCrystals);
+            }
+            return true;
+        } //If this has happened the function will return true.
+        // If this hasn't happened the a value of false will be returned.
+        return false;
+    }
 
-		return new GestorPropietats(f.getAbsolutePath());
-	}
-	static public FastSurvival getPlugin() {
-		Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("FastSurvival");
+    //	@Override
+    //	public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+    //		// TODO Auto-generated method stub
+    //		ChunkGenerator c = super.getDefaultWorldGenerator(worldName, id);
+    //
+    //		return c;
+    //	}
+    static public World getOverworld() {
+        return Bukkit.getWorlds().get(0);
+    }
 
-		// WorldGuard may not be loaded
-		if (plugin == null || !(plugin instanceof FastSurvival)) {
-			throw new RuntimeException("Plugin not found (should never happen)");
-		}
+    static public GestorPropietats Config() {
+        File f = new File(FastSurvival.getPlugin().getDataFolder().getAbsolutePath() + ((String) File.separator) + "Config.txt");
+        if (!f.exists()) {
+            //Default settings
+            GestorPropietats g = new GestorPropietats(f.getAbsolutePath());
+            g.EstablirPropietat("LanguageFileName", "EN");
+            g.EstablirPropietat("AutomaticToolsRequireRedstone", false);
+        }
 
-		return (FastSurvival) plugin;
-	}
-	static public NamespacedKey getKey(String key){
-		return new NamespacedKey(getPlugin(), key + "FS");
-	}
-	//	@Override
-	//    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-	//        return new MoonChunkGenerator();
-	//    }
+        return new GestorPropietats(f.getAbsolutePath());
+    }
+
+    static public FastSurvival getPlugin() {
+        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("FastSurvival");
+
+        // WorldGuard may not be loaded
+        if (plugin == null || !(plugin instanceof FastSurvival)) {
+            throw new RuntimeException("Plugin not found (should never happen)");
+        }
+
+        return (FastSurvival) plugin;
+    }
+
+    static public NamespacedKey getKey(String key) {
+        return new NamespacedKey(getPlugin(), key + "FS");
+    }
+    //	@Override
+    //    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+    //        return new MoonChunkGenerator();
+    //    }
 }

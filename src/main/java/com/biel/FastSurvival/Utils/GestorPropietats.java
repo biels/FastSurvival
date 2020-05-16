@@ -217,6 +217,10 @@ public class GestorPropietats {
 		locs.add(loc2);
 		EstablirLocations(Nom, locs);
 	}
+
+	public void EstablirCuboid(String Nom, Cuboid cuboid){
+		EstablirCuboid(Nom, cuboid.getLowerNE(), cuboid.getUpperSW());
+	}
 	public Cuboid ObtenirCuboid(String Nom){
 		ArrayList<Location> locs = ObtenirLocations(Nom);
 		return new Cuboid(locs.get(0), locs.get(1));

@@ -1,10 +1,19 @@
 package com.biel.FastSurvival;
 
 import com.biel.FastSurvival.Utils.GestorPropietats;
+import com.biel.FastSurvival.Utils.TestArea;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DebugOptions {
     static boolean debugEnabled = false;
+    static Map<World, TestArea> testAreaMap = new HashMap<>();
+    public static TestArea getTestArea(World world){
+        return testAreaMap.computeIfAbsent(world, TestArea::new);
+    }
     public static boolean isDebugEnabled () {
         return getDebugGestorPropietats().ObtenirPropietatBoolean("debug");
     }
