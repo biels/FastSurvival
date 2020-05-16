@@ -1,15 +1,18 @@
 package com.biel.FastSurvival.Utils;
 
+import com.google.common.collect.Lists;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TestArea {
     GestorPropietats p;
@@ -57,15 +60,24 @@ public class TestArea {
         buildFrame();
         if (isAuto()) clear();
     }
-    public void generate(String command) {
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "");
+    public void generate(Player p) {
+        clear();
+        String cmd = getAttachedCommand();
+        Location center = getCuboid().getCenter();
+        String locationArgs =  Stream.of(center.getBlockX(), center.getBlockY(), center.getBlockZ())
+                .map(integer -> integer.toString())
+                .collect(Collectors.joining(" "));
+        String commandLine = cmd + " " + locationArgs;
+        Bukkit.broadcastMessage(commandLine);
+        Bukkit.getServer().dispatchCommand(p, commandLine);
     }
     public void clear() {
         clearCuboid(getCuboid());
         buildFrame();
     }
-    public void attach(String command) {
+    public void attach(String command, Player p) { // maze 10 List<String> args
         setAttachedCommand(command);
+        generate(p);
     }
     public void auto(boolean auto) {
         setAuto(auto);

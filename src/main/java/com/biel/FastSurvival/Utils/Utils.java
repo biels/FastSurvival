@@ -36,6 +36,14 @@ public class Utils {
         return LanguageStrings.getString(code);
     }
 
+    public static Location getLocationFromArgs(String[] args, int argsIndex, World world) {
+         try {
+           return new Location(world, Integer.parseInt(args[argsIndex + 0]), Integer.parseInt(args[argsIndex + 1]), Integer.parseInt(args[argsIndex + 2]));
+         }catch (Exception e){
+             return null;
+         }
+    }
+
     public static ItemStack setItemNameAndLore(ItemStack item, String name, String... lore) {
         ItemMeta im = item.getItemMeta();
         if (!name.isEmpty()) {

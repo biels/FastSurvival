@@ -32,6 +32,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public final class FastSurvival extends JavaPlugin {
     public GestorPropietats pTemp = new GestorPropietats("pTemp.txt");
@@ -339,15 +341,31 @@ public final class FastSurvival extends JavaPlugin {
                 if (op.equalsIgnoreCase("clear")) {
                     testArea.clear();
                 }
+                if (op.equalsIgnoreCase("generate")) {
+                    testArea.generate(p);
+                }
+                if (op.equalsIgnoreCase("attach")) {
+                    String command = Stream.of(args).skip(1)
+                            .map(integer -> integer.toString())
+                            .collect(Collectors.joining(" "));
+                    testArea.attach(command, p);
+                }
             }
 
         }
         if (cmd.getName().equalsIgnoreCase("maze")) { // If the player typed /basic then do the following...
+            Location l;
+            int argsIndex = 0;
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (!(p.getGameMode() == GameMode.CREATIVE)) {
                     p.sendMessage("You must be in creative to use this command.");
                     return true;
+                }
+                l = p.getLocation().add(0, -1, 0);
+                if (args.length >= 3) {
+                    Location locationFromArgs = Utils.getLocationFromArgs(args, argsIndex, p.getWorld());
+                    if (locationFromArgs != null) l = locationFromArgs;
                 }
                 int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
                 int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
@@ -355,35 +373,47 @@ public final class FastSurvival extends JavaPlugin {
 //				maze.display(p.getLocation());
                 SimpleMazeGenerator generator = new SimpleMazeGenerator();
                 generator.generateMaze(x);
-                generator.build(p.getLocation(), 1, 1, Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE, Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
+                generator.build(l, 1, 1, Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE, Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
             }
 
         }
         if (cmd.getName().equalsIgnoreCase("temple")) { // If the player typed /basic then do the following...
+            Location l;
+            int argsIndex = 0;
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (!(p.getGameMode() == GameMode.CREATIVE)) {
                     p.sendMessage("You must be in creative to use this command.");
                     return true;
+                }
+                l = p.getLocation().add(0, -1, 0);
+                if (args.length >= 3) {
+                    Location locationFromArgs = Utils.getLocationFromArgs(args, argsIndex, p.getWorld());
+                    if (locationFromArgs != null) l = locationFromArgs;
                 }
                 int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
                 int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
                 SkyTemplePopulator generator = new SkyTemplePopulator();
-                generator.generate(p.getLocation().add(0, -1, 0));
+                generator.generate(l);
             }
 
         }
         if (cmd.getName().equalsIgnoreCase("theater")) { // If the player typed /basic then do the following...
+            Location l;
+            int argsIndex = 0;
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (!(p.getGameMode() == GameMode.CREATIVE)) {
                     p.sendMessage("You must be in creative to use this command.");
                     return true;
                 }
-                int x = args.length >= 1 ? (Integer.parseInt(args[0])) : 8;
-                int y = args.length == 2 ? (Integer.parseInt(args[0])) : 8;
+                l = p.getLocation().add(0, -1, 0);
+                if (args.length >= 3) {
+                    Location locationFromArgs = Utils.getLocationFromArgs(args, argsIndex, p.getWorld());
+                    if (locationFromArgs != null) l = locationFromArgs;
+                }
                 SkyTheaterPopulator generator = new SkyTheaterPopulator();
-                generator.generate(p.getLocation().add(0, -1, 0));
+                generator.generate(l);
             }
 
         }
