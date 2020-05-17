@@ -23,6 +23,12 @@ public class DebugOptions {
     public static String getSrcPath () {
         return getDebugGestorPropietats().ObtenirPropietat("srcPath");
     }
+    public static String getSelectedTestAreaWorldName () {
+        return getDebugGestorPropietats().ObtenirPropietat("selectedTestAreaWorldName");
+    }
+    public static void setSelectedTestAreaWorldName (World w) {
+        getDebugGestorPropietats().EstablirPropietat("selectedTestAreaWorldName", w.getName());
+    }
     @NotNull
     public static GestorPropietats getDebugGestorPropietats() {
         return new GestorPropietats("debug.txt");

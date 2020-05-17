@@ -106,6 +106,7 @@ public final class FastSurvival extends JavaPlugin {
         getLogger().info("FastSurvival Finished enabled");
         if (DebugOptions.isDebugEnabled()) {
             HotReload.startWatching();
+            TestArea.onReload();
             Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] RELOADED main");
         }
 
@@ -338,24 +339,38 @@ public final class FastSurvival extends JavaPlugin {
                     int radius = args.length >= 2 ? Integer.parseInt(args[1]) : 10;
                     testArea.create(((Player) sender).getLocation(), radius);
                 }
-                if (op.equalsIgnoreCase("clear")) {
-                    testArea.clear();
-                }
-                if (op.equalsIgnoreCase("generate")) {
-                    testArea.generate(p);
-                }
                 if (op.equalsIgnoreCase("attach")) {
                     String command = Stream.of(args).skip(1)
                             .map(integer -> integer.toString())
                             .collect(Collectors.joining(" "));
                     testArea.attach(command, p);
                 }
+                if (op.equalsIgnoreCase("clear")) {
+                    testArea.clear();
+                }
+                if (op.equalsIgnoreCase("generate")) {
+                    testArea.generate(p);
+                }
+                if (op.equalsIgnoreCase("auto")) {
+                    if (args.length == 1) testArea.toggleAuto(p);
+                    else if (args[1].equalsIgnoreCase("on")) testArea.auto(true, p);
+                    else if (args[1].equalsIgnoreCase("off")) testArea.auto(false, p);
+                }
+                if (op.equalsIgnoreCase("remove")) {
+                    testArea.remove();
+                }
+                if (op.equalsIgnoreCase("offset")) {
+
+                }
+                if (op.equalsIgnoreCase("tp")) {
+                    p.teleport(testArea.getCuboid().getCenter());
+                }
             }
 
         }
         if (cmd.getName().equalsIgnoreCase("maze")) { // If the player typed /basic then do the following...
             Location l;
-            int argsIndex = 0;
+            int argsIndex = 1;
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (!(p.getGameMode() == GameMode.CREATIVE)) {
