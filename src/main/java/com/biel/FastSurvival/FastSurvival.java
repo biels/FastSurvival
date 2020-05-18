@@ -20,6 +20,7 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Golem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -378,7 +379,11 @@ public final class FastSurvival extends JavaPlugin {
                         int z = Integer.parseInt(args[3]);
                         testArea.offset(x, y, z);
                     }
-                    if (args.length == 2 && args[1].equals("clear")) testArea.offset(0, 0, 0);
+                    if (args.length >= 2 && args[1].equals("clear")) testArea.offset(0, 0, 0);
+                    if (args.length >= 2 && args[1].equals("floor"))
+                        testArea.offset((int) testArea.getOffset().getX(), -testArea.getRadius() + 1, (int) testArea.getOffset().getZ());
+                    if (args.length >= 3 && args[1].equals("move"))
+                        testArea.offset((int) testArea.getOffset().getX(), Integer.parseInt(args[2]), (int) testArea.getOffset().getZ());
                     if (args.length == 2 && args[1].equals("here")) {
                         testArea.offset(
                                 ((int) p.getLocation().getX() - (int) testArea.getCenter().getX()),
@@ -388,9 +393,9 @@ public final class FastSurvival extends JavaPlugin {
                     int xOffset = (int) testArea.getOffset().getX();
                     int yOffset = (int) testArea.getOffset().getY();
                     int zOffset = (int) testArea.getOffset().getZ();
-                    ChatColor xChatColor = ChatColor.GRAY;
-                    ChatColor yChatColor = (Math.abs(yOffset) < Utils.getCuboidAround(testArea.getCenter(), testArea.getRadius()).getSizeX()) ? ChatColor.GREEN : ChatColor.RED;
-                    ChatColor zChatColor = (Math.abs(zOffset) < testArea.getRadius() * 2) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor xChatColor = (Math.abs(xOffset) < testArea.getRadius()) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor yChatColor = (Math.abs(yOffset) < testArea.getRadius()) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor zChatColor = (Math.abs(zOffset) < testArea.getRadius()) ? ChatColor.GREEN : ChatColor.RED;
                     Bukkit.broadcastMessage("[TA] Current offset: " +
                             xChatColor + (int) testArea.getOffset().getX() + " " +
                             yChatColor + (int) testArea.getOffset().getY() + " " +
@@ -412,7 +417,8 @@ public final class FastSurvival extends JavaPlugin {
                     if (args.length == 2) {
                         int expandSize = Integer.parseInt(args[1]);
                         testArea.size(testArea.getSize() + expandSize, p);
-                    } else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
+                    }
+                    Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
                 }
                 if (op.equalsIgnoreCase("center")) {
                     if (args.length == 1) testArea.toggleCenter(p);
@@ -422,7 +428,10 @@ public final class FastSurvival extends JavaPlugin {
                     }
                 }
                 if (op.equalsIgnoreCase("floor")) {
-                    if (args.length == 1) testArea.toggleFloor();
+                    if (args.length == 1) testArea.toggleFloor(p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("on")) testArea.floor(true, p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("off")) testArea.floor(false, p);
+                    if (args.length >= 3 && args[1].equalsIgnoreCase("height")) testArea.setFloorHeight(Integer.parseInt(args[2]));
                 }
             }
 
@@ -453,7 +462,7 @@ public final class FastSurvival extends JavaPlugin {
                 }
 
                 Vector lateralAxis = l.getDirection().getCrossProduct(new Vector(0, 1, 0));
-                FontRenderer.renderText(arg, l, lateralAxis.multiply(1), l.getDirection().multiply(-1), size);
+                FontRenderer.renderText(arg, l, lateralAxis.multiply(1), l.getDirection().multiply(-1), size, Material.DIAMOND_BLOCK);
             }
 
         }

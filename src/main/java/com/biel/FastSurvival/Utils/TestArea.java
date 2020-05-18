@@ -30,31 +30,27 @@ public class TestArea {
     public int getRadius() {
         return Integer.parseInt(p.ObtenirPropietat("radius"));
     }
-
+    public int getSize() {
+        return Integer.parseInt(p.ObtenirPropietat("radius"));
+    }
     public void setCenter(Location center) {
         p.EstablirLocation("center", center);
     }
-
     public void setRadius(int radius) {
         p.EstablirPropietat("radius", radius);
     }
-
     public boolean isActive() {
         return p.ObtenirPropietatBoolean("isActive");
     }
-
     public void setActive(boolean active) {
         p.EstablirPropietat("isActive", active);
     }
-
     public String getAttachedCommand() {
         return p.ObtenirPropietat("attachedCommand");
     }
-
     public void setAttachedCommand(String command) {
         p.EstablirPropietat("attachedCommand", command);
     }
-
     public boolean isAuto() {
         return p.ObtenirPropietatBoolean("isAuto");
     }
@@ -70,6 +66,19 @@ public class TestArea {
     public void setFloorActive(boolean newFloorValue) {
         p.EstablirPropietat("floor", newFloorValue);
     }
+    public int getFloorHeight(){
+        return p.ObtenirPropietatInt("floorHeight");
+    }
+    public void setFloorHeight(int height){
+        p.EstablirPropietat("floorHeight", height);
+
+    }
+
+    public Location getOffset() {
+        Location location = p.ObtenirLocation("offset");
+        if (location != null) return location;
+        return new Location(world, 0, 0, 0);
+    }
 
     // public (controller)
     public void create(Location center, int radius, Player p) {
@@ -82,18 +91,8 @@ public class TestArea {
     }
 
     public void size(int size, Player player) {
-        Location center = p.ObtenirLocation("center");
+        Location center = getCenter();
         create(center, size, player);
-    }
-
-    public int getSize() {
-        return Integer.parseInt(p.ObtenirPropietat("radius"));
-    }
-
-    public Location getOffset() {
-        Location location = p.ObtenirLocation("offset");
-        if (location != null) return location;
-        return new Location(world, 0, 0, 0);
     }
 
     public void offset(int x, int y, int z) {
@@ -150,20 +149,36 @@ public class TestArea {
             buildFrame();
         }
     }
-    public void floor(boolean newFloorValue, Player p) {
-        // on/off
-
-        // like auto
-    }
-
     public void toggleAuto(Player p) {
         if (isAuto()) auto(false, p);
         else if (!isAuto()) auto(true, p);
     }
 
-    public void toggleFloor() {
-//        if (isFloorActive()) floor(true);
-//        else if (!isFloorActive()) floor(false);
+    public void floor(boolean newFloorValue, Player p) {
+        boolean offToOn = !isFloorActive() && newFloorValue;
+        boolean onToOff = isFloorActive() && !newFloorValue;
+
+        Bukkit.broadcastMessage("[TA] Floor old: " + (isFloorActive() ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+        Bukkit.broadcastMessage("[TA] Floor: " + (newFloorValue ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+        int patternSize = (int) Math.ceil(getSize() / 12.5);
+        if (offToOn) {
+            Bukkit.broadcastMessage("offToOn");
+            getInnerCuboid().getFace(Cuboid.CuboidDirection.Down).shift(Cuboid.CuboidDirection.Up, getFloorHeight()-1)
+                    .forEach(block -> block.setType((((block.getX() / patternSize) + (block.getZ() / patternSize))) % 2 == 0 ? Material.WHITE_CONCRETE : Material.LIGHT_GRAY_CONCRETE));
+        }
+        if (onToOff) {
+            Bukkit.broadcastMessage("onToOff");
+            getInnerCuboid().getFace(Cuboid.CuboidDirection.Down).shift(Cuboid.CuboidDirection.Up, getFloorHeight()-1)
+                    .forEach(block -> block.setType(Material.AIR));
+            clear();
+            buildFrame();
+        }
+        setFloorActive(newFloorValue);
+    }
+
+    public void toggleFloor(Player player) {
+        if (isFloorActive()) floor(false, player);
+        else if (!isFloorActive()) floor(true, player);
     }
 
     public void toggleCenter(Player p) {

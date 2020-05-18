@@ -51,7 +51,7 @@ public class FontRenderer {
         return img;
     }
 
-    public static void renderText(String s, Location start, Vector direction, Vector normal, int size) {
+    public static void renderText(String s, Location start, Vector direction, Vector normal, int size, Material material) {
         BufferedImage img = stringToBufferedImage(s, size);
         System.out.println(img.getWidth());
         System.out.println(img.getHeight());
@@ -70,7 +70,7 @@ public class FontRenderer {
             }
         }
         vectors.forEach(b -> {
-            b.add(start.toVector()).toLocation(start.getWorld()).getBlock().setType(Material.DIAMOND_BLOCK);
+            b.add(start.toVector()).toLocation(start.getWorld()).getBlock().setType(material);
         });
     }
 }

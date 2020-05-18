@@ -48,9 +48,9 @@ public class GestorPropietats {
 		for (String linia : LlegirArxiuPropietats()){
 			String[] parts = linia.split("=");
 			String part1 = parts[0]; // 004
-			if(parts.length <= 1){return "0";}
-			String part2 = parts[1]; // 034556
 			if (Nom.equals(part1)){
+				if(parts.length <= 1){return "0";}
+				String part2 = parts[1]; // 034556
 				return part2;
 			}
 		}
