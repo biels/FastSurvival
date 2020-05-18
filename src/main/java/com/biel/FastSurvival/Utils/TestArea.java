@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -22,16 +23,20 @@ public class TestArea {
     }
 
     // public (data)
-    public Cuboid getCuboid() {
-        try {
-            return p.ObtenirCuboid("cuboid");
-        } catch (Exception e) {
-            return null;
-        }
+    public Location getCenter() {
+        return p.ObtenirLocation("center");
     }
 
-    public void setCuboid(Cuboid cuboid) {
-        p.EstablirCuboid("cuboid", cuboid);
+    public int getRadius() {
+        return Integer.parseInt(p.ObtenirPropietat("radius"));
+    }
+
+    public void setCenter(Location center) {
+        p.EstablirLocation("center", center);
+    }
+
+    public void setRadius(int radius) {
+        p.EstablirPropietat("radius", radius);
     }
 
     public boolean isActive() {
@@ -58,35 +63,50 @@ public class TestArea {
         p.EstablirPropietat("isAuto", auto);
     }
 
+    public boolean isFloorActive() {
+        return p.ObtenirPropietatBoolean("floor");
+    }
+
+    public void setFloorActive(boolean newFloorValue) {
+        p.EstablirPropietat("floor", newFloorValue);
+    }
+
     // public (controller)
     public void create(Location center, int radius, Player p) {
-        if (getCuboid() != null) destroyFrame();
-        Cuboid testAreaCuboid = Utils.getCuboidAround(center, radius);
-        setCuboid(testAreaCuboid);
+        if (getCenter() != null) destroyFrame();
+        setCenter(center);
+        setRadius(radius);
         buildFrame();
         if (isAuto()) clear();
-        if(isAttached()) generate(p);
+        if (isAttached()) generate(p);
     }
-    public void size(int size, Player p){
-        Location center = getCuboid().getCenter();
-        create(center, size, p);
+
+    public void size(int size, Player player) {
+        Location center = p.ObtenirLocation("center");
+        create(center, size, player);
     }
-    public int getSize(){
-        return getCuboid().getSizeX() / 2;
+
+    public int getSize() {
+        return Integer.parseInt(p.ObtenirPropietat("radius"));
     }
+
     public Location getOffset() {
-        return p.ObtenirLocation("offset");
+        Location location = p.ObtenirLocation("offset");
+        if (location != null) return location;
+        return new Location(world, 0, 0, 0);
     }
+
     public void offset(int x, int y, int z) {
         Location loc = new Location(world, x, y, z);
         p.EstablirLocation("offset", loc);
     }
 
     public void generate(Player p) {
-        if(!isAttached()) return;
+        if (!isAttached()) return;
         clear(); // In stack mode no clear, modify stack offset
+        Location center = getCenter();
+        Bukkit.broadcastMessage(center.getWorld().getName() + " " + getOffset().getWorld().getName());
         String cmd = getAttachedCommand();
-        Location center = getCuboid().getCenter();
         center.add(getOffset());
         String locationArgs = Stream.of(center.getBlockX(), center.getBlockY(), center.getBlockZ())
                 .map(integer -> integer.toString())
@@ -97,7 +117,7 @@ public class TestArea {
     }
 
     public void clear() {
-        clearCuboid(getCuboid());
+        clearCuboid(Utils.getCuboidAround(getCenter(), getRadius()));
         buildFrame();
     }
 
@@ -105,10 +125,12 @@ public class TestArea {
         setAttachedCommand(command);
         generate(p);
     }
+
     public void detach() {
         setAttachedCommand("");
         clear();
     }
+
     public boolean isAttached() {
         if (p.ObtenirPropietat("attachedCommand").equals("")) return false;
         else return true;
@@ -128,40 +150,43 @@ public class TestArea {
             buildFrame();
         }
     }
+    public void floor(boolean newFloorValue, Player p) {
+        // on/off
+
+        // like auto
+    }
 
     public void toggleAuto(Player p) {
         if (isAuto()) auto(false, p);
         else if (!isAuto()) auto(true, p);
     }
-    public void toggleFloor(){
-        if (isFloorActive()) setFloorActive(true);
-        else if (!isFloorActive()) setFloorActive(false);
+
+    public void toggleFloor() {
+//        if (isFloorActive()) floor(true);
+//        else if (!isFloorActive()) floor(false);
     }
-    public boolean isFloorActive(){
-        return p.ObtenirPropietatBoolean("floor");
-    }
-    public void setFloorActive(boolean newFloorValue) {
-        p.EstablirPropietat("floor", newFloorValue);
-    }
+
     public void toggleCenter(Player p) {
         if (isCenterActive()) activateCenter(false, p);
         else if (!isCenterActive()) activateCenter(true, p);
     }
+
     public void activateCenter(boolean newCenterValue, Player player) {
         boolean offToOn = !isCenterActive() && newCenterValue;
         boolean onToOff = isCenterActive() && !newCenterValue;
         p.EstablirPropietat("center", newCenterValue);
         Bukkit.broadcastMessage("[TA] Center: " + (newCenterValue ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
-        if (offToOn) getCuboid().getCenter().getBlock().setType(Material.GOLD_BLOCK);
-        if (onToOff) getCuboid().getCenter().getBlock().setType(Material.AIR);
+        if (offToOn) getCenter().getBlock().setType(Material.GOLD_BLOCK);
+        if (onToOff) getCenter().getBlock().setType(Material.AIR);
     }
+
     public boolean isCenterActive() {
         return p.ObtenirPropietatBoolean("center");
     }
 
     public void remove() {
         destroyFrame();
-        setCuboid(null);
+        setActive(false);
     }
 
 
@@ -177,20 +202,20 @@ public class TestArea {
                     DebugOptions.getTestArea(world.get()).generate(world.get().getPlayers().get(0));
                 }
             });
-        }else {
+        } else {
             Bukkit.broadcastMessage("Not reloading: No world found");
         }
     }
 
     // private helpers
     private Cuboid getInnerCuboid() {
-        AtomicReference<Cuboid> c = new AtomicReference<>(getCuboid());
+        AtomicReference<Cuboid> c = new AtomicReference<>(Utils.getCuboidAround(getCenter(), getRadius()));
         Arrays.stream(Cuboid.CuboidDirection.all()).forEach(f -> c.set(c.get().expand(f, -1)));
         return c.get();
     }
 
     private List<Vector> getFrameLocations() {
-        return getCuboid().edges().stream().flatMap(vectors -> vectors.stream()).collect(Collectors.toList());
+        return Utils.getCuboidAround(getCenter(), getRadius()).edges().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     private void buildFrame() {

@@ -17,6 +17,8 @@ commands:
      description: Test command.
    theater:
      description: Test command.
+   text:
+     description: Test command.
    skycrystals:
      description: Get a stack of sky crystals.
    recall:

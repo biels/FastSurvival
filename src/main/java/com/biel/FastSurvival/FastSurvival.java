@@ -27,6 +27,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import java.io.File;
 import java.io.IOException;
@@ -334,15 +335,19 @@ public final class FastSurvival extends JavaPlugin {
                     return true;
                 }
                 String op = args[0];
-                TestArea testArea = DebugOptions.getTestArea(((Player) sender).getWorld());
+                TestArea testArea = DebugOptions.getTestArea(p.getWorld());
                 if (op.equalsIgnoreCase("create")) {
                     int radius = args.length >= 2 ? Integer.parseInt(args[1]) : 10;
-                    testArea.create(((Player) sender).getLocation(), radius, p);
+                    Bukkit.broadcastMessage(testArea.toString());
+                    Bukkit.broadcastMessage("center: " + testArea.getCenter() + " radius: " + testArea.getRadius());
+                    testArea.create(p.getLocation(), radius, p);
                 }
                 if (op.equalsIgnoreCase("attach")) {
-                    if (args.length == 1){
-                        if (testArea.getAttachedCommand().equals("")) Bukkit.broadcastMessage(ChatColor.RED + "[TA] There is no attached command");
-                        else Bukkit.broadcastMessage("[TA] Attached command: " + ChatColor.GREEN + testArea.getAttachedCommand());
+                    if (args.length == 1) {
+                        if (testArea.getAttachedCommand().equals(""))
+                            Bukkit.broadcastMessage(ChatColor.RED + "[TA] There is no attached command");
+                        else
+                            Bukkit.broadcastMessage("[TA] Attached command: " + ChatColor.GREEN + testArea.getAttachedCommand());
                     }
                     String command = Stream.of(args).skip(1)
                             .map(integer -> integer.toString())
@@ -367,7 +372,7 @@ public final class FastSurvival extends JavaPlugin {
                     testArea.remove();
                 }
                 if (op.equalsIgnoreCase("offset")) {
-                    if (args.length == 4){
+                    if (args.length == 4) {
                         int x = Integer.parseInt(args[1]);
                         int y = Integer.parseInt(args[2]);
                         int z = Integer.parseInt(args[3]);
@@ -376,16 +381,16 @@ public final class FastSurvival extends JavaPlugin {
                     if (args.length == 2 && args[1].equals("clear")) testArea.offset(0, 0, 0);
                     if (args.length == 2 && args[1].equals("here")) {
                         testArea.offset(
-                                ((int) p.getLocation().getX() - (int) testArea.getCuboid().getCenter().getX()),
-                                ((int) p.getLocation().getY() - (int) testArea.getCuboid().getCenter().getY()),
-                                ((int) p.getLocation().getZ()) - (int) testArea.getCuboid().getCenter().getZ());
+                                ((int) p.getLocation().getX() - (int) testArea.getCenter().getX()),
+                                ((int) p.getLocation().getY() - (int) testArea.getCenter().getY()),
+                                ((int) p.getLocation().getZ()) - (int) testArea.getCenter().getZ());
                     }
                     int xOffset = (int) testArea.getOffset().getX();
                     int yOffset = (int) testArea.getOffset().getY();
                     int zOffset = (int) testArea.getOffset().getZ();
-                    ChatColor xChatColor = (Math.abs(xOffset) < testArea.getCuboid().getSizeX() / 2) ? ChatColor.GREEN : ChatColor.RED;
-                    ChatColor yChatColor = (Math.abs(yOffset) < testArea.getCuboid().getSizeY() / 2) ? ChatColor.GREEN : ChatColor.RED;
-                    ChatColor zChatColor = (Math.abs(zOffset) < testArea.getCuboid().getSizeZ() / 2) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor xChatColor = ChatColor.GRAY;
+                    ChatColor yChatColor = (Math.abs(yOffset) < Utils.getCuboidAround(testArea.getCenter(), testArea.getRadius()).getSizeX()) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor zChatColor = (Math.abs(zOffset) < testArea.getRadius() * 2) ? ChatColor.GREEN : ChatColor.RED;
                     Bukkit.broadcastMessage("[TA] Current offset: " +
                             xChatColor + (int) testArea.getOffset().getX() + " " +
                             yChatColor + (int) testArea.getOffset().getY() + " " +
@@ -395,25 +400,23 @@ public final class FastSurvival extends JavaPlugin {
                     }
                 }
                 if (op.equalsIgnoreCase("tp")) {
-                    p.teleport(testArea.getCuboid().getCenter());
+                    p.teleport(testArea.getCenter());
                 }
                 if (op.equalsIgnoreCase("size")) {
-                    if (args.length == 2){
+                    if (args.length == 2) {
                         int size = Integer.parseInt(args[1]);
                         testArea.size(size, p);
-                    }
-                    else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
+                    } else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
                 }
                 if (op.equalsIgnoreCase("expand")) {
-                    if (args.length == 2){
+                    if (args.length == 2) {
                         int expandSize = Integer.parseInt(args[1]);
                         testArea.size(testArea.getSize() + expandSize, p);
-                    }
-                    else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
+                    } else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
                 }
                 if (op.equalsIgnoreCase("center")) {
                     if (args.length == 1) testArea.toggleCenter(p);
-                    if (args.length == 2){
+                    if (args.length == 2) {
                         if (args[1].equalsIgnoreCase("on")) testArea.activateCenter(true, p);
                         if (args[1].equalsIgnoreCase("off")) testArea.activateCenter(false, p);
                     }
@@ -421,6 +424,36 @@ public final class FastSurvival extends JavaPlugin {
                 if (op.equalsIgnoreCase("floor")) {
                     if (args.length == 1) testArea.toggleFloor();
                 }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("text")) { // If the player typed /basic then do the following...
+            Location l;
+            int argsIndex = 1;
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                String arg = "Hola";
+                int size = 12;
+                if (args.length >= 1) {
+                    arg = args[0];
+                    argsIndex++;
+                }
+                if (args.length >= 2) {
+                    size = Integer.parseInt(args[1]);
+                    argsIndex++;
+                }
+                l = p.getEyeLocation().add(p.getLocation().getDirection().multiply(16));
+                if (args.length >= 3) {
+                    Location locationFromArgs = Utils.getLocationFromArgs(args, argsIndex, p.getWorld());
+                    if (locationFromArgs != null) l = locationFromArgs;
+                }
+
+                Vector lateralAxis = l.getDirection().getCrossProduct(new Vector(0, 1, 0));
+                FontRenderer.renderText(arg, l, lateralAxis.multiply(1), l.getDirection().multiply(-1), size);
             }
 
         }
