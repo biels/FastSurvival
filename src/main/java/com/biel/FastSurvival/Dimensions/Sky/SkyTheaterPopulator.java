@@ -19,21 +19,22 @@ public class SkyTheaterPopulator {
     public void generate(Location center) {
         center = center.toVector().toBlockVector().add(new Vector(0.5, 0.5, 0.5)).toLocation(center.getWorld());
         int height = Utils.NombreEntre(8, 13);
+        int width = Utils.NombreEntre(7, 25);
         for (int i = 0; i < height; i++) {
             center.add(0, 1, 0);
 //            Material material = Material.DIAMOND_BLOCK;
             Material material = Material.QUARTZ_BLOCK;
             if (i >= height - 4) {
-                Utils.getCylBlocks(center, 3 * (height) - 6, 1, false).forEach(block -> block.setType(material));
+                Utils.getCylBlocks(center, width + 3*(height - 4) + 1, 1, false).forEach(block -> block.setType(material));
                 Bukkit.broadcastMessage("height:" + height);
                 Bukkit.broadcastMessage("i:" + i);
             } else {
-                Utils.getCylBlocks(center, i * 3 + 6, 1, false).forEach(block -> block.setType(material));
-                Utils.getCylBlocks(center, i * 3 + 7, 1, false).forEach(block -> block.setType(material));
-                Utils.getCylBlocks(center, i * 3 + 8, 1, false).forEach(block -> block.setType(material));
-                Utils.getCylBlocks(center, i * 3 + 3, 1, false).forEach(block -> block.setType(Material.QUARTZ_SLAB));
+                Utils.getCylBlocks(center, i * 3 + width + 1, 1, false).forEach(block -> block.setType(material));
+                Utils.getCylBlocks(center, i * 3 + width + 2, 1, false).forEach(block -> block.setType(material));
+                Utils.getCylBlocks(center, i * 3 + width + 3, 1, false).forEach(block -> block.setType(material));
+                Utils.getCylBlocks(center.clone().add(0, 1, 0), i * 3 + width + 1, 1, false).forEach(block -> block.setType(Material.QUARTZ_SLAB));
                 if (i == 0)
-                    Utils.getCylBlocks(center, 5, 1, true).forEach(block -> block.setType(Material.SMOOTH_QUARTZ));
+                    Utils.getCylBlocks(center, width, 1, true).forEach(block -> block.setType(Material.SMOOTH_QUARTZ));
             }
         }
     }

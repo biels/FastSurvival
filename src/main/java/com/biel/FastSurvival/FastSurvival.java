@@ -337,13 +337,20 @@ public final class FastSurvival extends JavaPlugin {
                 TestArea testArea = DebugOptions.getTestArea(((Player) sender).getWorld());
                 if (op.equalsIgnoreCase("create")) {
                     int radius = args.length >= 2 ? Integer.parseInt(args[1]) : 10;
-                    testArea.create(((Player) sender).getLocation(), radius);
+                    testArea.create(((Player) sender).getLocation(), radius, p);
                 }
                 if (op.equalsIgnoreCase("attach")) {
+                    if (args.length == 1){
+                        if (testArea.getAttachedCommand().equals("")) Bukkit.broadcastMessage(ChatColor.RED + "[TA] There is no attached command");
+                        else Bukkit.broadcastMessage("[TA] Attached command: " + ChatColor.GREEN + testArea.getAttachedCommand());
+                    }
                     String command = Stream.of(args).skip(1)
                             .map(integer -> integer.toString())
                             .collect(Collectors.joining(" "));
                     testArea.attach(command, p);
+                }
+                if (op.equalsIgnoreCase("detach")) {
+                    testArea.detach();
                 }
                 if (op.equalsIgnoreCase("clear")) {
                     testArea.clear();
@@ -360,10 +367,59 @@ public final class FastSurvival extends JavaPlugin {
                     testArea.remove();
                 }
                 if (op.equalsIgnoreCase("offset")) {
-
+                    if (args.length == 4){
+                        int x = Integer.parseInt(args[1]);
+                        int y = Integer.parseInt(args[2]);
+                        int z = Integer.parseInt(args[3]);
+                        testArea.offset(x, y, z);
+                    }
+                    if (args.length == 2 && args[1].equals("clear")) testArea.offset(0, 0, 0);
+                    if (args.length == 2 && args[1].equals("here")) {
+                        testArea.offset(
+                                ((int) p.getLocation().getX() - (int) testArea.getCuboid().getCenter().getX()),
+                                ((int) p.getLocation().getY() - (int) testArea.getCuboid().getCenter().getY()),
+                                ((int) p.getLocation().getZ()) - (int) testArea.getCuboid().getCenter().getZ());
+                    }
+                    int xOffset = (int) testArea.getOffset().getX();
+                    int yOffset = (int) testArea.getOffset().getY();
+                    int zOffset = (int) testArea.getOffset().getZ();
+                    ChatColor xChatColor = (Math.abs(xOffset) < testArea.getCuboid().getSizeX() / 2) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor yChatColor = (Math.abs(yOffset) < testArea.getCuboid().getSizeY() / 2) ? ChatColor.GREEN : ChatColor.RED;
+                    ChatColor zChatColor = (Math.abs(zOffset) < testArea.getCuboid().getSizeZ() / 2) ? ChatColor.GREEN : ChatColor.RED;
+                    Bukkit.broadcastMessage("[TA] Current offset: " +
+                            xChatColor + (int) testArea.getOffset().getX() + " " +
+                            yChatColor + (int) testArea.getOffset().getY() + " " +
+                            zChatColor + (int) testArea.getOffset().getZ());
+                    if (xChatColor == ChatColor.RED || yChatColor == ChatColor.RED || zChatColor == ChatColor.RED) {
+                        Bukkit.broadcastMessage(ChatColor.RED + "[TA] Offset is out of the test area");
+                    }
                 }
                 if (op.equalsIgnoreCase("tp")) {
                     p.teleport(testArea.getCuboid().getCenter());
+                }
+                if (op.equalsIgnoreCase("size")) {
+                    if (args.length == 2){
+                        int size = Integer.parseInt(args[1]);
+                        testArea.size(size, p);
+                    }
+                    else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
+                }
+                if (op.equalsIgnoreCase("expand")) {
+                    if (args.length == 2){
+                        int expandSize = Integer.parseInt(args[1]);
+                        testArea.size(testArea.getSize() + expandSize, p);
+                    }
+                    else Bukkit.broadcastMessage("[TA] Current size: " + ChatColor.GREEN + testArea.getSize());
+                }
+                if (op.equalsIgnoreCase("center")) {
+                    if (args.length == 1) testArea.toggleCenter(p);
+                    if (args.length == 2){
+                        if (args[1].equalsIgnoreCase("on")) testArea.activateCenter(true, p);
+                        if (args[1].equalsIgnoreCase("off")) testArea.activateCenter(false, p);
+                    }
+                }
+                if (op.equalsIgnoreCase("floor")) {
+                    if (args.length == 1) testArea.toggleFloor();
                 }
             }
 

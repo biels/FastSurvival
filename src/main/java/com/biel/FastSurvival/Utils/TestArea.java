@@ -59,18 +59,35 @@ public class TestArea {
     }
 
     // public (controller)
-    public void create(Location center, int radius) {
+    public void create(Location center, int radius, Player p) {
         if (getCuboid() != null) destroyFrame();
         Cuboid testAreaCuboid = Utils.getCuboidAround(center, radius);
         setCuboid(testAreaCuboid);
         buildFrame();
         if (isAuto()) clear();
+        if(isAttached()) generate(p);
+    }
+    public void size(int size, Player p){
+        Location center = getCuboid().getCenter();
+        create(center, size, p);
+    }
+    public int getSize(){
+        return getCuboid().getSizeX() / 2;
+    }
+    public Location getOffset() {
+        return p.ObtenirLocation("offset");
+    }
+    public void offset(int x, int y, int z) {
+        Location loc = new Location(world, x, y, z);
+        p.EstablirLocation("offset", loc);
     }
 
     public void generate(Player p) {
+        if(!isAttached()) return;
         clear(); // In stack mode no clear, modify stack offset
         String cmd = getAttachedCommand();
         Location center = getCuboid().getCenter();
+        center.add(getOffset());
         String locationArgs = Stream.of(center.getBlockX(), center.getBlockY(), center.getBlockZ())
                 .map(integer -> integer.toString())
                 .collect(Collectors.joining(" "));
@@ -88,12 +105,20 @@ public class TestArea {
         setAttachedCommand(command);
         generate(p);
     }
+    public void detach() {
+        setAttachedCommand("");
+        clear();
+    }
+    public boolean isAttached() {
+        if (p.ObtenirPropietat("attachedCommand").equals("")) return false;
+        else return true;
+    }
 
     public void auto(boolean newAutoValue, Player p) {
         boolean offToOn = !isAuto() && newAutoValue;
         boolean onToOff = isAuto() && !newAutoValue;
         setAuto(newAutoValue);
-        Bukkit.broadcastMessage("[TA] Auto generation mode " + (newAutoValue ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+        Bukkit.broadcastMessage("[TA] Auto generation mode: " + (newAutoValue ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
         if (offToOn) {
             generate(p);
             Bukkit.broadcastMessage("[TA] Using command: " + getAttachedCommand());
@@ -108,15 +133,37 @@ public class TestArea {
         if (isAuto()) auto(false, p);
         else if (!isAuto()) auto(true, p);
     }
+    public void toggleFloor(){
+        if (isFloorActive()) setFloorActive(true);
+        else if (!isFloorActive()) setFloorActive(false);
+    }
+    public boolean isFloorActive(){
+        return p.ObtenirPropietatBoolean("floor");
+    }
+    public void setFloorActive(boolean newFloorValue) {
+        p.EstablirPropietat("floor", newFloorValue);
+    }
+    public void toggleCenter(Player p) {
+        if (isCenterActive()) activateCenter(false, p);
+        else if (!isCenterActive()) activateCenter(true, p);
+    }
+    public void activateCenter(boolean newCenterValue, Player player) {
+        boolean offToOn = !isCenterActive() && newCenterValue;
+        boolean onToOff = isCenterActive() && !newCenterValue;
+        p.EstablirPropietat("center", newCenterValue);
+        Bukkit.broadcastMessage("[TA] Center: " + (newCenterValue ? ChatColor.GREEN + "ON" : ChatColor.RED + "OFF"));
+        if (offToOn) getCuboid().getCenter().getBlock().setType(Material.GOLD_BLOCK);
+        if (onToOff) getCuboid().getCenter().getBlock().setType(Material.AIR);
+    }
+    public boolean isCenterActive() {
+        return p.ObtenirPropietatBoolean("center");
+    }
 
     public void remove() {
         destroyFrame();
         setCuboid(null);
     }
 
-    public void offset(Location loc) {
-
-    }
 
     public static void onReload() {
         AtomicReference<World> world = new AtomicReference<>(Bukkit.getServer().getWorld(DebugOptions.getSelectedTestAreaWorldName()));
