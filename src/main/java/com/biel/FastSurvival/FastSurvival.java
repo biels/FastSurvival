@@ -337,11 +337,18 @@ public final class FastSurvival extends JavaPlugin {
                 }
                 String op = args[0];
                 TestArea testArea = DebugOptions.getTestArea(p.getWorld());
+                int defaultRadius = 10;
                 if (op.equalsIgnoreCase("create")) {
-                    int radius = args.length >= 2 ? Integer.parseInt(args[1]) : 10;
+                    int radius = args.length >= 2 ? Integer.parseInt(args[1]) : defaultRadius;
                     Bukkit.broadcastMessage(testArea.toString());
                     Bukkit.broadcastMessage("center: " + testArea.getCenter() + " radius: " + testArea.getRadius());
-                    testArea.create(p.getLocation(), radius, p);
+                    testArea.create(p.getLocation(), radius, p, false);
+                }
+                if (op.equalsIgnoreCase("move")) {
+                    if (!testArea.isActive()) {
+                        testArea.create(p.getLocation(), defaultRadius, p, false);
+                    } else
+                        testArea.create(p.getLocation(), null, p, true);
                 }
                 if (op.equalsIgnoreCase("attach")) {
                     if (args.length == 1) {
@@ -359,7 +366,11 @@ public final class FastSurvival extends JavaPlugin {
                     testArea.detach();
                 }
                 if (op.equalsIgnoreCase("clear")) {
-                    testArea.clear();
+                    testArea.clear(true);
+                }
+                if (op.equalsIgnoreCase("overclear")) {
+                    if (args.length == 1) testArea.overClear(10);
+                    else testArea.overClear(Integer.parseInt(args[1]));
                 }
                 if (op.equalsIgnoreCase("generate")) {
                     testArea.generate(p);
@@ -431,7 +442,25 @@ public final class FastSurvival extends JavaPlugin {
                     if (args.length == 1) testArea.toggleFloor(p);
                     if (args.length >= 2 && args[1].equalsIgnoreCase("on")) testArea.floor(true, p);
                     if (args.length >= 2 && args[1].equalsIgnoreCase("off")) testArea.floor(false, p);
-                    if (args.length >= 3 && args[1].equalsIgnoreCase("height")) testArea.setFloorHeight(Integer.parseInt(args[2]));
+                    if (args.length >= 3 && args[1].equalsIgnoreCase("height"))
+                        testArea.floorHeight(Integer.parseInt(args[2]), p);
+                    if (args.length >= 3 && args[1].startsWith("mat")) testArea.floorMaterial(args[2], p);
+                }
+                if (op.equalsIgnoreCase("fill")) {
+                    if (args.length == 1) testArea.toggleFill(p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("on")) testArea.fill(true, p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("off")) testArea.fill(false, p);
+                    if (args.length >= 3 && args[1].startsWith("mat")) testArea.fillMaterial(args[2], p);
+                }
+                if (op.equalsIgnoreCase("compass")) {
+                    if (args.length == 1) testArea.toggleCompass(p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("on")) testArea.compass(true, p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("off")) testArea.compass(false, p);
+                }
+                if (op.equalsIgnoreCase("axis")) {
+                    if (args.length == 1) testArea.toggleAxis(p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("on")) testArea.axis(true, p);
+                    if (args.length >= 2 && args[1].equalsIgnoreCase("off")) testArea.axis(false, p);
                 }
             }
 

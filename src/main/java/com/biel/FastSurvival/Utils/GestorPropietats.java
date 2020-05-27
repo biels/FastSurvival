@@ -228,7 +228,6 @@ public class GestorPropietats {
 
 	public void EstablirPropietat(String nom, Boolean v) {
 		EstablirPropietat(nom, v.toString());
-
 	}
 	public Boolean ObtenirPropietatBoolean(String nom) {
 		return Boolean.parseBoolean(ObtenirPropietat(nom));

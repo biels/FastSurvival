@@ -26,8 +26,6 @@ public class SkyTheaterPopulator {
             Material material = Material.QUARTZ_BLOCK;
             if (i >= height - 4) {
                 Utils.getCylBlocks(center, width + 3*(height - 4) + 1, 1, false).forEach(block -> block.setType(material));
-                Bukkit.broadcastMessage("height:" + height);
-                Bukkit.broadcastMessage("i:" + i);
             } else {
                 Utils.getCylBlocks(center, i * 3 + width + 1, 1, false).forEach(block -> block.setType(material));
                 Utils.getCylBlocks(center, i * 3 + width + 2, 1, false).forEach(block -> block.setType(material));
