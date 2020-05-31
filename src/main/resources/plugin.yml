@@ -17,6 +17,8 @@ commands:
      description: Test command.
    theater:
      description: Test command.
+   rocket:
+     description: Test command.
    text:
      description: Test command.
    skycrystals:

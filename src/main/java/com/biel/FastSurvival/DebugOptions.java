@@ -35,7 +35,7 @@ public class DebugOptions {
     }
 
     public static boolean skyGenerationMode(){
-        return true;
+        return false;
     }
     public static boolean moonGenerationMode(){
         return false;

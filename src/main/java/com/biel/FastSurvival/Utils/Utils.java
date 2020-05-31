@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
+import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -37,11 +38,11 @@ public class Utils {
     }
 
     public static Location getLocationFromArgs(String[] args, int argsIndex, World world) {
-         try {
-           return new Location(world, Integer.parseInt(args[argsIndex + 0]), Integer.parseInt(args[argsIndex + 1]), Integer.parseInt(args[argsIndex + 2]));
-         }catch (Exception e){
-             return null;
-         }
+        try {
+            return new Location(world, Integer.parseInt(args[argsIndex + 0]), Integer.parseInt(args[argsIndex + 1]), Integer.parseInt(args[argsIndex + 2]));
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static ItemStack setItemNameAndLore(ItemStack item, String name, String... lore) {
@@ -546,6 +547,22 @@ public class Utils {
         return blks;
     }
 
+    public static List<Block> getCylBlocks(Location loc, int r, int height, Boolean fill, Vector normal) {
+        List<Block> blks = new ArrayList<>();
+//        Vector axis = normal.getCrossProduct(new Vector(0, 1, 0)).normalize();
+//        double angle = new Vector(0,1,0).angle(normal);
+
+        getCylBlocks(new Location(loc.getWorld(), 0, 0, 0), r, height, fill)
+                .forEach(block -> {
+                    Vector relativeToAxis = block.getLocation().toVector();
+                    Bukkit.broadcastMessage(MessageFormat.format("relativeToAxis: {0} locLength: {1} bloklen: {2}",
+                            relativeToAxis.toString(), loc.length(), block.getLocation().length()));
+                    Vector vector = getVectorInPlaneY(normal.clone(), relativeToAxis);
+                    blks.add(loc.clone().add(vector).getBlock());
+                });
+        return blks;
+    }
+
     public static ArrayList<Block> getOuterCylBlocks(Location loc, int r, int height, Boolean fill) {
         ArrayList<Block> cylBlocks = getCylBlocks(loc, r, height, true);
         int newR = r - 1;
@@ -555,6 +572,23 @@ public class Utils {
 
         return cylBlocks;
 
+    }
+
+    public static Vector getVectorInPlane(Vector normal, Vector relativeToAxis, Vector originalAxis) {
+        Vector rotationAxis = originalAxis.getCrossProduct(normal).normalize();
+        double x = rotationAxis.getX();
+//        Bukkit.broadcastMessage("X" + x);
+            Bukkit.broadcastMessage("rotationAxis len: " + rotationAxis.length());
+        if (Double.isNaN(rotationAxis.length())) {
+            return relativeToAxis.clone();
+        }
+//        Bukkit.broadcastMessage("No NaN");
+        double angle = normal.angle(originalAxis);
+        return relativeToAxis.clone().rotateAroundAxis(rotationAxis, angle);
+    }
+
+    public static Vector getVectorInPlaneY(Vector normal, Vector relativeToAxis) {
+        return getVectorInPlane(normal, relativeToAxis, new Vector(0, 1, 0));
     }
 
     public static void fillChestRandomly(Block chest, ArrayList<ItemStack> it) {

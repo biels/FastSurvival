@@ -16,6 +16,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class HotReload {
     static BukkitTask task;
     static GestorPropietats gestorPropietats;
+    static int hotReloads = 0;
 
     public static void startWatching() {
         gestorPropietats = new GestorPropietats("hotreload.txt");
@@ -47,6 +48,10 @@ public class HotReload {
                         Bukkit.getScheduler().runTask(FastSurvival.getPlugin(), new Runnable() {
                             @Override
                             public void run() {
+                                if(hotReloads > 10) {
+                                    Bukkit.getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(ChatColor.GOLD + "[FS] Clean reloading..."));
+                                    System.exit(0);
+                                }
                                 Bukkit.broadcastMessage(ChatColor.GOLD + "[FS] Compiling... ");
                                 try {
                                     HotReload.deployPlugin();
@@ -59,6 +64,7 @@ public class HotReload {
                                 Bukkit.getServer().reload();
                                 Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] Reloaded! ");
 //                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "reload confirm");
+                                hotReloads++;
 
                             }
                         });
