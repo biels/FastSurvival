@@ -426,8 +426,15 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent evt) {
+
         Player p = evt.getPlayer();
         String msg = FastSurvival.Config().ObtenirPropietat("join-message");
+        if (FastSurvival.getPlugin().config.getBoolean("youAreAwesome")) {
+            p.sendMessage("You are awesome!");
+        }
+        else {
+            p.sendMessage("You are not awesome...");
+        }
         if (msg.length() > 0) {
             p.sendMessage(msg);
         }

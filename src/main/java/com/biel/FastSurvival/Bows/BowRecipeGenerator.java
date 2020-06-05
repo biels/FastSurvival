@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BowRecipeGenerator {
+
 	public static void addBowRecipes(){
 		enderRecipe();
 		magneticRecipe();

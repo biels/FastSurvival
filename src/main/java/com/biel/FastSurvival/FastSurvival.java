@@ -20,8 +20,8 @@ import com.biel.FastSurvival.Utils.*;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Golem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -40,9 +40,48 @@ import java.util.stream.Stream;
 
 public final class FastSurvival extends JavaPlugin {
     public GestorPropietats pTemp = new GestorPropietats("pTemp.txt");
+    FileConfiguration config = getConfig();
 
     public void onEnable() {
+        config.addDefault("youAreAwesome", true);
+        config.addDefault("obtainableBows.teleport.craftable", true);
+        config.addDefault("obtainableBows.teleport.droppable", true);
 
+        config.addDefault("obtainableBows.magnetic.craftable", true);
+        config.addDefault("obtainableBows.magnetic.droppable", true);
+
+        config.addDefault("obtainableBows.explosive.craftable", true);
+        config.addDefault("obtainableBows.explosive.droppable", true);
+
+        config.addDefault("obtainableBows.illuminator.craftable", true);
+        config.addDefault("obtainableBows.illuminator.droppable", true);
+
+        config.addDefault("obtainableBows.bouncy.craftable", true);
+        config.addDefault("obtainableBows.bouncy.droppable", true);
+
+        config.addDefault("obtainableBows.icy.craftable", true);
+        config.addDefault("obtainableBows.icy.droppable", true);
+
+        config.addDefault("obtainableBows.water.craftable", true);
+        config.addDefault("obtainableBows.water.droppable", true);
+
+        config.addDefault("obtainableBows.whiter.craftable", true);
+        config.addDefault("obtainableBows.whiter.droppable", true);
+
+        config.addDefault("obtainableBows.multiTarget.craftable", true);
+        config.addDefault("obtainableBows.multiTarget.droppable", true);
+
+        config.addDefault("obtainableBows.skyExplosive.craftable", false);
+        config.addDefault("obtainableBows.skyExplosive.droppable", true);
+
+        config.addDefault("obtainableBows.skyJet.craftable", false);
+        config.addDefault("obtainableBows.skyJet.droppable", true);
+
+        config.addDefault("obtainableBows.electric.craftable", false);
+        config.addDefault("obtainableBows.electric.droppable", false);
+
+        config.options().copyDefaults(true);
+        saveConfig();
         getLogger().info("FastSurvival onEnable has been invoked!");
         try {
             Metrics metrics = new Metrics(this);
