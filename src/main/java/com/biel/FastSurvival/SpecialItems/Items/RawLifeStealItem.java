@@ -20,7 +20,7 @@ public class RawLifeStealItem extends SpecialItem{
 	public String getDescription(SpecialItemData d) {
 		// TODO Auto-generated method stub
 		long percentage = Math.round(getLifeStealMultiplier(d) * 100);
-		long percentage2 = Math.round(getLifeStealMultiplier(d) * 100);
+		long percentage2 = Math.round(getUndeadReducingMultiplier() * 100);
 		return "Heals yourself for a " + ChatColor.GREEN + percentage + ChatColor.WHITE + "% " + " of the total damage dealt. This effect is reduced by " + ChatColor.YELLOW + percentage2 + ChatColor.WHITE + "% " +"against undead creatures.";
 	}
 	@Override
@@ -32,7 +32,7 @@ public class RawLifeStealItem extends SpecialItem{
 		return 1D;
 	}
 	public double getUndeadReducingMultiplier() {
-		return 0D;
+		return 0.5D;
 	}
 	public Boolean isUndead(LivingEntity e){
 		return (e instanceof Skeleton || e instanceof Zombie);

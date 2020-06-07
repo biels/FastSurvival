@@ -31,6 +31,9 @@ public class AssaultEquipmentItem extends RawAssaultEquipmentItem{
 		super.initializeData(d);
 		d.setModifier(5D + Utils.NombreEntre(1, 2));
 	}
-	
-	
+
+	@Override
+	public Double getDamageMultiplier(SpecialItemData d) {
+		return super.getDamageMultiplier(d) / 2;
+	}
 }
