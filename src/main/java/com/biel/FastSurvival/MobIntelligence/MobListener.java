@@ -59,7 +59,7 @@ public class MobListener implements Listener {
                 sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, Color.MAROON));
                 fet = true;
             }
-            if (Utils.Possibilitat(3) && fet == false) {
+            if (Utils.Possibilitat(2) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.EXPLOSIVE);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.RED));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.GRAY));
@@ -67,7 +67,7 @@ public class MobListener implements Listener {
                 sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, Color.MAROON));
                 fet = true;
             }
-            if (Utils.Possibilitat(4) && fet == false) {
+            if (Utils.Possibilitat(3) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.ENDER);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.PURPLE));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.PURPLE));
@@ -80,7 +80,7 @@ public class MobListener implements Listener {
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 1));
                 fet = true;
             }
-            if (Utils.Possibilitat(5) && fet == false) {
+            if (Utils.Possibilitat(7) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.WATER);
                 sk.getEquipment().setLeggings(Utils.createColoredArmor(Material.LEATHER_LEGGINGS, Color.NAVY));
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
@@ -100,14 +100,14 @@ public class MobListener implements Listener {
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.BLACK));
                 fet = true;
             }
-            if (Utils.Possibilitat(1) && fet == false) {
+            if (Utils.Possibilitat(1, 200) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.TORCH);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.ORANGE));
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
                 fet = true;
             }
             Color skyBlue = Color.fromRGB(122, 173, 255);
-            if (Utils.Possibilitat(isInSky ? 34 : 1) && fet == false) {
+            if (Utils.Possibilitat(isInSky ? 34 : 2) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.SKY_EXPLOSIVE);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.fromRGB(255, 36, 36)));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, skyBlue));
