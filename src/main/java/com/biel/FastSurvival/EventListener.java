@@ -402,28 +402,10 @@ public class EventListener implements Listener {
                             if (Utils.trySpendItem(
                                     new ItemStack(Material.TORCH, 1), p)) {
                                 if (blockFace == BlockFace.UP) blk.setType(Material.TORCH);
-                                if (blockFace == BlockFace.NORTH) {
+                                if (Utils.getFacesNSEW().contains(blockFace)) {
                                     blk.setType(Material.WALL_TORCH);
                                     Directional directional = (Directional) blk.getBlockData();
-                                    directional.setFacing(BlockFace.NORTH);
-                                    blk.setBlockData(directional, true);
-                                }
-                                if (blockFace == BlockFace.EAST) {
-                                    blk.setType(Material.WALL_TORCH);
-                                    Directional directional = (Directional) blk.getBlockData();
-                                    directional.setFacing(BlockFace.EAST);
-                                    blk.setBlockData(directional, true);
-                                }
-                                if (blockFace == BlockFace.SOUTH) {
-                                    blk.setType(Material.WALL_TORCH);
-                                    Directional directional = (Directional) blk.getBlockData();
-                                    directional.setFacing(BlockFace.SOUTH);
-                                    blk.setBlockData(directional, true);
-                                }
-                                if (blockFace == BlockFace.WEST) {
-                                    blk.setType(Material.WALL_TORCH);
-                                    Directional directional = (Directional) blk.getBlockData();
-                                    directional.setFacing(BlockFace.WEST);
+                                    directional.setFacing(blockFace);
                                     blk.setBlockData(directional, true);
                                 }
                             }
