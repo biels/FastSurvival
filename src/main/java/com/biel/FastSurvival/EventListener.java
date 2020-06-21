@@ -16,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.PistonMoveReaction;
+import org.bukkit.block.data.Directional;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -391,14 +392,23 @@ public class EventListener implements Listener {
         Inventory inv = p.getInventory();
 
         if (evt.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            Block blk = evt.getClickedBlock().getRelative(evt.getBlockFace());
+            BlockFace blockFace = evt.getBlockFace();
+            Block blk = evt.getClickedBlock().getRelative(blockFace);
             if (isPickaxeOrShovel(i)) {
                 if (!MoonUtils.IsInMoon(p)) {
                     if (WGUtils.canBuild(p, blk)
                             && (blk.isEmpty() || blk.isLiquid())) {
-                        if (Utils.trySpendItem(
-                                new ItemStack(Material.TORCH, 1), p)) {
-                            blk.setType(Material.TORCH);
+                        if (!evt.getClickedBlock().isPassable()) {
+                            if (Utils.trySpendItem(
+                                    new ItemStack(Material.TORCH, 1), p)) {
+                                if (blockFace == BlockFace.UP) blk.setType(Material.TORCH);
+                                if (Utils.getFacesNSEW().contains(blockFace)) {
+                                    blk.setType(Material.WALL_TORCH);
+                                    Directional directional = (Directional) blk.getBlockData();
+                                    directional.setFacing(blockFace);
+                                    blk.setBlockData(directional, true);
+                                }
+                            }
                         }
                     }
                 }
@@ -426,8 +436,15 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent evt) {
+
         Player p = evt.getPlayer();
         String msg = FastSurvival.Config().ObtenirPropietat("join-message");
+        if (FastSurvival.getPlugin().config.getBoolean("youAreAwesome")) {
+            p.sendMessage("You are awesome!");
+        }
+        else {
+            p.sendMessage("You are not awesome...");
+        }
         if (msg.length() > 0) {
             p.sendMessage(msg);
         }

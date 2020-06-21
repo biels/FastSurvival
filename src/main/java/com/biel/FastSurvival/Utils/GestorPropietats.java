@@ -160,7 +160,6 @@ public class GestorPropietats {
 			Location pont1 = new Location(Bukkit.getWorlds().get(Integer.parseInt(p1[3])),Integer.parseInt(p1[0]),Integer.parseInt(p1[1]),Integer.parseInt(p1[2]));
 			return pont1;
 		} catch (Exception e) {
-			Bukkit.broadcastMessage("ObtenirLocation error");
 			return null;
 		}
 	}

@@ -48,7 +48,7 @@ public class HotReload {
                         Bukkit.getScheduler().runTask(FastSurvival.getPlugin(), new Runnable() {
                             @Override
                             public void run() {
-                                if(hotReloads > 10) {
+                                if(hotReloads > 5) {
                                     Bukkit.getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(ChatColor.GOLD + "[FS] Clean reloading..."));
                                     System.exit(0);
                                 }

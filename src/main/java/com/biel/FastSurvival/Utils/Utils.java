@@ -555,8 +555,8 @@ public class Utils {
         getCylBlocks(new Location(loc.getWorld(), 0, 0, 0), r, height, fill)
                 .forEach(block -> {
                     Vector relativeToAxis = block.getLocation().toVector();
-                    Bukkit.broadcastMessage(MessageFormat.format("relativeToAxis: {0} locLength: {1} bloklen: {2}",
-                            relativeToAxis.toString(), loc.length(), block.getLocation().length()));
+//                    Bukkit.broadcastMessage(MessageFormat.format("relativeToAxis: {0} locLength: {1} bloklen: {2}",
+//                            relativeToAxis.toString(), loc.length(), block.getLocation().length()));
                     Vector vector = getVectorInPlaneY(normal.clone(), relativeToAxis);
                     blks.add(loc.clone().add(vector).getBlock());
                 });
@@ -573,12 +573,32 @@ public class Utils {
         return cylBlocks;
 
     }
+    public static ArrayList<Location> drawTriangle(Location point1, Location point2, Location point3) {
+        ArrayList<Location> locs = new ArrayList<Location>();
+        Vector v1 = Utils.CrearVector(point1, point2);
+        Vector v2 = Utils.CrearVector(point1, point3);
+        Vector v3 = Utils.CrearVector(point2, point3);
+        float angleY = v1.angle(new Vector(0, 1, 0));
+        float angleX = v1.angle(new Vector(1, 0, 0));
+        float angleZ = v1.angle(new Vector(0, 0, 1));
+        double angle = Math.min(Math.min(angleX, Math.min(angleY, angleZ)), 0.78539816 / 2);
+        double smallTriangleHeightY = (1.0 / Math.cos(angle));
+        double smallTriangleHeightXY = (smallTriangleHeightY / Math.cos(v1.angle(new Vector(1, 0, 0))));
+        Vector unitV1 = v1.clone().multiply(smallTriangleHeightY / v1.length());
+        Vector unitV2 = v2.clone().multiply(smallTriangleHeightY/v1.length());
+        Vector unitV3 = v3.clone().multiply(smallTriangleHeightY/v1.length());
+        for (double i = 0.0; i < v1.length() + smallTriangleHeightY; i++) {
+            Utils.getLineBetween(unitV1.clone().multiply(i), unitV2.clone().multiply(i))
+                    .forEach(vector -> locs.add(vector.toLocation(Objects.requireNonNull(point1.getWorld())).add(point1)));
+        }
+        return locs;
+    }
 
     public static Vector getVectorInPlane(Vector normal, Vector relativeToAxis, Vector originalAxis) {
         Vector rotationAxis = originalAxis.getCrossProduct(normal).normalize();
         double x = rotationAxis.getX();
 //        Bukkit.broadcastMessage("X" + x);
-            Bukkit.broadcastMessage("rotationAxis len: " + rotationAxis.length());
+//            Bukkit.broadcastMessage("rotationAxis len: " + rotationAxis.length());
         if (Double.isNaN(rotationAxis.length())) {
             return relativeToAxis.clone();
         }
