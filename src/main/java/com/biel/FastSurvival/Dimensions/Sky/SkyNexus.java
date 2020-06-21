@@ -476,6 +476,7 @@ public class SkyNexus {
                     p.teleport(skyLocation);
                     teleportPlayerToSky(p);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 60, 0, false, false, false));
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 600, 4, false, false, false));
                     p.sendMessage("To the sky!");
                     p.setAllowFlight(false);
                 });
