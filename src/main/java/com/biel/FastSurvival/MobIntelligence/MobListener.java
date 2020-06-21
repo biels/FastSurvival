@@ -73,7 +73,7 @@ public class MobListener implements Listener {
                     sk.getEquipment().setItemInMainHandDropChance(isInMoon ? 0.05F : 0.001F);
                 } else sk.getEquipment().setItemInMainHandDropChance(0.0F);
             }
-            if (Utils.Possibilitat(4) && fet == false) {
+            if (Utils.Possibilitat(3) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.EXPLOSIVE);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.RED));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.GRAY));
@@ -85,7 +85,7 @@ public class MobListener implements Listener {
                     sk.getEquipment().setItemInMainHandDropChance(isInMoon ? 0.05F : 0.001F);
                 } else sk.getEquipment().setItemInMainHandDropChance(0.0F);
             }
-            if (Utils.Possibilitat(5) && fet == false) {
+            if (Utils.Possibilitat(4) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.ENDER);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.PURPLE));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, Color.PURPLE));
@@ -106,7 +106,7 @@ public class MobListener implements Listener {
                     sk.getEquipment().setItemInMainHandDropChance(isInMoon ? 0.05F : 0.001F);
                 } else sk.getEquipment().setItemInMainHandDropChance(0.0F);
             }
-            if (Utils.Possibilitat(5) && fet == false) {
+            if (Utils.Possibilitat(8) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.WATER);
                 sk.getEquipment().setLeggings(Utils.createColoredArmor(Material.LEATHER_LEGGINGS, Color.NAVY));
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
@@ -138,7 +138,7 @@ public class MobListener implements Listener {
                     sk.getEquipment().setItemInMainHandDropChance(isInMoon ? 0.05F : 0.001F);
                 } else sk.getEquipment().setItemInMainHandDropChance(0.0F);
             }
-            if (Utils.Possibilitat(4) && fet == false) {
+            if (Utils.Possibilitat(2) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.TORCH);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.ORANGE));
                 sk.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
@@ -149,12 +149,12 @@ public class MobListener implements Listener {
                 } else sk.getEquipment().setItemInMainHandDropChance(0.0F);
             }
             Color skyBlue = Color.fromRGB(122, 173, 255);
-            if (Utils.Possibilitat(isInSky ? 34 : 1) && fet == false) {
+            if (Utils.Possibilitat(isInSky ? 34 : 2) && fet == false) {
                 i = BowRecipeGenerator.getBow(BowType.SKY_EXPLOSIVE);
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.fromRGB(255, 36, 36)));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, skyBlue));
                 sk.getEquipment().setLeggings(Utils.createColoredArmor(Material.LEATHER_LEGGINGS, skyBlue));
-                sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, skyBlue));
+                sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, !isInMoon ? skyBlue : Color.fromRGB(255, 36, 36)));
                 fet = true;
                 sk.getEquipment().setItemInMainHand(i);
                 if (FastSurvival.getPlugin().getConfig().getBoolean("obtainableBows.skyExplosive.droppable")) {
