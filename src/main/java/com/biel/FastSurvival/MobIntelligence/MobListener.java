@@ -154,7 +154,7 @@ public class MobListener implements Listener {
                 sk.getEquipment().setHelmet(Utils.createColoredArmor(Material.LEATHER_HELMET, Color.fromRGB(255, 36, 36)));
                 sk.getEquipment().setChestplate(Utils.createColoredArmor(Material.LEATHER_CHESTPLATE, skyBlue));
                 sk.getEquipment().setLeggings(Utils.createColoredArmor(Material.LEATHER_LEGGINGS, skyBlue));
-                sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, skyBlue));
+                sk.getEquipment().setBoots(Utils.createColoredArmor(Material.LEATHER_BOOTS, !isInMoon ? skyBlue : Color.fromRGB(255, 36, 36)));
                 fet = true;
                 sk.getEquipment().setItemInMainHand(i);
                 if (FastSurvival.getPlugin().getConfig().getBoolean("obtainableBows.skyExplosive.droppable")) {
