@@ -5,7 +5,10 @@ import com.biel.FastSurvival.Bows.BowUtils;
 import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Cuboid;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BrewingStand;
@@ -149,7 +152,7 @@ public class ElectricBossPopulator extends BlockPopulator {
                         }
                         break;
                     case BONUS:
-                        st = EntityType.PIG_ZOMBIE;
+                        st = EntityType.ZOMBIFIED_PIGLIN;
                         st2 = EntityType.ZOMBIE;
                         prob = 20;
                         for (Block b : bonusZone) {
