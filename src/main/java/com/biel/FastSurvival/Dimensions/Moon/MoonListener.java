@@ -92,8 +92,8 @@ public class MoonListener implements Listener{
 	public void PlayerSleepEvent(PlayerBedEnterEvent event){
 		final Player p = event.getPlayer();
 		Location loc = event.getBed().getLocation();
-		event.setCancelled(true);
 		if (MoonUtils.IsInMoon(p)){
+			event.setCancelled(true);
 			loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 1, false, true);
 		}
 
