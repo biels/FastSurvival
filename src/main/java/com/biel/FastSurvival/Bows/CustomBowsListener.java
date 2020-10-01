@@ -577,7 +577,7 @@ public class CustomBowsListener implements Listener {
         Location location = world.getHighestBlockAt(l.getBlockX(), l.getBlockZ()).getLocation();
         ArrayList<Block> finalLocs = new ArrayList<Block>();
         try {
-            for (Location lo : Utils.getLocationsCircle(location.add(new Vector(0, -1, 0)), 6.8D * f + 1, 4)) {
+            for (Location lo : Utils.getLocationsCircle(location.add(new Vector(0, 0, 0)), 6.8D * f + 1, 4)) {
                 Location lob = world.getHighestBlockAt(lo.getBlockX(), lo.getBlockZ()).getLocation();
                 Block b = lob.getBlock().getRelative(BlockFace.DOWN);
                 if (b.getPistonMoveReaction() == PistonMoveReaction.BREAK || TurretUtils.getTurretAt(b.getLocation()) != null) {
