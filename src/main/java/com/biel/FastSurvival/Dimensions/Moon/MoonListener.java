@@ -1,9 +1,7 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +12,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
@@ -88,6 +87,16 @@ public class MoonListener implements Listener{
 		if(p.getInventory().getItemInMainHand() == MoonUtils.getSpaceGlass()){
         	p.getEquipment().setHelmet(MoonUtils.getSpaceGlass());
         }
+	}
+	@EventHandler
+	public void PlayerSleepEvent(PlayerBedEnterEvent event){
+		final Player p = event.getPlayer();
+		Location loc = event.getBed().getLocation();
+		event.setCancelled(true);
+		if (MoonUtils.IsInMoon(p)){
+			loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 1, false, true);
+		}
+
 	}
 	@EventHandler
     public void onDmg(EntityDamageEvent evt){
