@@ -186,6 +186,8 @@ public class MoonUtils {
     public static Location copyPortalToMoon(Location owBLoc) {
         ArrayList<Block> portalBlocks = detectMoonPortalBlocks(owBLoc);
         Location moonLocation = getHighestYLoc(getMoonLocation(owBLoc, 0));
+        Bukkit.broadcastMessage("moonLocation: " + moonLocation);
+        Bukkit.broadcastMessage("buttonElevation: " + getButtonElevation(owBLoc));
         moonLocation.add(0, getButtonElevation(owBLoc), 0);
         setPortalCopyBlocks(owBLoc, portalBlocks, moonLocation);
         return moonLocation;

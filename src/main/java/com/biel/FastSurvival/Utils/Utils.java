@@ -594,6 +594,30 @@ public class Utils {
         return locs;
     }
 
+    public static Vector getClosestAxisVector(Vector v, boolean canBeYAxis){
+        double toRadians = 180 / Math.PI;
+        double angleToX = v.angle(new Vector(1, 0, 0));
+        if (angleToX > 90.0/toRadians) angleToX = v.angle(new Vector(-1, 0, 0));
+        double angleToY = v.angle(new Vector(0, 1, 0));
+        if (angleToY > 90.0/toRadians) angleToY = v.angle(new Vector(0, -1, 0));
+        double angleToZ = v.angle(new Vector(0, 0, 1));
+        if (angleToZ > 90.0/toRadians) angleToZ = v.angle(new Vector(0, 0, -1));
+
+        if (angleToX < angleToY && angleToX < angleToZ) {
+            return new Vector(1, 0, 0);
+        }
+        if (canBeYAxis && angleToY < angleToX && angleToY < angleToZ) {
+            return new Vector(0, 1, 0);
+        }
+        if (angleToZ < angleToX && angleToZ < angleToY) {
+            return new Vector(0, 0, 1);
+        }
+        else {
+            if (canBeYAxis) return new Vector(0, 1, 0); // else return Y axis
+            return new Vector(1, 0, 0);
+        }
+    }
+
     public static Vector getVectorInPlane(Vector normal, Vector relativeToAxis, Vector originalAxis) {
         Vector rotationAxis = originalAxis.getCrossProduct(normal).normalize();
         double x = rotationAxis.getX();
