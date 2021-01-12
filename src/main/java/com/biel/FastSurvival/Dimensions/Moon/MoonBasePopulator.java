@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MoonBasePopulator extends BlockPopulator {
 
@@ -29,16 +30,17 @@ public class MoonBasePopulator extends BlockPopulator {
     Material tunnelMaterial = Material.WHITE_CONCRETE;
     Material lineMaterial = Material.YELLOW_CONCRETE;
     double bubbleRadius = 8.0;
-    int tunnelRadius = 6;
+    int tunnelRadius = 6; ///
     int minimumDistance = 30;
 
     public List<Location> generateRandomLocs(Location center, int locationCount, World world) {
         ArrayList<Location> locs = new ArrayList<Location>();
         for (int i = 0; i < locationCount * 10; i++) {
-            Vector randVec = Vector.getRandom().multiply(100);
+            Vector randVec = Vector.getRandom().add(new Vector(-0.5, 0, -0.5)).normalize().multiply(100);
             randVec.setY(0);
+//            Bukkit.broadcastMessage(randVec.toString());
             Location loc = center.clone().add(randVec);
-//            loc.setY(Objects.requireNonNull(loc.getWorld()).getHighestBlockYAt(loc));
+            loc.setY(Objects.requireNonNull(loc.getWorld()).getHighestBlockYAt(loc));
             boolean collision = false;
             for (Location l2 : locs) {
                 if (l2.distance(loc) < minimumDistance) {
@@ -48,7 +50,7 @@ public class MoonBasePopulator extends BlockPopulator {
             }
             if (!collision) {
                 locs.add(loc);
-                if(locs.size() >= locationCount) break;
+                if (locs.size() >= locationCount) break;
             }
         }
         return locs;
@@ -90,9 +92,10 @@ public class MoonBasePopulator extends BlockPopulator {
     public void connectBubbles(Location b1, Location b2) {
         Vector cylVector = Utils.CrearVector(b1, b2);
         Vector cylNormal = Utils.getClosestAxisVector(Utils.CrearVector(b1, b2), false);
+        AtomicInteger i = new AtomicInteger();
         Utils.getLineBetween(b1.clone(), b2.clone())
                 .forEach(vector -> {
-
+                    int idx = i.getAndIncrement();
                     Utils.getCylBlocks(vector.toLocation(Objects.requireNonNull(b1.getWorld())), tunnelRadius, 1, false, cylNormal)
                             .forEach(cylBlock -> {
                                 if (cylBlock.getY() < vector.toLocation(cylBlock.getLocation().getWorld()).getBlockY()) {
@@ -103,7 +106,7 @@ public class MoonBasePopulator extends BlockPopulator {
                                     return;
                                 }
                                 if (cylBlock.getY() == vector.toLocation(cylBlock.getLocation().getWorld()).getBlockY() + 2) {
-                                    cylBlock.setType(Material.YELLOW_CONCRETE); // build yellow strip lines in the tunnels
+                                    cylBlock.setType(lineMaterial); // build yellow strip lines in the tunnels
                                     return;
                                 }
                                 cylBlock.setType(tunnelMaterial);
@@ -114,6 +117,7 @@ public class MoonBasePopulator extends BlockPopulator {
                                 if (cylBlock.getY() > vector.getBlockY() && cylBlock.getType() != Material.AIR)
                                     cylBlock.setType(Material.AIR);
                             });
+
                 });
     }
 
