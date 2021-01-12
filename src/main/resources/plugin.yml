@@ -47,6 +47,9 @@ commands:
    moon:
      description: Teleports you to the moon
      aliases: [lluna]
+
+   moonbase:
+     description: Teleports you to the moon
    sky:
      description: Teleports you to the sky
      aliases: [cel]

@@ -38,6 +38,7 @@ public class MoonBasePopulator extends BlockPopulator {
             Vector randVec = Vector.getRandom().multiply(100);
             randVec.setY(0);
             Location loc = center.clone().add(randVec);
+//            loc.setY(Objects.requireNonNull(loc.getWorld()).getHighestBlockYAt(loc));
             boolean collision = false;
             for (Location l2 : locs) {
                 if (l2.distance(loc) < minimumDistance) {

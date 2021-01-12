@@ -4,10 +4,7 @@ import com.biel.FastSurvival.Bows.BowRecipeGenerator;
 import com.biel.FastSurvival.Bows.CustomBowsListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandListener;
 import com.biel.FastSurvival.BuilderWand.BuilderWandUtils;
-import com.biel.FastSurvival.Dimensions.Moon.MoonListener;
-import com.biel.FastSurvival.Dimensions.Moon.MoonUtils;
-import com.biel.FastSurvival.Dimensions.Moon.RocketPopulator;
-import com.biel.FastSurvival.Dimensions.Moon.TeleporterListener;
+import com.biel.FastSurvival.Dimensions.Moon.*;
 import com.biel.FastSurvival.Dimensions.Sky.*;
 import com.biel.FastSurvival.MobIntelligence.MobListener;
 import com.biel.FastSurvival.Recall.RecallListener;
@@ -615,6 +612,25 @@ public final class FastSurvival extends JavaPlugin {
                 }
                 RocketPopulator generator = new RocketPopulator();
                 generator.generate(l);
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("moonbase")) { // If the player typed /basic then do the following...
+            Location l;
+            int argsIndex = 0;
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                l = p.getLocation().add(0, -1, 0);
+                if (args.length >= 3) {
+                    Location locationFromArgs = Utils.getLocationFromArgs(args, argsIndex, p.getWorld());
+                    if (locationFromArgs != null) l = locationFromArgs;
+                }
+                MoonBasePopulator generator = new MoonBasePopulator();
+                generator.generate(l, l.getWorld());
             }
 
         }
