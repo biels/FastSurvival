@@ -14,9 +14,9 @@ public class MoonBasePopulator extends BlockPopulator {
 
     @Override
     public void populate(World world, Random random, Chunk source) {
-        if (!(random.nextInt(300) <= 1)) {
-            return;
-        }
+        if (source.getX() % 15 != 3 || source.getZ() % 15 != 4) return;
+//        if (random.nextInt((int) Math.ceil(30 / 225F)) > 1) return;
+
         int centerX = (source.getX() << 4) + random.nextInt(16);
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
         int centerY = world.getHighestBlockYAt(centerX, centerZ) - 1;
@@ -30,19 +30,25 @@ public class MoonBasePopulator extends BlockPopulator {
     Material lineMaterial = Material.YELLOW_CONCRETE;
     double bubbleRadius = 8.0;
     int tunnelRadius = 6;
+    int minimumDistance = 30;
 
-    public List<Location> generateRandomLocs(Location start, int locationNum, World world) {
+    public List<Location> generateRandomLocs(Location center, int locationCount, World world) {
         ArrayList<Location> locs = new ArrayList<Location>();
-        for (int i = 0; i < locationNum; i++) {
-            int xPossitiveOrNegative = Utils.Possibilitat(50) ? 1 : -1;
-            int zPossitiveOrNegative = Utils.Possibilitat(50) ? 1 : -1;
-            int x = Utils.NombreEntre(10, 50) * xPossitiveOrNegative;
-            int z = Utils.NombreEntre(10, 50) * zPossitiveOrNegative;
-            int y = world.getHighestBlockYAt(x, z);
-            Location l = start.clone().add(x, 0, z);
-//            l.setY(y);
-            locs.add(l);
-//            l.clone().add(0, 1, 0).getBlock().setType(Material.DIAMOND_BLOCK);
+        for (int i = 0; i < locationCount * 10; i++) {
+            Vector randVec = Vector.getRandom().multiply(100);
+            randVec.setY(0);
+            Location loc = center.clone().add(randVec);
+            boolean collision = false;
+            for (Location l2 : locs) {
+                if (l2.distance(loc) < minimumDistance) {
+                    collision = true;
+                    break;
+                }
+            }
+            if (!collision) {
+                locs.add(loc);
+                if(locs.size() >= locationCount) break;
+            }
         }
         return locs;
     }
@@ -162,6 +168,7 @@ public class MoonBasePopulator extends BlockPopulator {
     }
 
     public List<Location> orderListFromFarToNear(List<Location> locList) {
+        if (locList.size() == 0) return locList;
         Location centerBubble = locList.get(0).clone();
         List<Location> clonedList = new ArrayList<>();
         locList.forEach(l -> clonedList.add(l.clone()));

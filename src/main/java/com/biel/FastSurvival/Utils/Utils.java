@@ -603,15 +603,9 @@ public class Utils {
         double angleToZ = v.angle(new Vector(0, 0, 1));
         if (angleToZ > 90.0/toRadians) angleToZ = v.angle(new Vector(0, 0, -1));
 
-        if (angleToX < angleToY && angleToX < angleToZ) {
-            return new Vector(1, 0, 0);
-        }
-        if (canBeYAxis && angleToY < angleToX && angleToY < angleToZ) {
-            return new Vector(0, 1, 0);
-        }
-        if (angleToZ < angleToX && angleToZ < angleToY) {
-            return new Vector(0, 0, 1);
-        }
+        if (angleToX < angleToY && angleToX < angleToZ) return new Vector(1, 0, 0);
+        if (canBeYAxis && angleToY < angleToX && angleToY < angleToZ) return new Vector(0, 1, 0);
+        if (angleToZ < angleToX && angleToZ < angleToY) return new Vector(0, 0, 1);
         else {
             if (canBeYAxis) return new Vector(0, 1, 0); // else return Y axis
             return new Vector(1, 0, 0);
