@@ -9,9 +9,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class HotReload {
     static BukkitTask task;
@@ -52,17 +50,7 @@ public class HotReload {
                                     Bukkit.getServer().getOnlinePlayers().forEach(player -> player.kickPlayer(ChatColor.GOLD + "[FS] Clean reloading..."));
                                     System.exit(0);
                                 }
-                                Bukkit.broadcastMessage(ChatColor.GOLD + "[FS] Compiling... ");
-                                try {
-                                    HotReload.deployPlugin();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                                Bukkit.broadcastMessage(ChatColor.GOLD + "[FS] Reloading... ");
-                                Bukkit.getServer().reload();
-                                Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] Reloaded! ");
+                                compileAndDeploy();
 //                                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), "reload confirm");
                                 hotReloads++;
 
@@ -77,9 +65,23 @@ public class HotReload {
         });
     }
 
+    public static void compileAndDeploy() {
+        Bukkit.broadcastMessage(ChatColor.GOLD + "[FS] Compiling... ");
+        try {
+            HotReload.deployPlugin();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Bukkit.broadcastMessage(ChatColor.GOLD + "[FS] Reloading... ");
+        Bukkit.getServer().reload();
+        Bukkit.broadcastMessage(ChatColor.GREEN + "[FS] Reloaded! ");
+    }
+
     public static void deployPlugin() throws IOException, InterruptedException {
         File dir = new File(DebugOptions.getServerPath());
-        String cmd = "deploy-fs.cmd";
+        String cmd = "deploy.bat";
         Process process = Runtime.getRuntime().exec(cmd, null, dir);
         process.waitFor(10, TimeUnit.SECONDS);
     }

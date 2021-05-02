@@ -2,9 +2,14 @@ package com.biel.FastSurvival.Dimensions.Moon;
 
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -19,8 +24,9 @@ public class RocketPopulator extends BlockPopulator {
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
         int centerY = world.getHighestBlockYAt(centerX, centerZ) - 1;
         Location start = new Location(world, centerX, centerY, centerZ);
-        generate(start);
+        generate(start, random);
     }
+
     double toRadians = 180 / Math.PI;
     Vector up = new Vector(0, 1, 0).normalize();
     Vector side = Utils.getVectorInPlaneY(up, new Vector(0, 0, 1));
@@ -42,8 +48,12 @@ public class RocketPopulator extends BlockPopulator {
         return (((y / 2) + (angle / 24)) % 2 == 1) ? Material.WHITE_CONCRETE : Material.RED_CONCRETE;
     }
 
-    public void generateMid(Location center) {
+    public void generateMid(Location center, Random random) {
         Location cylCenter = center.clone();
+        List<Location> floorCenters = new ArrayList<>();
+        List<Integer> floorRadiuses = new ArrayList<>();
+        // Generate structure
+        Material floorMaterial = Material.BIRCH_PLANKS;
         for (int i = 0; i < height - roofHeight; i++) {
             cylCenter.add(up);
             Vector r = side.clone().normalize().multiply(getWidthAt(i));
@@ -56,12 +66,33 @@ public class RocketPopulator extends BlockPopulator {
                     block.setType(Material.RED_CONCRETE);
                 });
             }
-            if (i % 5 == 0 && i > 8){
-                Utils.getCylBlocks(cylCenter, (int) r.length() - 1, 1, true, up).forEach(block -> {
-                    block.setType(Material.BIRCH_PLANKS);
+            if (i % 5 == 0 && i > 8) {
+                int floorRadius = (int) r.length() - 1;
+                Utils.getCylBlocks(cylCenter, floorRadius, 1, true, up).forEach(block -> {
+                    block.setType(floorMaterial);
                 });
+                floorCenters.add(cylCenter.clone());
+                floorRadiuses.add(floorRadius);
             }
         }
+
+        // Generate details
+
+        for (int i = 0; i < floorCenters.size(); i++) {
+            Location floorCenter = floorCenters.get(i);
+            Integer floorRadius = floorRadiuses.get(i);
+            // Generate stair holes
+            List<Block> ringBlocks = Utils.getCylBlocks(floorCenter, floorRadius - 2, 1, false, up);
+            Block block = ringBlocks.get(random.nextInt(ringBlocks.size()));
+            int levelHeight = 4;
+            for (int j = 0; j < levelHeight; j++) {
+                Block b = block.getRelative(0, -j, 0);
+                if (b.isEmpty() || b.getType().equals(floorMaterial)) b.setType(Material.LADDER);
+            }
+
+           // Bukkit.broadcastMessage("centers: " + i);
+        }
+
     }
 
     public void generateRoof(Location center) {
@@ -89,7 +120,7 @@ public class RocketPopulator extends BlockPopulator {
                     , loc.clone().add(up.clone().multiply(p3Y)).add(sideVector.clone().multiply(p3X))).forEach(l -> {
                 l.getBlock().setType(Material.RED_CONCRETE);
             });
-            sideVector.rotateAroundAxis(up, (360/ legNum) / toRadians);
+            sideVector.rotateAroundAxis(up, (360 / legNum) / toRadians);
 //            Utils.getLineBetween(loc.clone().add(up.clone().multiply(p1Y)).add(sideVector.clone().multiply(getWidthAt(p1Y)))
 //                    , loc.clone().add(up.clone().multiply(p3Y)).add(sideVector.clone().multiply(10))).forEach(v -> {
 //                        Utils.getSphereLocations(v.toLocation(Objects.requireNonNull(loc.getWorld())), 2.0, false)
@@ -99,12 +130,12 @@ public class RocketPopulator extends BlockPopulator {
         }
     }
 
-    public void generate(Location location) {
+    public void generate(Location location, Random random) {
         location = location.toVector().toBlockVector().toLocation(location.getWorld());
 //        location.getBlock().setType(Material.DIAMOND_BLOCK);
         Location center = location.clone().add(up.clone().multiply(10));
 //        center.getBlock().setType(Material.GOLD_BLOCK);
-        generateMid(center);
+        generateMid(center, random);
         generateRoof(center.clone().add(up.clone().multiply(height - roofHeight)));
         generateLegs(center);
 //        Utils.getCylBlocks(location, 3,1,false, up).forEach(block -> block.setType(Material.GOLD_BLOCK));

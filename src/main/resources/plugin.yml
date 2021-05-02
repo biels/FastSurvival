@@ -1,6 +1,6 @@
 name: FastSurvival
 main: com.biel.FastSurvival.FastSurvival
-version: 3.13
+version: 3.14
 load: STARTUP
 #depend: [BKCommonLib]
 api-version: 1.15
@@ -20,6 +20,8 @@ commands:
    rocket:
      description: Test command.
    text:
+     description: Test command.
+   deploy:
      description: Test command.
    skycrystals:
      description: Get a stack of sky crystals.

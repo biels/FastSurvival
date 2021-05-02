@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -365,6 +366,17 @@ public final class FastSurvival extends JavaPlugin {
             }
             return true;
         }
+        if (cmd.getName().equalsIgnoreCase("deploy")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.isOp())) {
+                    p.sendMessage("You must be an operator to use this command.");
+                    return true;
+                }
+//                String op = args[0];
+                HotReload.compileAndDeploy();
+            }
+        }
         if (cmd.getName().equalsIgnoreCase("testarea")) { // If the player typed /basic then do the following...
             if (sender instanceof Player) {
                 Player p = (Player) sender;
@@ -611,7 +623,7 @@ public final class FastSurvival extends JavaPlugin {
                     if (locationFromArgs != null) l = locationFromArgs;
                 }
                 RocketPopulator generator = new RocketPopulator();
-                generator.generate(l);
+                generator.generate(l, new Random());
             }
 
         }
