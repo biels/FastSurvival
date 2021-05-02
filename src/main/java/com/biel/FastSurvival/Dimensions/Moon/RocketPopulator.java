@@ -1,9 +1,13 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.Bows.BowRecipeGenerator;
+import com.biel.FastSurvival.SpecialItems.SpecialItemsUtils;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -82,18 +86,69 @@ public class RocketPopulator extends BlockPopulator {
             Location floorCenter = floorCenters.get(i);
             Integer floorRadius = floorRadiuses.get(i);
             // Generate stair holes
-            List<Block> ringBlocks = Utils.getCylBlocks(floorCenter, floorRadius - 2, 1, false, up);
-            Block block = ringBlocks.get(random.nextInt(ringBlocks.size()));
+            List<Block> ladderRingBlocks = Utils.getCylBlocks(floorCenter, floorRadius - 2, 1, false, up);
+            Block ladderBlock = ladderRingBlocks.get(random.nextInt(ladderRingBlocks.size()));
             int levelHeight = 4;
             for (int j = 0; j < levelHeight; j++) {
-                Block b = block.getRelative(0, -j, 0);
+                Block b = ladderBlock.getRelative(0, -j, 0);
                 if (b.isEmpty() || b.getType().equals(floorMaterial)) b.setType(Material.LADDER);
             }
 
-           // Bukkit.broadcastMessage("centers: " + i);
+            List<Block> chestRingBlocks = Utils.getCylBlocks(floorCenter.clone().add(0, 1, 0), floorRadius - 1, 1, false, up);
+            int chestRingIndex = random.nextInt(chestRingBlocks.size() - 1) + 1;
+            int lampIndex = random.nextInt(chestRingBlocks.size() - 1) + 1;
+            Block lampBlock = chestRingBlocks.get(lampIndex);
+            lampBlock.setType(Material.SEA_LANTERN);
+
+            Block chestBlock = chestRingBlocks.get(chestRingIndex);
+            if (Utils.Possibilitat(80) && chestBlock.getRelative(0, -1, 0).getType().isSolid()) {
+                chestBlock.setType(Material.CHEST);
+                Utils.fillChestRandomly(chestBlock, getItemsForLevel());
+            }
+            Block furnanceBlock = chestRingBlocks.get(chestRingIndex - 1);
+            if (Utils.Possibilitat(70) && furnanceBlock.getRelative(0, -1, 0).getType().isSolid()) {
+                Material applianceMat = Material.BLAST_FURNACE;
+                if(Utils.Possibilitat(10)) applianceMat = Material.DROPPER;
+                if(Utils.Possibilitat(10)) applianceMat = Material.FURNACE;
+                if(Utils.Possibilitat(10)) applianceMat = Material.TNT;
+                furnanceBlock.setType(applianceMat);
+
+            }
+
+
+            floorCenter.getBlock().setType(Material.CRAFTING_TABLE);
+
+
+            // Bukkit.broadcastMessage("centers: " + i);
         }
 
     }
+
+    public ArrayList<ItemStack> getItemsForLevel() {
+        ArrayList<ItemStack> i = new ArrayList<ItemStack>();
+
+        if (Utils.Possibilitat(8)){i.add(BowRecipeGenerator.getRandomBow(false));}
+        if (Utils.Possibilitat(4)){i.add(BowRecipeGenerator.getRandomBow(false));}
+        if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_WOOD_SWORD, 1));}
+        if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.DIAMOND_HELMET, 1));}
+        if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.IRON_HELMET, 1));}
+        if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.IRON_SWORD, 1));}
+        if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_IRON_SPADE, 1));}
+        if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.ARROW, 1));}
+        if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.FLINT_AND_STEEL, 1));}
+        if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.IRON_DOOR, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_CHESTPLATE, 1));}
+        if (Utils.Possibilitat(50)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
+        if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
+        if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
+        if (Utils.Possibilitat(14)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
+        if (Utils.Possibilitat(38)){i.add(Utils.getRandomPotion());}
+        if (Utils.Possibilitat(35)){i.add(Utils.getRandomPotion());}
+        if (Utils.Possibilitat(1)){new ItemStack(SpecialItemsUtils.getRandomSpecialItem(3));}
+
+        return i;
+    }
+
 
     public void generateRoof(Location center) {
         Location cylCenter = center.clone();

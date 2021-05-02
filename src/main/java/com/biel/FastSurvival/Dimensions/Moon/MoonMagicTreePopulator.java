@@ -26,7 +26,7 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 	Material treeMaterial = Material.BIRCH_WOOD;
 	@Override
 	public void populate(World world, Random random, Chunk source) {
-		if (!(random.nextInt(700) <= TREE_CHANCE)) {return;} // 740
+		if (!(random.nextInt(740) <= TREE_CHANCE)) {return;} // 740
 		int centerX = (source.getX() << 4) + random.nextInt(16);
 		int centerZ = (source.getZ() << 4) + random.nextInt(16);
 		int centerY = world.getHighestBlockYAt(centerX, centerZ);
