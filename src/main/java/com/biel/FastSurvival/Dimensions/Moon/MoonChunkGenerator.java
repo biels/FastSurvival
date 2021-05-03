@@ -102,13 +102,14 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                     point.setY(0);
                     Random random1 = new Random(id);
-                    double r = (biasFunction(random1.nextDouble(), 0.6)) * SC_BLOCK_WIDTH * 1.5;
+                    double r = (biasFunction(random1.nextDouble(), 0.4)) * SC_BLOCK_WIDTH * 2;
 //                    System.out.println(id + ", " + r);
                     int type = random1.nextInt(2);
 
 
                     double distance = thisBlock.distance(point);
-                    double elevation = 6.0 -  6.0 * biasFunction((distance) / r, 0.6);
+                    double maxElevation = 6.0 * random1.nextDouble();
+                    double elevation = maxElevation -  maxElevation * biasFunction((distance) / r, 0.6);
                     if (distance < r) {
 //                        Bukkit.broadcastMessage(pointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
                         mat = Material.STONE;
@@ -154,7 +155,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
     }
 
     private int getSuperChunkId(int scx, int scz) {
-        int id = scx + scz;
+        int id = scx ^ scz;
         return id;
     }
 
