@@ -39,6 +39,7 @@ import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 
+import static org.bukkit.Bukkit.getConsoleSender;
 import static org.bukkit.Bukkit.getLogger;
 
 public class EventListener implements Listener {
@@ -69,7 +70,8 @@ public class EventListener implements Listener {
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doFireTick", "false");
             world.setDifficulty(Difficulty.NORMAL);
-            world.setTime(15000);
+            world.setTime(6000); //15000
+            Bukkit.broadcastMessage("getViewDistance: "+ world.getViewDistance());
         }
 
         if (Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)) {
@@ -451,6 +453,9 @@ public class EventListener implements Listener {
         //p.teleport(new Location(Bukkit.getWorlds().get(1), 50, 50 , 50));
         if (DebugOptions.skyGenerationMode()) {
             SkyUtils.teleportPlayerToSky(p);
+        }
+        if (DebugOptions.moonGenerationMode()) {
+            MoonUtils.teleportPlayerToMoon(p);
         }
     }
 

@@ -137,6 +137,8 @@ public final class FastSurvival extends JavaPlugin {
                 // DEBUG (Load worlds)
                 if (DebugOptions.skyGenerationMode()) {
                     SkyUtils.loadSkyIfNecessary();
+                } if (DebugOptions.moonGenerationMode()) {
+                    MoonUtils.loadMoonIfNecessary();
                 }
             }
         }, 20 * 5);
