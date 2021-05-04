@@ -256,7 +256,7 @@ public class MoonUtils {
     }
 
     public static Material getMoonSurfaceMaterial() {
-        return Material.GRASS_BLOCK;
+        return Material.WHITE_CONCRETE_POWDER;
     }
 
     public static Material getMoonInnerMaterial() {

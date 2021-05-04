@@ -50,7 +50,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
 //        int highestBlockYAt = world.getHighestBlockYAt(l);
 
             if (isInChunk) { // source.getX() % 10 == 0 && source.getZ() % 10 == 0
-                System.out.println("In chunk: " + thisPoint.id);
+//                System.out.println("In chunk: " + thisPoint.id);
                 // Populate
                 String str = "A";
                 int size = 10;

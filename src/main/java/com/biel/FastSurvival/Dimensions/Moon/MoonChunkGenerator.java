@@ -107,6 +107,37 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //        return result;
 //    }
 
+    public double craterFunction(double x) {
+        double cavityShape = x*x-1;
+        double a = (Math.abs(x) - 1 - 0.5);
+        double rimShape = 0.5 * a * a;
+        double floorShape = x;
+        return Math.max(Math.min(cavityShape, rimShape), floorShape);
+    }
+
+    double craterFunctionSmooth(double x) {
+        x = x * 1.5;
+        double cavityShape = x*x-1.0;
+        double a = (Math.abs(x) - 1 - 0.5);
+        double rimShape = 0.5 * a * a;
+        double floorShape = -0.4;
+        double s = 0.14;
+        return smin(smin(cavityShape, rimShape, s/2), floorShape, -s) / -floorShape;
+    }
+
+    double smin(double a,  double b, double  k) {
+        double h = clamp(0.5 + 0.5*(a-b)/k, 0.0, 1.0);
+        return mix(a, b, h) - k*h*(1.0-h);
+    }
+
+    double clamp(double v, double min,  double max) {
+        return Math.min(Math.max(v, min), max);
+    };
+
+    double mix(double start, double end, double t) {
+        return start * (1 - t) + end * t;
+    }
+
 
     @Override
     public ChunkData generateChunkData(World world, Random random, int cx, int cz, BiomeGrid biome) {
@@ -123,7 +154,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                double height = 60; //getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2, 60);
+                double height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2, 60);
                 double offset = 0;
                 Material mat = MoonUtils.getMoonSurfaceMaterial();
                 boolean matLocked = false;
@@ -143,7 +174,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                         Random random1 = new Random(id);
                         int chance = 130; // Out of 1000
-                        if (isXL) chance = 700; // Out of 1000
+                        if (isXL) chance = 900; // Out of 1000
                         if (!isXL) chance = chance / SMALL_IVN_COUNT;
                         if (random1.nextInt(1000) >= chance) continue;
                         double size = (random1.nextDouble() + 0.5) / 2;
@@ -155,7 +186,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                         double distance = thisBlock.distance(point);
                         double maxElevation = (isXL ? 70 : 9) * size + 1;
 
-                        double elevation = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+//                        double elevation = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+                        double elevation = (craterFunctionSmooth( (distance / r))) * -1 * maxElevation ;
                         if (distance < r) {
 //                        Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
                             if (!matLocked) {
@@ -165,7 +197,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     mat = Material.STONE;
                                 }
                                 if (isXL) {
-                                    mat = Material.QUARTZ_BRICKS;
+                                    mat = Material.WHITE_CONCRETE;
                                 }
                             }
 
