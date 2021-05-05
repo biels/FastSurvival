@@ -27,7 +27,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
     InfiniteVoronoiNoise xlIvn;
     List<InfiniteVoronoiNoise> smallIvns;
-    static int SMALL_IVN_COUNT = 0;
+    static int SMALL_IVN_COUNT = 10;
 
     private NoiseGenerator getGenerator(World world) {
         if (generator == null) {
@@ -39,7 +39,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private InfiniteVoronoiNoise getXLIvn(World world, Random r) {
         if (xlIvn == null) {
             LongHashFunction xx = LongHashFunction.xx(r.nextLong());
-            xlIvn = new InfiniteVoronoiNoise(r, 2, xx.hashInt(0));
+            xlIvn = new InfiniteVoronoiNoise(r, 70, xx.hashInt(0));
             xlIvn.isXL = true;
         }
         return xlIvn;
@@ -227,7 +227,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 height += offset;
                 height += xlOffset;
 //                height += hillOffset;
-//                height += noiseOffset;
+                height += noiseOffset;
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -267,7 +267,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
             // Chance
             int chance = 130; // Out of 1000
-            if (ci.isXL) chance = 130;//850; // Out of 1000
+            if (ci.isXL) chance = 850; // Out of 1000
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
