@@ -12,10 +12,8 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import javax.rmi.CORBA.Util;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class SampleSharedVoronoiPopulator extends BlockPopulator {
 
