@@ -33,16 +33,19 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
 //                    double v = p1.vector.distanceSquared(thisChunk) - p2.vector.distanceSquared(thisChunk);
 //                    return (int) v;
 //                }).collect(Collectors.toList());
-//        Vector thisChunk = source.getBlock(8, 0, 8).getLocation().toVector();
+        Vector thisChunk = source.getBlock(8, 0, 8).getLocation().toVector();
 
         // TODO Use hash or additional random seed info for whether this is actually generated
         for (int i = 0; i < allIvns.size(); i++) {
             InfiniteVoronoiNoise ivn = allIvns.get(i);
+
+            Vector superChunkVec = ivn.getSuperChunkFromChunk(source.getX(), source.getZ());
+
             List<VoronoiPoint> neighbourPointsWithId = ivn
-                    .getNeighbourPointsWithId(source.getX(), source.getZ(), 0);
+                    .getNeighbourPointsWithId(superChunkVec.getBlockX(), superChunkVec.getBlockZ(), 0);
             VoronoiPoint thisPoint = neighbourPointsWithId.get(0);
-            Vector pointVec = thisPoint.vector;
-//            double distance = pointVec.distance(thisChunk);
+            Vector pointVec = thisPoint.vector.clone();
+            double distance = pointVec.distance(thisChunk);
 
             boolean inAABB = pointVec.isInAABB(
                     source.getBlock(0, 0, 0).getLocation().toVector(),
@@ -71,7 +74,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 l.add(up.clone().multiply(13));
 //                if (random.nextInt(100) < 30)
                 int fontSize = 17;
-                if(ci.isXL) fontSize = 80;
+                if(ci.isXL) fontSize = 20;
                 if(ci.isXL) Utils.getLine(l.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
                 FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
 //            l.getBlock().setType(Material.LAPIS_BLOCK);
