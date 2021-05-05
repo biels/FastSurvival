@@ -13,6 +13,11 @@ import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.noise.Noise;
+import org.spongepowered.noise.NoiseQualitySimplex;
+import org.spongepowered.noise.model.Cylinder;
+import org.spongepowered.noise.module.source.Cylinders;
+import org.spongepowered.noise.module.source.Simplex;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +44,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private InfiniteVoronoiNoise getXLIvn(World world, Random r) {
         if (xlIvn == null) {
             LongHashFunction xx = LongHashFunction.xx(r.nextLong());
-            xlIvn = new InfiniteVoronoiNoise(r, 70, xx.hashInt(0));
+            xlIvn = new InfiniteVoronoiNoise(r, 65, xx.hashInt(0));
             xlIvn.isXL = true;
         }
         return xlIvn;
@@ -150,6 +155,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 double height = baseline;
                 double offset = 0;
                 double xlOffset = 0;
+                double cylOffset = 0;
                 Material mat = MoonUtils.getMoonSurfaceMaterial();
                 boolean matLocked = false;
                 Vector thisBlock = new Vector(cx * 16 + x, 0, cz * 16 + z);
@@ -169,28 +175,33 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                         CraterInfo ci = CraterInfo.fromId(id, voronoiPoint.vector, ivn);
 
-//                        Random random1 = new Random(id);
-                        int chance = 130; // Out of 1000
-//                        if (isXL) chance = 850; // Out of 1000
-//                        if (!isXL) chance = chance / SMALL_IVN_COUNT;
                         if (!ci.generated) continue;
                         double size = 1; //(random1.nextDouble() + 0.5) / 2;
                         int type = ci.type;
 
                         double r = ci.r; //(ivn.SC_BLOCK_WIDTH / 2.0) * (isXL ? 1 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
-                        double upPoint = ci.upPoint;
-                        double innerRUp = ci.innerRUp; // Got visually from plot
-                        double downPoint = ci.downPoint;
-                        double innerRDown = ci.innerRDown; // Got visually from plot
+
 
                         // Specific to block
                         double distance = thisBlock.distance(point);
                         double maxElevation = (isXL ? 70 : 9) * size + 1;
 
 //                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
-                        double craterOffset = (CraterInfo.craterFunctionSmooth((distance / r))) * maxElevation;
+                        double relDist = distance / r;
+                        double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
                         if (distance < r) {
                             // Block is inside crater radius
+
+                            Simplex simplex = new Simplex();
+                            simplex.setSeed((int) (id));
+                            simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
+                            simplex.setFrequency(15.0);
+                            Cylinder cylinder = new Cylinder(simplex);
+                            float angle = new Vector(0, 0, 1).angle(Utils.CrearVector(point, thisBlock));
+                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
+                            rawCylNoise = biasFunction(rawCylNoise, 0.16);
+                            double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
+//                            craterOffset += (cylNoise - 0.8) * 1.1;
 
 //                        Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
                             if (!matLocked) {
@@ -203,9 +214,23 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     mat = Material.WHITE_CONCRETE;
                                 }
                             }
+
+//                            if (relDist > CraterInfo.UP_POINT && ci.isXL) {
+//                                // Outside area
+//                                mat = Material.WHITE_CONCRETE;
+//                                double x1 = 1 - biasFunction(1 - relDist, 0.2);
+//                                double simplexMaxValue = simplex.getMaxValue();
+//                                if (Utils.sigmoid(rawCylNoise - 1) + 1 < (1.0 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 0.0)) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
+//                                    mat = Material.WHITE_CONCRETE_POWDER;
+////                                    cylOffset -= 0.5;
+//                                }
+//
+//                            }
                             if (xlOffset < 0 || offset < 0) craterOffset /= 2;
                             if (isXL) {
+//                                if (xlOffset < 0) craterOffset /= 2;
                                 xlOffset += (craterOffset);
+
                             } else {
                                 offset += (craterOffset);
                             }
@@ -226,8 +251,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 // Add offsets
                 height += offset;
                 height += xlOffset;
+//                height += cylOffset;
 //                height += hillOffset;
-                height += noiseOffset;
+//                height += noiseOffset;
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -267,7 +293,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
             // Chance
             int chance = 130; // Out of 1000
-            if (ci.isXL) chance = 850; // Out of 1000
+            if (ci.isXL) chance = 900; // Out of 1000
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
@@ -276,13 +302,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
             int type = random1.nextInt(2);
             ci.type = type;
 
-            double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (ci.isXL ? 1 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
+            double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (ci.isXL ? 0.6 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
 //            System.out.println("SC_BLOCK_WIDTH: " + ivn.SC_BLOCK_WIDTH);
             ci.r = r;
-            ci.upPoint = 0.649;
-            ci.innerRUp = r * ci.upPoint; // Got visually from plot
-            ci.downPoint = 0.536;
-            ci.innerRDown = r * ci.downPoint; // Got visually from plot
+            ci.innerRUp = r * UP_POINT; // Got visually from plot
+            ci.innerRDown = r * DOWN_POINT; // Got visually from plot
 
             return ci;
         }
@@ -300,6 +324,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
             return res;
         }
 
+        static double UP_POINT = 0.649;
+        static double DOWN_POINT = 0.536;
+
         public static double craterFunctionSmooth(double x) {
             x = x * 1.5;
             double cavityShape = ((x * 1.5) * (x * 1.5)) - 2.0;
@@ -308,6 +335,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
             double floorShape = -0.4;
             double s = 0.14;
             return Utils.smin(Utils.smin(cavityShape, rimShape, s / 3), floorShape, -s) / -floorShape;
+        }
+
+        public static double ridgeLerpFn(double x) {
+            if (x < CraterInfo.UP_POINT) return 0;
+            return Utils.clamp((-(x * 2.85) + 2.85), 0, 1);
         }
 
     }
@@ -373,16 +405,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(
-                new SampleSharedVoronoiPopulator(),
-                new MoonCraterPopulator(),
-                new ElectricBossPopulator(),
-                new FlagPopulator(),
-                new MoonMagicTreePopulator(),
-                new ClaySpiralPopulator(),
+                new SampleSharedVoronoiPopulator()
+//                new MoonCraterPopulator(),
+//                new ElectricBossPopulator(),
+//                new FlagPopulator(),
+//                new MoonMagicTreePopulator(),
+//                new ClaySpiralPopulator(),
 //                new ClayColorPopulator(),
-                new MiniMazePopulator(),
-                new RocketPopulator(),
-                new MoonBasePopulator()
+//                new MiniMazePopulator(),
+//                new RocketPopulator(),
+//                new MoonBasePopulator()
         );
     }
 

@@ -24,7 +24,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
-import java.text.MessageFormat;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -45,10 +44,16 @@ public class Utils {
 
     ;
 
-    public  static double mix(double start, double end, double t) {
+    public static double mix(double start, double end, double t) {
         return start * (1 - t) + end * t;
     }
 
+    public static double map(double x, double x1, double x2, double y1, double y2) {
+        double m = (y2 - y1) / (x2 - x1);
+        double c = y1 - m * x1; // point of interest: c is also equal to y2 - m * x2, though float math might lead to slightly different results.
+
+        return m * x + c;
+    }
 
 
     public static String L(String code) {
@@ -591,6 +596,7 @@ public class Utils {
         return cylBlocks;
 
     }
+
     public static ArrayList<Location> drawTriangle(Location point1, Location point2, Location point3) {
         ArrayList<Location> locs = new ArrayList<Location>();
         Vector v1 = Utils.CrearVector(point1, point2);
@@ -603,8 +609,8 @@ public class Utils {
         double smallTriangleHeightY = (1.0 / Math.cos(angle));
         double smallTriangleHeightXY = (smallTriangleHeightY / Math.cos(v1.angle(new Vector(1, 0, 0))));
         Vector unitV1 = v1.clone().multiply(smallTriangleHeightY / v1.length());
-        Vector unitV2 = v2.clone().multiply(smallTriangleHeightY/v1.length());
-        Vector unitV3 = v3.clone().multiply(smallTriangleHeightY/v1.length());
+        Vector unitV2 = v2.clone().multiply(smallTriangleHeightY / v1.length());
+        Vector unitV3 = v3.clone().multiply(smallTriangleHeightY / v1.length());
         for (double i = 0.0; i < v1.length() + smallTriangleHeightY; i++) {
             Utils.getLineBetween(unitV1.clone().multiply(i), unitV2.clone().multiply(i))
                     .forEach(vector -> locs.add(vector.toLocation(Objects.requireNonNull(point1.getWorld())).add(point1)));
@@ -612,14 +618,14 @@ public class Utils {
         return locs;
     }
 
-    public static Vector getClosestAxisVector(Vector v, boolean canBeYAxis){
+    public static Vector getClosestAxisVector(Vector v, boolean canBeYAxis) {
         double toRadians = 180 / Math.PI;
         double angleToX = v.angle(new Vector(1, 0, 0));
-        if (angleToX > 90.0/toRadians) angleToX = v.angle(new Vector(-1, 0, 0));
+        if (angleToX > 90.0 / toRadians) angleToX = v.angle(new Vector(-1, 0, 0));
         double angleToY = v.angle(new Vector(0, 1, 0));
-        if (angleToY > 90.0/toRadians) angleToY = v.angle(new Vector(0, -1, 0));
+        if (angleToY > 90.0 / toRadians) angleToY = v.angle(new Vector(0, -1, 0));
         double angleToZ = v.angle(new Vector(0, 0, 1));
-        if (angleToZ > 90.0/toRadians) angleToZ = v.angle(new Vector(0, 0, -1));
+        if (angleToZ > 90.0 / toRadians) angleToZ = v.angle(new Vector(0, 0, -1));
 
         if (angleToX < angleToY && angleToX < angleToZ) return new Vector(1, 0, 0);
         if (canBeYAxis && angleToY < angleToX && angleToY < angleToZ) return new Vector(0, 1, 0);

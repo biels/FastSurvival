@@ -35,7 +35,7 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
-    implementation "org.spongepowered:noise:2.0.0-SNAPSHOT"
+    compile "org.spongepowered:noise:2.0.0-SNAPSHOT"
 
     testCompileOnly(
             'junit:junit:4.12'
