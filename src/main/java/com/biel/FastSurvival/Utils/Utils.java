@@ -33,6 +33,24 @@ import static java.util.stream.Collector.Characteristics.UNORDERED;
 
 
 public class Utils {
+
+    public static double smin(double a, double b, double k) {
+        double h = clamp(0.5 + 0.5 * (a - b) / k, 0.0, 1.0);
+        return mix(a, b, h) - k * h * (1.0 - h);
+    }
+
+    public static double clamp(double v, double min, double max) {
+        return Math.min(Math.max(v, min), max);
+    }
+
+    ;
+
+    public  static double mix(double start, double end, double t) {
+        return start * (1 - t) + end * t;
+    }
+
+
+
     public static String L(String code) {
         return LanguageStrings.getString(code);
     }

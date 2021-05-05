@@ -53,8 +53,8 @@ public class FontRenderer {
 
     public static void renderText(String s, Location start, Vector direction, Vector normal, int size, Material material) {
         BufferedImage img = stringToBufferedImage(s, size);
-        System.out.println(img.getWidth());
-        System.out.println(img.getHeight());
+//        System.out.println(img.getWidth());
+//        System.out.println(img.getHeight());
         List<Vector> vectors = new ArrayList<>();
         Vector xAxis = direction.normalize();
         Vector yAxis = direction.getCrossProduct(normal.normalize()).multiply(-1).normalize();

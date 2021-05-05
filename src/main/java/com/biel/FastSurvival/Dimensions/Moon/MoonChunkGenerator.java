@@ -27,7 +27,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
     InfiniteVoronoiNoise xlIvn;
     List<InfiniteVoronoiNoise> smallIvns;
-    private int SMALL_IVN_COUNT = 10;
+    static int SMALL_IVN_COUNT = 10;
 
     private NoiseGenerator getGenerator(World world) {
         if (generator == null) {
@@ -39,7 +39,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private InfiniteVoronoiNoise getXLIvn(World world, Random r) {
         if (xlIvn == null) {
             LongHashFunction xx = LongHashFunction.xx(r.nextLong());
-            xlIvn = new InfiniteVoronoiNoise(r, 40, xx.hashInt(0));
+            xlIvn = new InfiniteVoronoiNoise(r, 80, xx.hashInt(0));
+            xlIvn.isXL = true;
         }
         return xlIvn;
     }
@@ -50,7 +51,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             smallIvns = new ArrayList<>();
             for (int i = 0; i < SMALL_IVN_COUNT; i++) {
                 int i1 = r.nextInt(3);
-                i1 = 0;
+//                i1 = 0;
                 smallIvns.add(new InfiniteVoronoiNoise(r, i1 + 1, xx.hashInt(i + 1)));
             }
         }
@@ -71,25 +72,34 @@ public class MoonChunkGenerator extends ChunkGenerator {
         return ultraSlowGenerator;
     }
 
-    private int getHeight(World world, double x, double y, double variance, int baseline) {
+    private double getHeightNoiseFactor(World world, double x, double y, double variance, double hillHeightFactor) {
         NoiseGenerator gen = getGenerator(world);
-        NoiseGenerator slowGen = getSlowGenerator(world);
         NoiseGenerator varGen = getSlowGenerator(world);
 
         double varResult = (varGen.noise(x / 20, y / 20) / 1.8) + 0.8;
         variance = variance * varResult;
+
+
+        double result = 0;
+
+        double effectiveVariance = hillHeightFactor < 0.6 ? variance : variance / 2.0; // Top of hill less roughness
+        result = gen.noise(x, y) * effectiveVariance; // Noise
+
+        //result += (hillHeightFactor * 30); // Hills
+
+
+        return result;
+    }
+
+    private double getHillHeightFactor(World world, double x, double y) {
+        NoiseGenerator slowGen = getSlowGenerator(world);
+
         int sigmoidHarshness = 35;
         double slowResult = (slowGen.noise(x / 45, y / 45) - 0.5) * sigmoidHarshness;
         double slowAfterSigmoid = Utils.sigmoid(slowResult);
-        double result = 0;
-        double effectiveVariance = slowAfterSigmoid < 0.6 ? variance : variance / 2.0;
-        result = gen.noise(x, y) * effectiveVariance;
-
-        result += (slowAfterSigmoid * 30);
-        result += baseline;
-
-        return NoiseGenerator.floor(result);
+        return slowAfterSigmoid;
     }
+
 
     //
 //    public byte[] generate(World world, Random random, int cx, int cz) {
@@ -108,34 +118,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //    }
 
     public double craterFunction(double x) {
-        double cavityShape = x*x-1;
+        double cavityShape = x * x - 1;
         double a = (Math.abs(x) - 1 - 0.5);
         double rimShape = 0.5 * a * a;
         double floorShape = x;
         return Math.max(Math.min(cavityShape, rimShape), floorShape);
-    }
-
-    double craterFunctionSmooth(double x) {
-        x = x * 1.5;
-        double cavityShape = x*x-1.0;
-        double a = (Math.abs(x) - 1 - 0.5);
-        double rimShape = 0.5 * a * a;
-        double floorShape = -0.4;
-        double s = 0.14;
-        return smin(smin(cavityShape, rimShape, s/2), floorShape, -s) / -floorShape;
-    }
-
-    double smin(double a,  double b, double  k) {
-        double h = clamp(0.5 + 0.5*(a-b)/k, 0.0, 1.0);
-        return mix(a, b, h) - k*h*(1.0-h);
-    }
-
-    double clamp(double v, double min,  double max) {
-        return Math.min(Math.max(v, min), max);
-    };
-
-    double mix(double start, double end, double t) {
-        return start * (1 - t) + end * t;
     }
 
 
@@ -154,41 +141,57 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                double height = getHeight(world, cx + x * 0.0625, cz + z * 0.0625, 2, 60);
+                int baseline = 80;
+                double hillHeightFactor = getHillHeightFactor(world, cx + x * 0.0625, cz + z * 0.0625);
+                boolean isHill = hillHeightFactor > 0.6;
+                double heightNoiseFactor = getHeightNoiseFactor(world, cx + x * 0.0625, cz + z * 0.0625, 1, hillHeightFactor); // Scaled by variance
+                double hillOffset = hillHeightFactor * 35;
+                double noiseOffset = heightNoiseFactor * 2;
+                double height = baseline;
                 double offset = 0;
+                double xlOffset = 0;
                 Material mat = MoonUtils.getMoonSurfaceMaterial();
                 boolean matLocked = false;
                 Vector thisBlock = new Vector(cx * 16 + x, 0, cz * 16 + z);
                 for (int ivnIndex = 0; ivnIndex < allIvns.size(); ivnIndex++) {
                     InfiniteVoronoiNoise ivn = allIvns.get(ivnIndex);
-                    // For each crater noise
+                    // For each ivn
                     List<VoronoiPoint> points = allPointsWithId.get(ivnIndex);
                     for (int pointIndex = 0; pointIndex < points.size(); pointIndex++) {
-                        // For each point, calc Y offset
+                        // For each crater, calc Y offset
                         boolean isXL = ivn == xlIvn;
                         VoronoiPoint voronoiPoint = points.get(pointIndex);
                         Vector point = voronoiPoint.vector.clone();
                         long id = voronoiPoint.id;
-//                    System.out.println(String.valueOf(point.getY()));
+
+                        // Info
 
 
-                        Random random1 = new Random(id);
+                        CraterInfo ci = CraterInfo.fromId(id, voronoiPoint.vector, ivn);
+
+//                        Random random1 = new Random(id);
                         int chance = 130; // Out of 1000
-                        if (isXL) chance = 900; // Out of 1000
-                        if (!isXL) chance = chance / SMALL_IVN_COUNT;
-                        if (random1.nextInt(1000) >= chance) continue;
-                        double size = (random1.nextDouble() + 0.5) / 2;
-                        double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (isXL ? 1 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
-//                    System.out.println(id + ", " + r);
-                        int type = random1.nextInt(2);
+//                        if (isXL) chance = 850; // Out of 1000
+//                        if (!isXL) chance = chance / SMALL_IVN_COUNT;
+                        if (!ci.generated) continue;
+                        double size = 1; //(random1.nextDouble() + 0.5) / 2;
+                        int type = ci.type;
 
+                        double r = ci.r; //(ivn.SC_BLOCK_WIDTH / 2.0) * (isXL ? 1 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
+                        double upPoint = ci.upPoint;
+                        double innerRUp = ci.innerRUp; // Got visually from plot
+                        double downPoint = ci.downPoint;
+                        double innerRDown = ci.innerRDown; // Got visually from plot
 
+                        // Specific to block
                         double distance = thisBlock.distance(point);
                         double maxElevation = (isXL ? 70 : 9) * size + 1;
 
-//                        double elevation = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
-                        double elevation = (craterFunctionSmooth( (distance / r))) * -1 * maxElevation ;
+//                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+                        double craterOffset = (CraterInfo.craterFunctionSmooth((distance / r))) * maxElevation;
                         if (distance < r) {
+                            // Block is inside crater radius
+
 //                        Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
                             if (!matLocked) {
                                 if (mat == Material.STONE) {
@@ -200,19 +203,31 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     mat = Material.WHITE_CONCRETE;
                                 }
                             }
+                            if (xlOffset < 0 || offset < 0) craterOffset /= 2;
+                            if (isXL) {
+                                xlOffset += (craterOffset);
+                            } else {
+                                offset += (craterOffset);
+                            }
 
-                            if (offset >= 0) offset -= (elevation);
-                            else offset = offset - (elevation / 2);
                             if (distance <= 2) {
+                                if (isXL) {
+                                    xlOffset += 12;
+                                }
                                 mat = type == 0 ? Material.COAL_BLOCK : Material.GOLD_BLOCK;
                                 matLocked = true;
                             }
                         }
 
+
 //                    int yOffset = 0;
                     }
                 }
+                // Add offsets
                 height += offset;
+                height += xlOffset;
+                height += hillOffset;
+                height += noiseOffset;
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -224,6 +239,83 @@ public class MoonChunkGenerator extends ChunkGenerator {
             }
         }
         return chunk;
+    }
+
+    static class CraterInfo {
+        long id;
+        Vector point;
+        InfiniteVoronoiNoise ivn;
+        boolean generated;
+        boolean isXL;
+        int type;
+
+        double r;
+        double upPoint;
+        double innerRUp;
+        double downPoint;
+        double innerRDown;
+
+        static CraterInfo fromId(long id, Vector point, InfiniteVoronoiNoise ivn) {
+            CraterInfo ci = new CraterInfo();
+            ci.id = id;
+            ci.point = point;
+            ci.ivn = ivn;
+
+            ci.isXL = ivn.isXL;
+
+            Random random1 = new Random(id);
+
+            // Chance
+            int chance = 130; // Out of 1000
+            if (ci.isXL) chance = 850; // Out of 1000
+            if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
+            ci.generated = random1.nextInt(1000) < chance;
+            if (!ci.generated) return ci;
+
+            double size = 1; //(random1.nextDouble() + 0.5) / 2;
+            int type = random1.nextInt(2);
+            ci.type = type;
+
+            double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (ci.isXL ? 1 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
+//            System.out.println("SC_BLOCK_WIDTH: " + ivn.SC_BLOCK_WIDTH);
+            ci.r = r;
+            ci.upPoint = 0.649;
+            ci.innerRUp = r * ci.upPoint; // Got visually from plot
+            ci.downPoint = 0.536;
+            ci.innerRDown = r * ci.downPoint; // Got visually from plot
+
+            return ci;
+        }
+
+        public OffsetAndMat getOffsetAndMatAt(Vector v) {
+            OffsetAndMat res = new OffsetAndMat();
+            double distance = v.distance(point);
+            double maxElevation = (isXL ? 70 : 9) + 1;
+
+//                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+            double craterOffset = (craterFunctionSmooth((distance / r))) * maxElevation;
+
+            // TODO Add material logic (unwind replacements)
+            res.offset = craterOffset;
+            return res;
+        }
+
+        public static double craterFunctionSmooth(double x) {
+            x = x * 1.5;
+            double cavityShape = ((x * 1.5) * (x * 1.5)) - 2.0;
+            double a = (Math.abs(x) - 1 - 0.5);
+            double rimShape = 0.5 * a * a;
+            double floorShape = -0.4;
+            double s = 0.14;
+            return Utils.smin(Utils.smin(cavityShape, rimShape, s / 3), floorShape, -s) / -floorShape;
+        }
+
+    }
+
+    static class OffsetAndMat {
+        double offset;
+        Material mat;
+
     }
 
     @NotNull

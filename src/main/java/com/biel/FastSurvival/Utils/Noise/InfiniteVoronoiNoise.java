@@ -14,6 +14,7 @@ public class InfiniteVoronoiNoise {
     public int CHUNKS_IN_SC = 3;
     public int SC_BLOCK_WIDTH;
     private LongHashFunction xx;
+    public boolean isXL = false;
 
     public void setSeed(Long seed) {
         this.seed = seed;
