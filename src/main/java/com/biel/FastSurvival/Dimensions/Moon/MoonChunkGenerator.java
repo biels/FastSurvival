@@ -192,15 +192,15 @@ public class MoonChunkGenerator extends ChunkGenerator {
                         if (distance < r) {
                             // Block is inside crater radius
 
-                            Simplex simplex = new Simplex();
-                            simplex.setSeed((int) (id));
-                            simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
-                            simplex.setFrequency(15.0);
-                            Cylinder cylinder = new Cylinder(simplex);
-                            float angle = new Vector(0, 0, 1).angle(Utils.CrearVector(point, thisBlock));
-                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
-                            rawCylNoise = biasFunction(rawCylNoise, 0.16);
-                            double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
+//                            Simplex simplex = new Simplex();
+//                            simplex.setSeed((int) (id));
+//                            simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
+//                            simplex.setFrequency(15.0);
+//                            Cylinder cylinder = new Cylinder(simplex);
+//                            float angle = new Vector(0, 0, 1).angle(Utils.CrearVector(point, thisBlock));
+//                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
+//                            rawCylNoise = biasFunction(rawCylNoise, 0.16);
+//                            double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 //                            craterOffset += (cylNoise - 0.8) * 1.1;
 
 //                        Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
