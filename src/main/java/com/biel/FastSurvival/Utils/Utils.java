@@ -360,7 +360,7 @@ public class Utils {
     }
 
     public static Vector CrearVector(Vector inici, Vector fi) {
-        return fi.subtract(inici);
+        return fi.clone().subtract(inici);
     }
 
     public static ArrayList<Location> getLocationsCircle(Location center, Double radius, int espai) {

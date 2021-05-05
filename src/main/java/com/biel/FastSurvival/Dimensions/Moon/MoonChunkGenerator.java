@@ -188,7 +188,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 //                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
                         double relDist = distance / r;
-                        double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
+
                         if (distance < r) {
                             // Block is inside crater radius
 
@@ -201,9 +201,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
                             double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
                             rawCylNoise = biasFunction(rawCylNoise, 0.16);
                             double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
-//                            craterOffset += (cylNoise - 0.8) * 1.1;
 
-//                        Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::toString).collect(Collectors.joining(", ")));
+                            double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
+//                            craterOffset += (cylNoise - 0.8) * 1.0;
+
+                            // Materials
                             if (!matLocked) {
                                 if (mat == Material.STONE) {
                                     mat = Material.COBBLESTONE;
@@ -215,17 +217,17 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 }
                             }
 
-//                            if (relDist > CraterInfo.UP_POINT && ci.isXL) {
-//                                // Outside area
-//                                mat = Material.WHITE_CONCRETE;
-//                                double x1 = 1 - biasFunction(1 - relDist, 0.2);
-//                                double simplexMaxValue = simplex.getMaxValue();
-//                                if (Utils.sigmoid(rawCylNoise - 1) + 1 < (1.0 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 0.0)) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
-//                                    mat = Material.WHITE_CONCRETE_POWDER;
-////                                    cylOffset -= 0.5;
-//                                }
-//
-//                            }
+                            if (relDist > CraterInfo.UP_POINT && ci.isXL) {
+                                // Outside area
+                                mat = Material.WHITE_CONCRETE;
+                                double x1 = 1 - biasFunction(1 - relDist, 0.2);
+                                double simplexMaxValue = simplex.getMaxValue();
+                                if (Utils.sigmoid(rawCylNoise - 1) * 2 + 1 < (1.4 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 0.0)) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
+                                    mat = Material.WHITE_CONCRETE_POWDER;
+//                                    cylOffset -= 0.5;
+                                }
+
+                            }
                             if (xlOffset < 0 || offset < 0) craterOffset /= 2;
                             if (isXL) {
 //                                if (xlOffset < 0) craterOffset /= 2;
@@ -251,9 +253,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 // Add offsets
                 height += offset;
                 height += xlOffset;
-//                height += cylOffset;
+                height += cylOffset;
 //                height += hillOffset;
-//                height += noiseOffset;
+                height += noiseOffset;
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -338,7 +340,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
         }
 
         public static double ridgeLerpFn(double x) {
-            if (x < CraterInfo.UP_POINT) return 0;
+            if (x < CraterInfo.DOWN_POINT) return 0;
+            if (x < CraterInfo.UP_POINT) return 9.66*x -5.27;
             return Utils.clamp((-(x * 2.85) + 2.85), 0, 1);
         }
 
