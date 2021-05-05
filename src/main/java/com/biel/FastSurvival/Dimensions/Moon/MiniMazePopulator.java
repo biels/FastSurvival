@@ -45,7 +45,7 @@ public class MiniMazePopulator extends BlockPopulator {
         generator.generateMaze(sideLength);
         generator.build(start, 1, 1,
 //                Material.LIGHT_GRAY_CONCRETE, Material.WHITE_CONCRETE,
-                Material.WHITE_TERRACOTTA, Material.LIGHT_GRAY_CONCRETE,
+                Material.WHITE_CONCRETE_POWDER, Material.LIGHT_GRAY_CONCRETE,
                 Material.YELLOW_CONCRETE, Material.GREEN_CONCRETE);
     }
 }

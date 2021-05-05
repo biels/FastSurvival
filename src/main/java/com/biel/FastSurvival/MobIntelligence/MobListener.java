@@ -298,7 +298,7 @@ public class MobListener implements Listener {
             }
 
             ent.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
-            ent.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
+//            ent.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
             ent.setMaxHealth(ent.getMaxHealth() + Utils.NombreEntre(0, 10));
         }
         //			if (ent instanceof Slime){

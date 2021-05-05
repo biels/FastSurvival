@@ -373,16 +373,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(
-                new SampleSharedVoronoiPopulator()
-//                new MoonCraterPopulator(),
-//                new ElectricBossPopulator(),
-//                new FlagPopulator(),
-//                new MoonMagicTreePopulator(),
-//                new ClaySpiralPopulator(),
-////                new ClayColorPopulator(),
-//                new MiniMazePopulator(),
-//                new RocketPopulator(),
-//                new MoonBasePopulator()
+                new SampleSharedVoronoiPopulator(),
+                new MoonCraterPopulator(),
+                new ElectricBossPopulator(),
+                new FlagPopulator(),
+                new MoonMagicTreePopulator(),
+                new ClaySpiralPopulator(),
+//                new ClayColorPopulator(),
+                new MiniMazePopulator(),
+                new RocketPopulator(),
+                new MoonBasePopulator()
         );
     }
 

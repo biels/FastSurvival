@@ -11,6 +11,9 @@ repositories {
     maven {
         url = "https://oss.sonatype.org/content/repositories/snapshots/"
     }
+    maven {
+        url "https://repo.spongepowered.org/repository/maven-public/"
+    }
 }
 //def defaultEncoding = 'UTF-8'
 //compileJava {
@@ -32,6 +35,8 @@ dependencies {
     compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
 
+    implementation "org.spongepowered:noise:2.0.0-SNAPSHOT"
+
     testCompileOnly(
             'junit:junit:4.12'
     )
@@ -45,6 +50,7 @@ dependencies {
             'org.junit.platform:junit-platform-runner:1.1.0'
     )
     implementation 'org.jetbrains:annotations:15.0'
+
 }
 
 test {

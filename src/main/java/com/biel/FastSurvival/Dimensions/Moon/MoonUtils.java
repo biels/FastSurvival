@@ -10,6 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import javax.rmi.CORBA.Util;
@@ -94,7 +96,18 @@ public class MoonUtils {
         int highestBlockYAt = getMoon().getHighestBlockYAt(moonLocation.getBlockX(), moonLocation.getBlockZ());
         moonLocation.setY(highestBlockYAt + 1);
         p.teleport(moonLocation);
+//        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
+
         //p.setBedSpawnLocation(moonLocation, true);
+    }
+    public static void giveMoonPotionEffects(Player p){
+        p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
+
+
+    }
+    public static void clearMoonPotionEffects(Player p){
+        p.removePotionEffect(PotionEffectType.JUMP);
+
     }
 
     public static void teleportPlayerToEarth(Player p) {
