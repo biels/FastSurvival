@@ -1,10 +1,12 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
 import com.biel.FastSurvival.Dimensions.Sky.hexgen.SkyHexChunkGenerator;
+import com.biel.FastSurvival.Utils.FontRenderer;
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise.VoronoiPoint;
 import com.biel.FastSurvival.Utils.Utils;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -189,7 +191,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                         // Specific to block
                         double distance = thisBlock.distance(point);
-                        double maxElevation = (isXL ? 70 : 9) * size + 1;
+                        double maxElevation = (isXL ? 60 : 9) * size + 1;
 
 //                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
                         double relDist = distance / r;
@@ -203,12 +205,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
                             simplex.setFrequency(15.0);
                             Cylinder cylinder = new Cylinder(simplex);
                             float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
-                            double rawCylNoise = cylinder.getValue(1 * 180 / Math.PI, 0);
+                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
                             rawCylNoise = biasFunction(rawCylNoise, 0.16);
                             double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 
                             double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
-                            if(relDist > 0.5 && ivn.isXL ) craterOffset = craterOffset + (cylNoise * 1.5 );
+                            if (relDist > 0.5 && ivn.isXL) craterOffset = craterOffset + (cylNoise * 1.5);
 
                             // Materials
                             if (!matLocked) {
@@ -227,7 +229,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 mat = Material.WHITE_CONCRETE;
                                 double x1 = 1 - biasFunction(1 - relDist, 0.2);
                                 double simplexMaxValue = simplex.getMaxValue();
-                                if(rawCylNoise < 1){
+                                if (cylNoise < 1) {
                                     mat = Material.WHITE_CONCRETE_POWDER;
                                 }
 //                                if (Utils.sigmoid(rawCylNoise - 1) + 1 < (1 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 1.0 ) / 2) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
@@ -382,6 +384,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
         return;
     }
 
+
     public void vpCommand(Player p, String[] args) {
         String cmd = args[0];
 
@@ -476,6 +479,114 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                     }
                 });
+            }
+        } else if (cmd.equalsIgnoreCase("d")) {
+            ///
+            int r = 10;
+
+
+            List<Material> wools = Arrays.asList(
+                    Material.BLUE_WOOL,
+                    Material.WHITE_WOOL,
+                    Material.BLACK_WOOL,
+                    Material.GREEN_WOOL,
+                    Material.BROWN_WOOL,
+                    Material.CYAN_WOOL,
+                    Material.GRAY_WOOL
+            );
+
+
+            if (args.length >= 2) r = Integer.parseInt(args[1]);
+            for (int ix = -r; ix < r; ix++) {
+                for (int iz = -r; iz < r; iz++) {
+                    Chunk source = p.getLocation().add(16 * ix, 0, 16 * iz).getChunk();
+//        @NotNull List<VoronoiPoint> neighbourPointsWithId = allIvns.stream()
+//                .flatMap(ivn -> ivn.getNeighbourPointsWithId(source.getX(), source.getZ(), 1).stream())
+//                .collect(Collectors.toList());
+//        List<VoronoiPoint> points = neighbourPointsWithId
+//                .stream()
+//                .sorted((VoronoiPoint p1, VoronoiPoint p2) -> {
+//                    double v = p1.vector.distanceSquared(thisChunk) - p2.vector.distanceSquared(thisChunk);
+//                    return (int) v;
+//                }).collect(Collectors.toList());
+                    Vector thisChunk = source.getBlock(8, 0, 8).getLocation().toVector();
+
+                    // TODO Use hash or additional random seed info for whether this is actually generated
+                    for (int i = 0; i < allIvns.size(); i++) {
+                        InfiniteVoronoiNoise ivn = allIvns.get(i);
+
+                        Vector superChunkVec = ivn.getSuperChunkFromChunk(source.getX(), source.getZ());
+
+                        List<VoronoiPoint> neighbourPointsWithId = ivn
+                                .getNeighbourPointsWithId(superChunkVec.getBlockX(), superChunkVec.getBlockZ(), 0);
+                        VoronoiPoint thisPoint = neighbourPointsWithId.get(0);
+                        Vector pointVec = thisPoint.vector.clone();
+                        double distance = pointVec.distance(thisChunk);
+
+                        boolean inAABB = pointVec.isInAABB(
+                                source.getBlock(0, 0, 0).getLocation().toVector(),
+                                source.getBlock(15, 1, 15).getLocation().toVector()
+                        );
+//        Chunk closestPointChunk = pointVec.toLocation(world).getBlock().getChunk();
+                        boolean isInChunk = (int) (pointVec.getBlockX() / 16) == source.getX() &&
+                                pointVec.getBlockZ() / 16 == source.getZ();
+//
+                        if (inAABB) {
+                            MoonChunkGenerator.CraterInfo ci = MoonChunkGenerator.CraterInfo.fromId(thisPoint.id, thisPoint.vector, ivn);
+                            if (!ci.generated) continue;
+                            if (ci.isXL)
+                                System.out.println("In chunk: " + ci.id + " " + ci.r + " xl: " + ci.isXL);
+                            World world = p.getWorld();
+                            Location l1 = pointVec.toLocation(world);
+                            int highestBlockYAt = world.getHighestBlockYAt(l1);
+                            // Populate
+                            String str = String.valueOf(i % 100);
+                            if (ci.isXL) str += "XL";
+                            int size = 10;
+                            l1.setY(highestBlockYAt);
+                            l1.getBlock().setType(i == 0 ? Material.LAPIS_BLOCK : Material.REDSTONE_BLOCK);
+                            Vector lateralAxis = new Vector(0, 0, 1);
+//                l.add(lateralAxis.clone().multiply(str.length() * size / 2));
+                            Vector up = new Vector(0, 1, 0);
+                            l1.add(up.clone().multiply(13));
+//                if (random.nextInt(100) < 30)
+                            int fontSize = 17;
+                            if (ci.isXL) fontSize = 20;
+                            if (ci.isXL)
+                                Utils.getLine(l1.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
+
+
+
+                            ///
+
+                            Vector scv = ivn.getSuperChunkFromLoc(thisPoint.vector);
+                            Vector start = ivn.getSuperChunkVector(scv.getBlockX(), scv.getBlockZ());
+                            Vector offset = ivn.getSuperChunkPointOffset(scv.getBlockX(), scv.getBlockZ());
+                            World w = p.getWorld();
+//                    int highestBlockYAt = l.getWorld().getHighestBlockYAt(start.toLocation(w));
+                            int y = Math.max(0 + 4, 130) + i;
+                            start.setY(y);
+//                    p.teleport(start.toLocation(w));
+                            Vector end = start.clone().add(new Vector(ivn.SC_BLOCK_WIDTH, 0, ivn.SC_BLOCK_WIDTH));
+                            int finalI = i;
+                            Vector offsetEnd = thisPoint.vector.clone().setY(y);
+                            Material wool = wools.get(finalI % wools.size());
+                            l1.setY(y - 1);
+                            FontRenderer.renderText(str, l1, lateralAxis.multiply(1), up, fontSize, wool);
+                            Utils.getLineBetweenPoints(start, offsetEnd)
+                                    .forEach(b -> b.toLocation(w).getBlock().setType(wool));
+                            Utils.get2dRectangleAround(start.getMidpoint(end), new Vector(0, 1, 0), new Vector(0, 0, 1), ivn.SC_BLOCK_WIDTH, ivn.SC_BLOCK_WIDTH)
+                                    .forEach(b -> b.toLocation(w).getBlock().setType(wool));
+                            start.toLocation(w).getBlock().setType(Material.DIAMOND_BLOCK);
+                            offsetEnd.toLocation(w).getBlock().setType(Material.REDSTONE_BLOCK);
+
+
+                            ////
+//            l.getBlock().setType(Material.LAPIS_BLOCK);
+                        }
+//            thisChunk.toLocation(world).getBlock().setType(Material.EMERALD_BLOCK);
+                    }
+                }
             }
         }
     }

@@ -65,7 +65,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 if(ci.isXL) str += "XL";
                 int size = 10;
                 l.setY(highestBlockYAt);
-                l.getBlock().setType(i == 0 ? Material.LAPIS_BLOCK : Material.REDSTONE_BLOCK);
+//                l.getBlock().setType(i == 0 ? Material.LAPIS_BLOCK : Material.REDSTONE_BLOCK);
                 Vector lateralAxis = new Vector(0, 0, 1);
 //                l.add(lateralAxis.clone().multiply(str.length() * size / 2));
                 Vector up = new Vector(0, 1, 0);
@@ -73,8 +73,8 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
 //                if (random.nextInt(100) < 30)
                 int fontSize = 17;
                 if(ci.isXL) fontSize = 20;
-                if(ci.isXL) Utils.getLine(l.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
-                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
+//                if(ci.isXL) Utils.getLine(l.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
+//                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
 //            l.getBlock().setType(Material.LAPIS_BLOCK);
             }
 //            thisChunk.toLocation(world).getBlock().setType(Material.EMERALD_BLOCK);
