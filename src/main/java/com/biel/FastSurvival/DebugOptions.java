@@ -38,6 +38,6 @@ public class DebugOptions {
         return false;
     }
     public static boolean moonGenerationMode(){
-        return true;
+        return false;
     }
 }

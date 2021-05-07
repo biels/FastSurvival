@@ -94,7 +94,7 @@ public final class FastSurvival extends JavaPlugin {
 
         FileExtraction.extractResourcesFolder("Lang", false);
 //
-        System.out.println("AAAA onEnable");
+        System.out.println("Fast Survival Enabled");
 
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         getServer().getPluginManager().registerEvents(new CustomBowsListener(), this);
@@ -382,6 +382,10 @@ public final class FastSurvival extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("vp")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
+                if (!(p.isOp())) {
+                    p.sendMessage("You must be an operator to use this command.");
+                    return true;
+                }
                 MoonChunkGenerator generator = (MoonChunkGenerator) MoonUtils.getMoon().getGenerator();
                 if (generator != null) {
                     generator.vpCommand(p, args);

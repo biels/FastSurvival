@@ -66,12 +66,12 @@ public class EventListener implements Listener {
 //            world.getPopulators().add(new IcyArchPopulator());
         }
         if (MoonUtils.IsMoon(world)) {
-            world.setMonsterSpawnLimit(100);
+//            world.setMonsterSpawnLimit(80);
             world.setGameRuleValue("doDaylightCycle", "false");
             world.setGameRuleValue("doFireTick", "false");
-            world.setDifficulty(Difficulty.NORMAL);
-            world.setTime(6000); //15000
-            Bukkit.broadcastMessage("getViewDistance: "+ world.getViewDistance());
+            world.setDifficulty(Difficulty.HARD);
+            world.setTime(114000); //15000
+//            Bukkit.broadcastMessage("getViewDistance: "+ world.getViewDistance());
         }
 
         if (Bukkit.getWorlds().size() > 1 && Bukkit.getWorlds().get(1).equals(world)) {

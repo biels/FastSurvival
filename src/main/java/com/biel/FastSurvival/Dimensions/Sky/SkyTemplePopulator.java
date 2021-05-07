@@ -124,7 +124,7 @@ public class SkyTemplePopulator extends BlockPopulator {
     }
 
     public void generateDiagonalBlock(Location center, BlockFace direction) {
-        Bukkit.broadcastMessage("direction:" + direction.toString());
+//        Bukkit.broadcastMessage("direction:" + direction.toString());
         List<Vector> columnVectors = new ArrayList<>();
         Vector column1 = (new Vector(5, 0, 4));
         Vector column2 = (new Vector(4, 0, 5));

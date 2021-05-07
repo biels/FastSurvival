@@ -21,7 +21,7 @@ public class SlimeBossPopulator extends BlockPopulator {
             return;
         }
         
-        Bukkit.broadcastMessage("Populated");
+//        Bukkit.broadcastMessage("Populated");
         int sizeX = 16;//Utils.NombreEntre(20, 40);
         int sizeY = 6;
         int sizeZ = 16;//Utils.NombreEntre(20, 40);

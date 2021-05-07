@@ -251,8 +251,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 if (isXL) {
                                     xlOffset += 12;
                                 }
-                                mat = type == 0 ? Material.COAL_BLOCK : Material.GOLD_BLOCK;
-                                matLocked = true;
+//                                mat = type == 0 ? Material.COAL_BLOCK : Material.GOLD_BLOCK;
+//                                matLocked = true;
                             }
                         }
 
@@ -264,7 +264,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 height += offset;
                 height += xlOffset;
                 height += cylOffset;
-//                height += hillOffset;
+                height += hillOffset;
                 height += noiseOffset;
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
@@ -534,8 +534,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                         if (inAABB) {
                             MoonChunkGenerator.CraterInfo ci = MoonChunkGenerator.CraterInfo.fromId(thisPoint.id, thisPoint.vector, ivn);
                             if (!ci.generated) continue;
-                            if (ci.isXL)
-                                System.out.println("In chunk: " + ci.id + " " + ci.r + " xl: " + ci.isXL);
+//                            if (ci.isXL)
+//                                System.out.println("In chunk: " + ci.id + " " + ci.r + " xl: " + ci.isXL);
                             World world = p.getWorld();
                             Location l1 = pointVec.toLocation(world);
                             int highestBlockYAt = world.getHighestBlockYAt(l1);
@@ -630,16 +630,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         return Arrays.asList(
-                new SampleSharedVoronoiPopulator()
-//                new MoonCraterPopulator(),
-//                new ElectricBossPopulator(),
-//                new FlagPopulator(),
-//                new MoonMagicTreePopulator(),
-//                new ClaySpiralPopulator(),
-//                new ClayColorPopulator(),
-//                new MiniMazePopulator(),
-//                new RocketPopulator(),
-//                new MoonBasePopulator()
+                new SampleSharedVoronoiPopulator(),
+                new MoonCraterPopulator(),
+                new ElectricBossPopulator(),
+                new FlagPopulator(),
+                new MoonMagicTreePopulator(),
+                new ClaySpiralPopulator(),
+                new ClayColorPopulator(),
+                new MiniMazePopulator(),
+                new RocketPopulator(),
+                new MoonBasePopulator()
         );
     }
 
