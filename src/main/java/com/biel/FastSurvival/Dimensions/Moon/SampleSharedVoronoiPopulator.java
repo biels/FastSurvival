@@ -61,7 +61,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 Location l = pointVec.toLocation(world);
                 int highestBlockYAt = world.getHighestBlockYAt(l);
                 // Populate
-                String str = String.valueOf(ci.id % 100);
+                String str = String.valueOf(i % 100);
                 if(ci.isXL) str += "XL";
                 int size = 10;
                 l.setY(highestBlockYAt);

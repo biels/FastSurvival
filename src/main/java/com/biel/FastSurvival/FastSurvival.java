@@ -379,6 +379,15 @@ public final class FastSurvival extends JavaPlugin {
                 HotReload.compileAndDeploy();
             }
         }
+        if (cmd.getName().equalsIgnoreCase("vp")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                MoonChunkGenerator generator = (MoonChunkGenerator) MoonUtils.getMoon().getGenerator();
+                if (generator != null) {
+                    generator.vpCommand(p, args);
+                }
+            }
+        }
         if (cmd.getName().equalsIgnoreCase("testarea")) { // If the player typed /basic then do the following...
             if (sender instanceof Player) {
                 Player p = (Player) sender;

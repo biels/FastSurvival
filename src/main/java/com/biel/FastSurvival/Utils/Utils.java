@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
+import javax.rmi.CORBA.Util;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -834,6 +835,25 @@ public class Utils {
         return l;
     }
 
+    public static List<Vector> getLineBetweenPoints(Vector origin, Vector end) {
+        ArrayList<Vector> l = new ArrayList<>();
+        Vector current = origin.clone();
+        Vector currentAtOrig = new Vector(0, 0, 0);
+        Vector vector = Utils.CrearVector(origin, end);
+        Vector direction = vector.clone().normalize();
+
+        int i = 0;
+        while (currentAtOrig.length() <= vector.length()) {
+            l.add(current.clone());
+            current.add(direction);
+            currentAtOrig.add(direction);
+            i++;
+            if(i > 1000) break;
+        }
+        return l;
+    }
+
+
     public static List<Vector> getLineBetween(Vector origin, Vector end) {
         Vector direction = Utils.CrearVector(origin, end);
         double length = Math.round(direction.length());
@@ -849,6 +869,13 @@ public class Utils {
         return getLineBetween(origin.getLocation().toVector(), end.getLocation().toVector());
     }
 
+//    public static List<Vector> get2dRectangleAround(Vector a, Vector b) {
+//        Vector center = a.getMidpoint(b);
+//        Vector up = a.getCrossProduct(b);
+//        Vector front = Utils.CrearVector(a, b).angle()
+//
+//        return get2dRectangleAround(center, up, )
+//    }
     public static List<Vector> get2dRectangleAround(Vector center, Vector up, Vector front, int xw, int zw) {
         ArrayList<Vector> l = new ArrayList<>();
         up = up.normalize();

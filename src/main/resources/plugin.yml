@@ -23,6 +23,9 @@ commands:
      description: Test command.
    deploy:
      description: Test command.
+
+   vp:
+     description: Voronoi points.
    skycrystals:
      description: Get a stack of sky crystals.
    recall:

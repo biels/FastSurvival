@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.Dimensions.Sky.hexgen.SkyHexChunkGenerator;
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise.VoronoiPoint;
@@ -7,6 +8,7 @@ import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.Vector;
@@ -19,6 +21,8 @@ import org.spongepowered.noise.model.Cylinder;
 import org.spongepowered.noise.module.source.Cylinders;
 import org.spongepowered.noise.module.source.Simplex;
 
+import javax.rmi.CORBA.Util;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -136,12 +140,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
         ChunkData chunk = createChunkData(world);
         InfiniteVoronoiNoise xlIvn = getXLIvn(world, random);
         List<InfiniteVoronoiNoise> allIvns = getInfiniteVoronoiNoises(world, random);
-
-        List<List<VoronoiPoint>> allPointsWithId = allIvns.stream()
-                .map(ivn -> {
-                    Vector superChunkVec = ivn.getSuperChunkFromChunk(cx, cz);
-                    return ivn.getNeighbourPointsWithId(superChunkVec.getBlockX(), superChunkVec.getBlockZ(), 3);
-                }).collect(Collectors.toList());
+        Vector startOfChunk = new Vector(cx * 16, 0, cz * 16);
+        List<List<VoronoiPoint>> allPointsWithId = new ArrayList<>();
+        for (int i = 0; i < allIvns.size(); i++) {
+            InfiniteVoronoiNoise allIvn = allIvns.get(i);
+            List<VoronoiPoint> neighbourPointsWithId = allIvn.getNeighbourPointsWithId(startOfChunk.toLocation(world), 3);
+            allPointsWithId.add(neighbourPointsWithId);
+        }
         // Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::getBlockY).map(integer -> Integer.toString(integer)).collect(Collectors.joining(", ")));
 
         for (int x = 0; x < 16; x++) {
@@ -197,13 +202,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
                             simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
                             simplex.setFrequency(15.0);
                             Cylinder cylinder = new Cylinder(simplex);
-                            float angle = new Vector(0, 0, 1).angle(Utils.CrearVector(point, thisBlock));
-                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
+                            float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
+                            double rawCylNoise = cylinder.getValue(1 * 180 / Math.PI, 0);
                             rawCylNoise = biasFunction(rawCylNoise, 0.16);
                             double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 
                             double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
-//                            craterOffset += (cylNoise - 0.8) * 1.0;
+                            if(relDist > 0.5 && ivn.isXL ) craterOffset = craterOffset + (cylNoise * 1.5 );
 
                             // Materials
                             if (!matLocked) {
@@ -222,10 +227,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 mat = Material.WHITE_CONCRETE;
                                 double x1 = 1 - biasFunction(1 - relDist, 0.2);
                                 double simplexMaxValue = simplex.getMaxValue();
-                                if (Utils.sigmoid(rawCylNoise - 1) * 2 + 1 < (1.4 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 0.0)) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
+                                if(rawCylNoise < 1){
                                     mat = Material.WHITE_CONCRETE_POWDER;
-//                                    cylOffset -= 0.5;
                                 }
+//                                if (Utils.sigmoid(rawCylNoise - 1) + 1 < (1 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 1.0 ) / 2) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
+//                                    mat = Material.WHITE_CONCRETE_POWDER;
+////                                    cylOffset -= 0.5;
+//                                }
 
                             }
                             if (xlOffset < 0 || offset < 0) craterOffset /= 2;
@@ -341,7 +349,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         public static double ridgeLerpFn(double x) {
             if (x < CraterInfo.DOWN_POINT) return 0;
-            if (x < CraterInfo.UP_POINT) return 9.66*x -5.27;
+            if (x < CraterInfo.UP_POINT) return 9.66 * x - 5.27;
             return Utils.clamp((-(x * 2.85) + 2.85), 0, 1);
         }
 
@@ -367,6 +375,109 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private double biasFunction(double x, double bias) {
         double k = Math.pow(1.0 - bias, 3);
         return (x * k) / (x * k - x + 1);
+    }
+
+    public void getClosestPoints(Location l) {
+
+        return;
+    }
+
+    public void vpCommand(Player p, String[] args) {
+        String cmd = args[0];
+
+        Location l = p.getLocation();
+        List<InfiniteVoronoiNoise> allIvns = getInfiniteVoronoiNoises(l.getWorld(), null);
+
+
+        if (cmd.equalsIgnoreCase("draw")) {
+            int ivnIndexOnly = -1;
+            if (args.length >= 2) ivnIndexOnly = Integer.parseInt(args[1]);
+            List<InfiniteVoronoiNoise> usingIvns;
+            if (ivnIndexOnly >= 0) {
+                usingIvns = new ArrayList<>();
+                usingIvns.add(allIvns.get(ivnIndexOnly));
+            } else {
+                usingIvns = allIvns;
+            }
+
+            List<Material> wools = Arrays.asList(
+                    Material.BLUE_WOOL,
+                    Material.WHITE_WOOL,
+                    Material.BLACK_WOOL,
+                    Material.GREEN_WOOL,
+                    Material.BROWN_WOOL,
+                    Material.CYAN_WOOL,
+                    Material.GRAY_WOOL
+            );
+
+            for (int i = 0, usingIvnsSize = usingIvns.size(); i < usingIvnsSize; i++) {
+                InfiniteVoronoiNoise ivn = usingIvns.get(i);
+                List<VoronoiPoint> ivnPoints = ivn.getNeighbourPointsWithId(l, ivn.isXL ? 0 : 1);
+
+                int finalIvnIndexOnly = ivnIndexOnly;
+                ivnPoints.forEach(vp -> {
+                    Vector scv = ivn.getSuperChunkFromLoc(vp.vector);
+                    Vector start = ivn.getSuperChunkVector(scv.getBlockX(), scv.getBlockZ());
+                    Vector offset = ivn.getSuperChunkPointOffset(scv.getBlockX(), scv.getBlockZ());
+                    World w = p.getWorld();
+//                    int highestBlockYAt = l.getWorld().getHighestBlockYAt(start.toLocation(w));
+                    int y = Math.max(0 + 4, 130) + finalIvnIndexOnly;
+                    start.setY(y);
+//                    p.teleport(start.toLocation(w));
+                    Vector end = start.clone().add(new Vector(ivn.SC_BLOCK_WIDTH, 0, ivn.SC_BLOCK_WIDTH));
+                    Utils.getLineBetweenPoints(start, vp.vector.clone().setY(y))
+                            .forEach(b -> b.toLocation(w).getBlock().setType(wools.get(finalIvnIndexOnly % wools.size())));
+                    Utils.get2dRectangleAround(start.getMidpoint(end), new Vector(0, 1, 0), new Vector(0, 0, 1), ivn.SC_BLOCK_WIDTH, ivn.SC_BLOCK_WIDTH)
+                            .forEach(b -> b.toLocation(w).getBlock().setType(wools.get(finalIvnIndexOnly % wools.size())));
+                    start.toLocation(w).getBlock().setType(Material.REDSTONE_BLOCK);
+                    end.toLocation(w).getBlock().setType(Material.DIAMOND_BLOCK);
+
+                });
+
+            }
+
+
+//            for (int i = 0, listOfPointsWithIdSize = listOfPointsWithId.size(); i < listOfPointsWithIdSize; i++) {
+//                List<VoronoiPoint> list = listOfPointsWithId.get(i);
+//                list.stream().forEach(vp -> {
+//                    Utils.getLine()
+//                });
+//            }
+        } else if (cmd.equalsIgnoreCase("tp")) {
+            // <ivnIdx> <orig | offset>
+            int ivnIndexOnly = -1;
+            if (args.length >= 2) ivnIndexOnly = Integer.parseInt(args[1]);
+            List<InfiniteVoronoiNoise> usingIvns;
+            if (ivnIndexOnly >= 0) {
+                usingIvns = new ArrayList<>();
+                usingIvns.add(allIvns.get(ivnIndexOnly));
+            } else {
+                usingIvns = allIvns;
+            }
+
+
+            for (int i = 0, usingIvnsSize = usingIvns.size(); i < usingIvnsSize; i++) {
+                InfiniteVoronoiNoise ivn = usingIvns.get(i);
+                List<VoronoiPoint> ivnPoints = ivn.getNeighbourPointsWithId(l, 0);
+
+                int finalI = i;
+                ivnPoints.forEach(vp -> {
+                    Vector scv = ivn.getSuperChunkFromLoc(vp.vector);
+                    Vector start = ivn.getSuperChunkVector(scv.getBlockX(), scv.getBlockZ());
+                    Vector offset = ivn.getSuperChunkPointOffset(scv.getBlockX(), scv.getBlockZ());
+                    if (args[2].equalsIgnoreCase("orig")) {
+                        Location location = start.toLocation(p.getWorld());
+                        location.setY(120);
+                        p.teleport(location);
+                    } else {
+                        Location location = start.clone().add(offset).toLocation(p.getWorld());
+                        location.setY(120);
+                        p.teleport(location);
+
+                    }
+                });
+            }
+        }
     }
 
 //    private Vector getSuperChunkFromChunk(int cx, int cz) {

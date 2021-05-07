@@ -1,6 +1,7 @@
 package com.biel.FastSurvival.Utils.Noise;
 
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +33,9 @@ public class InfiniteVoronoiNoise {
     public Vector getSuperChunkFromChunk(int cx, int cz) {
         return new Vector(cx / CHUNKS_IN_SC, 0, cz / CHUNKS_IN_SC);
     }
+    public Vector getSuperChunkFromLoc(Vector v) {
+        return getSuperChunkFromChunk(v.getBlockX() / 16, v.getBlockZ() / 16);
+    }
 
     public Vector getSuperChunkPointOffset(int scx, int scz) {
         Random r1 = new Random(getSuperChunkId(scx, scz) * seed);
@@ -49,6 +53,10 @@ public class InfiniteVoronoiNoise {
 //        return xx.hashLong(id);
     }
 
+    public List<VoronoiPoint> getNeighbourPointsWithId(Location l, int overscan) {
+        Vector superChunkVec = this.getSuperChunkFromChunk(l.getBlockX() / 16, l.getBlockZ() / 16);
+        return getNeighbourPointsWithId(superChunkVec.getBlockX(), superChunkVec.getBlockZ(), overscan);
+    }
     @NotNull
     public List<VoronoiPoint> getNeighbourPointsWithId(int scx, int scz, int overscan) {
         List<VoronoiPoint> points = new ArrayList<>();
