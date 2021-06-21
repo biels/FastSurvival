@@ -1,6 +1,5 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
-import com.biel.FastSurvival.Dimensions.Sky.hexgen.SkyHexChunkGenerator;
 import com.biel.FastSurvival.Utils.FontRenderer;
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise;
@@ -17,19 +16,14 @@ import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.noise.Noise;
 import org.spongepowered.noise.NoiseQualitySimplex;
 import org.spongepowered.noise.model.Cylinder;
-import org.spongepowered.noise.module.source.Cylinders;
 import org.spongepowered.noise.module.source.Simplex;
 
-import javax.rmi.CORBA.Util;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class MoonChunkGenerator extends ChunkGenerator {
     private NoiseGenerator generator;
@@ -150,7 +144,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             allPointsWithId.add(neighbourPointsWithId);
         }
         // Bukkit.broadcastMessage(allPointsWithId.stream().map(Vector::getBlockY).map(integer -> Integer.toString(integer)).collect(Collectors.joining(", ")));
-
+        List<Material> acidLakeMaterials = CraterInfo.getAcidLakeMaterials();
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 int baseline = 80;
@@ -165,6 +159,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 double cylOffset = 0;
                 Material mat = MoonUtils.getMoonSurfaceMaterial();
                 boolean matLocked = false;
+                boolean isAcidLakeBlock = false;
+                Cylinder acidCylinder = null;
+                Vector xlPoint = null;
                 Vector thisBlock = new Vector(cx * 16 + x, 0, cz * 16 + z);
                 for (int ivnIndex = 0; ivnIndex < allIvns.size(); ivnIndex++) {
                     InfiniteVoronoiNoise ivn = allIvns.get(ivnIndex);
@@ -175,6 +172,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                         boolean isXL = ivn == xlIvn;
                         VoronoiPoint voronoiPoint = points.get(pointIndex);
                         Vector point = voronoiPoint.vector.clone();
+                        if (isXL) xlPoint = point;
                         long id = voronoiPoint.id;
 
                         // Info
@@ -191,69 +189,163 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                         // Specific to block
                         double distance = thisBlock.distance(point);
-                        double maxElevation = (isXL ? 60 : 9) * size + 1;
 
-//                        double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
-                        double relDist = distance / r;
+                        if (ci.craterKind == CraterInfo.CraterKind.CRATER) {
+                            // Crater
+                            double maxElevation = (isXL ? 60 : 9) * size + 1;
+                            // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+                            double relDist = distance / r;
 
-                        if (distance < r) {
-                            // Block is inside crater radius
+                            if (distance < r) {
+                                // Block is inside crater radius
 
-                            Simplex simplex = new Simplex();
-                            simplex.setSeed((int) (id));
-                            simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
-                            simplex.setFrequency(15.0);
-                            Cylinder cylinder = new Cylinder(simplex);
-                            float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
-                            double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
-                            rawCylNoise = biasFunction(rawCylNoise, 0.16);
-                            double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
+                                Simplex simplex = new Simplex();
+                                simplex.setSeed((int) (id));
+                                simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
+                                simplex.setFrequency(15.0);
+                                Cylinder cylinder = new Cylinder(simplex);
+                                float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
+                                double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
+                                rawCylNoise = biasFunction(rawCylNoise, 0.16);
+                                double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 
-                            double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
-                            if (relDist > 0.5 && ivn.isXL) craterOffset = craterOffset + (cylNoise * 1.5);
+                                double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
+                                if (relDist > 0.5 && ivn.isXL) craterOffset = craterOffset + (cylNoise * 1.5);
 
-                            // Materials
-                            if (!matLocked) {
-                                if (mat == Material.STONE) {
-                                    mat = Material.COBBLESTONE;
-                                } else {
-                                    mat = Material.STONE;
+                                // Materials
+                                if (!matLocked) {
+                                    if (mat == Material.STONE) {
+                                        mat = Material.COBBLESTONE;
+                                    } else {
+                                        mat = Material.STONE;
+                                    }
+                                    if (isXL) {
+                                        mat = Material.WHITE_CONCRETE;
+                                    }
                                 }
-                                if (isXL) {
+
+                                if (relDist > CraterInfo.UP_POINT && ci.isXL) {
+                                    // Outside area
                                     mat = Material.WHITE_CONCRETE;
-                                }
-                            }
-
-                            if (relDist > CraterInfo.UP_POINT && ci.isXL) {
-                                // Outside area
-                                mat = Material.WHITE_CONCRETE;
-                                double x1 = 1 - biasFunction(1 - relDist, 0.2);
-                                double simplexMaxValue = simplex.getMaxValue();
-                                if (cylNoise < 1) {
-                                    mat = Material.WHITE_CONCRETE_POWDER;
-                                }
+                                    double x1 = 1 - biasFunction(1 - relDist, 0.2);
+                                    double simplexMaxValue = simplex.getMaxValue();
+                                    if (cylNoise < 1) {
+                                        mat = Material.WHITE_CONCRETE_POWDER;
+                                    }
 //                                if (Utils.sigmoid(rawCylNoise - 1) + 1 < (1 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 1.0 ) / 2) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
 //                                    mat = Material.WHITE_CONCRETE_POWDER;
 ////                                    cylOffset -= 0.5;
 //                                }
 
-                            }
-                            if (xlOffset < 0 || offset < 0) craterOffset /= 2;
-                            if (isXL) {
-//                                if (xlOffset < 0) craterOffset /= 2;
-                                xlOffset += (craterOffset);
-
-                            } else {
-                                offset += (craterOffset);
-                            }
-
-                            if (distance <= 2) {
-                                if (isXL) {
-                                    xlOffset += 12;
                                 }
+
+                                if (relDist < CraterInfo.DOWN_POINT && ci.isXL) {
+                                    // Interior of crater
+
+                                    // Generate ecosystems
+
+                                    // LLLDLDLD[LS] // L = Light green, D = Dark green, [LS] = Light source
+
+                                }
+
+                                if (xlOffset < 0 || offset < 0) craterOffset /= 2;
+                                if (isXL) {
+//                                if (xlOffset < 0) craterOffset /= 2;
+                                    xlOffset += (craterOffset);
+
+                                } else {
+                                    offset += (craterOffset);
+                                }
+
+
+                                if (distance <= 2) {
+                                    if (isXL) {
+                                        xlOffset += 12;
+                                    }
 //                                mat = type == 0 ? Material.COAL_BLOCK : Material.GOLD_BLOCK;
 //                                matLocked = true;
+                                }
                             }
+                        } else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
+                            // Acid Lake LAKE
+                            double maxElevation = (isXL ? 60 : 9) * size + 1;
+                            // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
+                            double relDist = distance / r;
+
+                            if (distance < r) {
+                                // Block is inside crater radius
+
+                                Simplex shapeSimplex = new Simplex();
+                                shapeSimplex.setSeed((int) (id));
+                                shapeSimplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
+                                shapeSimplex.setFrequency(2.0);
+                                acidCylinder = new Cylinder(shapeSimplex);
+
+                                Simplex simplex = new Simplex();
+                                simplex.setSeed((int) (id));
+                                simplex.setNoiseQuality(NoiseQualitySimplex.SMOOTH);
+                                simplex.setFrequency(3.0);
+                                Cylinder outShapeCyl = new Cylinder(simplex);
+
+                                float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
+
+                                double outShapeCylNoise = outShapeCyl.getValue(angle * 180 / Math.PI, 0);
+                                outShapeCylNoise = biasFunction(outShapeCylNoise, 0.16);
+                                double outShapeCylNoiseMix = Utils.mix(0, (outShapeCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
+
+                                double craterOffset = (CraterInfo.craterFunctionSmooth(relDist)) * maxElevation;
+                                if (relDist > 0.5 && ivn.isXL)
+                                    craterOffset = craterOffset + (outShapeCylNoiseMix * 1.5);
+
+                                // Materials
+                                if (!matLocked) {
+                                    if (mat == Material.STONE) {
+                                        mat = Material.COBBLESTONE;
+                                    } else {
+                                        mat = Material.STONE;
+                                    }
+                                    if (isXL) {
+                                        mat = Material.WHITE_CONCRETE;
+                                    }
+                                }
+
+                                if (relDist > CraterInfo.UP_POINT && ci.isXL) {
+                                    // Outside area
+                                    mat = Material.STONE;
+                                    double x1 = 1 - biasFunction(1 - relDist, 0.2);
+                                    double simplexMaxValue = simplex.getMaxValue();
+                                    if (outShapeCylNoiseMix < 1) {
+                                        mat = Material.WHITE_CONCRETE_POWDER;
+                                    }
+//                                if (Utils.sigmoid(outShapeCylNoise - 1) + 1 < (1 * Utils.map(relDist, CraterInfo.UP_POINT, 1, 1 - (simplexMaxValue - 1), simplexMaxValue) + 1.0 ) / 2) { // (1.0 / (1 - CraterInfo.UP_POINT) + CraterInfo.UP_POINT)// from 0.8 to 0.0 in UP_POINT to 1
+//                                    mat = Material.WHITE_CONCRETE_POWDER;
+////                                    cylOffset -= 0.5;
+//                                }
+
+                                }
+
+                                if (relDist < CraterInfo.DOWN_POINT && ci.isXL) {
+                                    double acidCylNoise = acidCylinder.getValue(angle * 180 / Math.PI, 0);
+                                    double expectedR = acidCylNoise * 30;
+                                    isAcidLakeBlock = true;
+
+                                    // LLLDLDLD[LS] // L = Light green, D = Dark green, [LS] = Light source
+
+                                }
+
+                                if (xlOffset < 0 || offset < 0) craterOffset /= 2;
+                                xlOffset += (craterOffset);
+
+
+                                if (distance <= 2) {
+                                    if (isXL) {
+                                        xlOffset += 12;
+                                    }
+//                                mat = type == 0 ? Material.COAL_BLOCK : Material.GOLD_BLOCK;
+//                                matLocked = true;
+                                }
+                            }
+// END LAKE
                         }
 
 
@@ -270,6 +362,25 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
                 }
+                if (acidCylinder != null) {
+                    float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(xlPoint.clone()));
+
+
+                    if (isAcidLakeBlock) {
+                        int liquidLevel = (int) (height - 1);
+                        int liquidHeight = acidLakeMaterials.size();
+                        int liquidFloor = liquidLevel - liquidHeight;
+                        for (int y = liquidLevel + 1; y <= height; y++) {
+                            chunk.setBlock(x, y, z, Material.AIR);
+                        }
+                        for (int y = liquidFloor; y < liquidLevel; y++) {
+                            int acidHeight = liquidHeight - (y - liquidFloor);
+                            chunk.setBlock(x, y, z, acidLakeMaterials.get(acidHeight % acidLakeMaterials.size()));
+                        }
+                    }
+
+
+                }
                 for (int y = hardenedHeight; y < height; y++) {
                     chunk.setBlock(x, y, z, mat);
                 }
@@ -285,6 +396,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
         InfiniteVoronoiNoise ivn;
         boolean generated;
         boolean isXL;
+        CraterKind craterKind = CraterKind.CRATER;
         int type;
 
         double r;
@@ -292,6 +404,33 @@ public class MoonChunkGenerator extends ChunkGenerator {
         double innerRUp;
         double downPoint;
         double innerRDown;
+
+        // In the center of the crater there is a structure (with spawners) that determines the kind of meteor
+        //
+
+
+        static enum CraterKind {
+            CRATER,
+            ACID_LAKE
+
+        }
+
+        static enum CraterMainFeature {
+            MOUNTAIN_GRAVEYARD, // Monument of
+            MEDALLION,
+            CRYSTAL,
+            GLASS_FIREPLACE,
+        }
+
+        static enum CraterEcosystem {
+            POISON_SWAMP, // Jeracraft pattern
+            ORE_SPIKES, // Of different ores
+            ORE_PATTERNS, // Simulate ore patterns with real ores
+            CRYSTALS, // With stained glass and light ik style and jeracraft style
+            ROCKET_LAUNCHPAD, // ,
+            STONE_LOOPS,
+            WATER_POND,
+        }
 
         static CraterInfo fromId(long id, Vector point, InfiniteVoronoiNoise ivn) {
             CraterInfo ci = new CraterInfo();
@@ -309,7 +448,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
-
+            if (ci.isXL && random1.nextInt(100) < 60) ci.craterKind = CraterKind.ACID_LAKE;
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
             ci.type = type;
@@ -353,6 +492,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
             if (x < CraterInfo.DOWN_POINT) return 0;
             if (x < CraterInfo.UP_POINT) return 9.66 * x - 5.27;
             return Utils.clamp((-(x * 2.85) + 2.85), 0, 1);
+        }
+
+        public static List<Material> getAcidLakeMaterials() {
+            // LLLDLDLD[LS] // L = Light green, D = Dark green, [LS] = Light source
+            return Arrays.asList(
+                    Material.LIME_STAINED_GLASS, Material.LIME_STAINED_GLASS, Material.LIME_STAINED_GLASS,
+                    Material.GREEN_STAINED_GLASS, Material.LIME_STAINED_GLASS,
+                    Material.GREEN_STAINED_GLASS, Material.LIME_STAINED_GLASS,
+                    Material.GREEN_STAINED_GLASS, Material.LAVA
+            );
         }
 
     }
@@ -554,7 +703,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
                             if (ci.isXL) fontSize = 20;
                             if (ci.isXL)
                                 Utils.getLine(l1.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
-
 
 
                             ///
