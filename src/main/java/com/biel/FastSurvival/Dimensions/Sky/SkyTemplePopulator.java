@@ -188,7 +188,7 @@ public class SkyTemplePopulator extends BlockPopulator {
         outerStairs.getBlocks().forEach(block -> block.setType(Material.CHISELED_QUARTZ_BLOCK));
         floor.getBlocks().forEach(block -> block.setType(Material.QUARTZ_BLOCK));
         getColumnVectors(floor.corners()[0].getLocation().toVector().clone().add(new Vector(3, 0, 3)), new Vector(0, 1, 0), new Vector(1, 0, 0), floor.getSizeZ() / 7, floor.getSizeX() / 7).forEach(vector -> {
-            generateColumn(vector.toLocation(center.getWorld()), 5, true);
+            generateColumn(vector.toLocation(center.getWorld()), 4, true);
         });
         generateAltar(center);
     }

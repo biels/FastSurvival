@@ -140,9 +140,9 @@ public class RecallUtils {
 		RecallLink newLink = createLinkFromLocation(l);
 		if(newLink != null){
 			p.setItemInHand(getRecallItem(newLink));
-			p.sendMessage(ChatColor.GREEN + "EnllaÁat correctament. " + ChatColor.YELLOW + Utils.writeHumanReadableLocation(newLink.getLinkLocation(), true));
+			p.sendMessage(ChatColor.GREEN + "Enlla√ßat correctament. " + ChatColor.YELLOW + Utils.writeHumanReadableLocation(newLink.getLinkLocation(), true));
 		}else{
-			p.sendMessage("NomËs pots enllaÁar sobre blocs de maragda.");
+			p.sendMessage("Nom√®s pots enlla√ßar sobre blocs de maragda.");
 		}
 	}
 	public static void playerRecallClickItemInHand(Player p){
@@ -152,12 +152,12 @@ public class RecallUtils {
 		//Reecall link
 		RecallLink link = getRecallLink(p, i);
 		if (link == null){
-			p.sendMessage("EnllaÁ no v‡lid");
+			p.sendMessage("Enlla√ß no v√†lid");
 			return;
 		}
 		Location linkLocation = link.getLinkLocation();
 		if (linkLocation == null){
-			p.sendMessage("PosiciÛ de destÌ inexistent");
+			p.sendMessage("Posici√≥ de dest√≠ inexistent");
 			return;
 		}
 		Location loc = linkLocation.clone().add(0.5,1,0.5);
@@ -318,15 +318,15 @@ public class RecallUtils {
 		if (isInRecall(p)){return;}
 		//PRE-CHECK
 		if(!checkRecallArea(p.getLocation())){
-			p.sendMessage("PosiciÛ no v‡lida per fer recall. Torna-ho a intentar en un lloc pl‡.");
+			p.sendMessage("Posici√≥ no v√†lida per fer recall. Torna-ho a intentar en un lloc pl√†.");
 			return;
 		}
 		if (!isWithinSameWorld(p, link)){
-			p.sendMessage("No pots fer recall entre mÛns.");
+			p.sendMessage("No pots fer recall entre m√≥ns.");
 			return;
 		}
 		if (!checkDestArea(link.getLinkLocation())){
-			p.sendMessage("El punt de destÌ no Ès v‡lid o est· obstruÔt.");
+			p.sendMessage("El punt de dest√≠ no √©s v√†lid o est√° obstru√Øt.");
 			return;
 		}
 		//START
@@ -375,7 +375,7 @@ public class RecallUtils {
 				
 				
 				if (damaged){
-					ply.sendMessage("Has de tenir la vida al m‡xim per poder fer recall!");
+					ply.sendMessage("Has de tenir la vida al m√†xim per poder fer recall!");
 					cancelled = true;
 				}
 				if (moved){
