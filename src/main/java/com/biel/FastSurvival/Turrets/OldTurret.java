@@ -439,9 +439,9 @@ public class OldTurret implements Listener, Serializable {
         ArmorBlocks.clear();
     }
     public void resetArmorCD(){
-        //Bukkit.broadcastMessage("CD r! : " + Integer.toString(getByTipus(TipusMillora.RESISTÈNCIA).lvl) );
+        //Bukkit.broadcastMessage("CD r! : " + Integer.toString(getByTipus(TipusMillora.RESISTÃˆNCIA).lvl) );
         if (built == false){setArmorCD(-1); return;}
-        if (getByTipus(TipusMillora.RESISTÈNCIA).lvl > 0){
+        if (getByTipus(TipusMillora.RESISTÃˆNCIA).lvl > 0){
             //Bukkit.broadcastMessage("CD ir!");
             int cd = tempsEscut;
             if (damaged == false){
@@ -506,7 +506,7 @@ public class OldTurret implements Listener, Serializable {
                 while (count <= range){
                     Block block = iLoc.getBlock().getRelative(face);
                     Location loc = block.getLocation().clone();
-                    tirarPoció(loc, PotionType.INSTANT_DAMAGE, (3 * count) + 1 + delayOffSet);
+                    tirarPocio(loc, PotionType.INSTANT_DAMAGE, (3 * count) + 1 + delayOffSet);
                     iLoc = loc;
                     count++;
                 }
@@ -520,7 +520,7 @@ public class OldTurret implements Listener, Serializable {
             if (espai <= 8){espai = 8;}
             ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
             for (Location loc : locs){
-                tirarPoció(loc, PotionType.POISON, delayOffSet);
+                tirarPocio(loc, PotionType.POISON, delayOffSet);
                 //loc.getBlock().setType(Material.COBBLESTONE);
             }
             location.getBlock().setType(Material.BEDROCK);
@@ -532,7 +532,7 @@ public class OldTurret implements Listener, Serializable {
             if (espai <= 5){espai = 5;}
             ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
             for (Location loc : locs){
-                tirarPoció(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
+                tirarPocio(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
                 count++;
             }
         }
@@ -543,13 +543,13 @@ public class OldTurret implements Listener, Serializable {
             if (espai <= 5){espai = 5;}
             ArrayList<Location> locs = Utils.getLocationsCircle(location.clone(), (double) radius, espai);
             for (Location loc : locs){
-                tirarPoció(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
-                tirarPoció(loc, PotionType.WEAKNESS, delayOffSet - (count * 2));
+                tirarPocio(loc, PotionType.WEAKNESS, delayOffSet + (count * 2));
+                tirarPocio(loc, PotionType.WEAKNESS, delayOffSet - (count * 2));
                 count++;
             }
         }
     }
-    public void tirarPoció(Location loc, PotionType type){
+    public void tirarPocio(Location loc, PotionType type){
         World world = Bukkit.getServer().getWorlds().get(0);
         Location spawnpoint = location.clone().add(new Location(world, 0.5, 3.2, 0.5));
         Vector rawDir = loc.toVector().subtract(spawnpoint.toVector());
@@ -563,10 +563,10 @@ public class OldTurret implements Listener, Serializable {
         potion.setItem(stack1);
         potion.setShooter(creador.getPlayer());
     }
-    public void tirarPoció(final Location loc, final PotionType type, int delay){
+    public void tirarPocio(final Location loc, final PotionType type, int delay){
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
             public void run() {
-                tirarPoció(loc, type);
+                tirarPocio(loc, type);
             }
         }, delay);
     }
@@ -581,13 +581,13 @@ public class OldTurret implements Listener, Serializable {
                 World world = plugin.getServer().getWorlds().get(0);
                 LivingEntity target = getTarget();
                 if (target != null){
-                    if (tirs >= 12 && getByTipus(TipusMillora.MECÀNICA).lvl > 0){
+                    if (tirs >= 12 && getByTipus(TipusMillora.MECÃ€NICA).lvl > 0){
                         AtacEspecial();
                         tirs = 0;
                         return;
                     }
-                    if (tirsquim >= 5 && getByTipus(TipusMillora.QUÍMICA).lvl > 0 && getTargets().size() > 4){
-                        int lvl = getByTipus(TipusMillora.QUÍMICA).lvl;
+                    if (tirsquim >= 5 && getByTipus(TipusMillora.QUIMICA).lvl > 0 && getTargets().size() > 4){
+                        int lvl = getByTipus(TipusMillora.QUIMICA).lvl;
                         randomPotionAttack((int) (1 + Math.rint(lvl/3)), lvl * 3 + 1);
                         tirsquim = 0;
                         return;
@@ -665,13 +665,13 @@ public class OldTurret implements Listener, Serializable {
                 final World world = plugin.getServer().getWorlds().get(0);
                 final Location centerLoc = location.clone().add(0, 1.5, 0);
                 int i1 = 0;
-                int shoots = 1 + getByTipus(TipusMillora.MECÀNICA).lvl;
+                int shoots = 1 + getByTipus(TipusMillora.MECÃ€NICA).lvl;
                 int temps = 5;
                 while (i1 < shoots){
                     plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                         public void run() {
                             int i = 0;
-                            int espai = 32 - (getByTipus(TipusMillora.MECÀNICA).lvl * 4);
+                            int espai = 32 - (getByTipus(TipusMillora.MECÃ€NICA).lvl * 4);
                             while (i <= 360){
                                 float angle = i;
                                 double toRadians = Math.PI / 180;
@@ -1013,7 +1013,7 @@ public class OldTurret implements Listener, Serializable {
 
     }
 
-    public enum TipusMillora {MAL, VELOCITAT_ATAC, FOC, DIST_ATAC, RESISTÈNCIA, QUÍMICA, MECÀNICA, MAGNETISME, APRENENTATGE};
+    public enum TipusMillora {MAL, VELOCITAT_ATAC, FOC, DIST_ATAC, RESISTÃˆNCIA, QUIMICA, MECÃ€NICA, MAGNETISME, APRENENTATGE};
     public class Millora implements Serializable{
         String name;
         String Description;
@@ -1030,7 +1030,7 @@ public class OldTurret implements Listener, Serializable {
                     material = Material.IRON_AXE;
                     Cost = 25;
                     break;
-                case VELOCITAT_ATAC:  name = "Recàrrega ràpida";
+                case VELOCITAT_ATAC:  name = "RecÃ rrega rÃ pida";
                     Description = "+10% Velocitat d'atac";
                     Cost = 38;
                     material = Material.FEATHER;
@@ -1042,23 +1042,23 @@ public class OldTurret implements Listener, Serializable {
                     Cost = 60;
                     max = 1;
                     break;
-                case DIST_ATAC:  name = "Distància atac";
+                case DIST_ATAC:  name = "DistÃ ncia atac";
                     Description = "+2 blocs dist. atac";
                     material = Material.BOW;
                     Cost = 24;
                     break;
-                case RESISTÈNCIA:  name = "Escut protector";
+                case RESISTÃˆNCIA:  name = "Escut protector";
                     Description = "-4s Regen. Escut, +6Hp escut, +2Hp";
                     material = Material.IRON_CHESTPLATE;
                     Cost = 42;
                     max = 20;
                     break;
-                case QUÍMICA:  name = "Química";
+                case QUIMICA:  name = "QuÃ­mica";
                     Description = "Habilitats amb pocions";
                     material = Material.LEGACY_BREWING_STAND_ITEM;
                     Cost = 500;
                     break;
-                case MECÀNICA:  name = "Mecànica avançada";
+                case MECÃ€NICA:  name = "MecÃ nica avanÃ§ada";
                     Description = "Habilitats especials cada 10 tirs";
                     material = Material.LEGACY_PISTON_BASE;
                     Cost = 50;
@@ -1070,7 +1070,7 @@ public class OldTurret implements Listener, Serializable {
                     Cost = 50;
                     break;
                 case APRENENTATGE:  name = "Aprenentatge";
-                    Description = "x2 punts d'experiència";
+                    Description = "x2 punts d'experiÃ¨ncia";
                     material = Material.BOOK;
                     Cost = 75;
                     break;
@@ -1098,7 +1098,7 @@ public class OldTurret implements Listener, Serializable {
                 xp = xp - getCost();
             }
             lvl = lvl + 1;
-            acciólvlUp();
+            acciolvlUp();
             if(isAdmin){
                 updateChildStats();
             }
@@ -1141,7 +1141,7 @@ public class OldTurret implements Listener, Serializable {
             itemstack.setItemMeta(meta);
             return itemstack;
         }
-        public void acciólvlUp() {
+        public void acciolvlUp() {
             switch (tipus) {
                 case MAL:
                     Atac = Atac + 2;
@@ -1158,10 +1158,10 @@ public class OldTurret implements Listener, Serializable {
                 case FOC:
                     foc = true;
                     break;
-                case DIST_ATAC:  name = "Distància atac";
+                case DIST_ATAC:  name = "DistÃ ncia atac";
                     distAtac = distAtac + 2;
                     break;
-                case RESISTÈNCIA:
+                case RESISTÃˆNCIA:
                     maxHpEscut = maxHpEscut + 6;
                     hp = hp + 2;
                     tempsEscut = tempsEscut - 4;
@@ -1169,7 +1169,7 @@ public class OldTurret implements Listener, Serializable {
                         tempsEscut = 10;
                     }
                     break;
-                case MECÀNICA:
+                case MECÃ€NICA:
 
                     break;
                 case MAGNETISME:
