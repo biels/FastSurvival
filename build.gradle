@@ -58,7 +58,7 @@ test {
 }
 idea {
     project{
-        languageLevel '1.8'
+//        languageLevel '1.8'
     }
     module {
         downloadJavadoc = true // defaults to false
@@ -71,6 +71,17 @@ jar {
         from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     }
 }
+tasks.withType(JavaCompile) {
+    // -XaddExports:java.base/sun.nio.ch=ALL-UNNAMED
+    options.compilerArgs += [
+            "--add-exports", "java.base/sun.nio.ch=ALL-UNNAMED"
+    ]
+
+}
+
+
+
+
 //task fatJar(type: Jar) {
 //    manifest.from jar.manifest
 ////    classifier = 'all'

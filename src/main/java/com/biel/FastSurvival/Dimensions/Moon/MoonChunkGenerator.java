@@ -205,7 +205,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 simplex.setFrequency(15.0);
                                 Cylinder cylinder = new Cylinder(simplex);
                                 float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
-                                double rawCylNoise = cylinder.getValue(angle * 180 / Math.PI, 0);
+                                double rawCylNoise = cylinder.get(angle * 180 / Math.PI, 0);
                                 rawCylNoise = biasFunction(rawCylNoise, 0.16);
                                 double cylNoise = Utils.mix(0, (rawCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 
@@ -228,7 +228,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     // Outside area
                                     mat = Material.WHITE_CONCRETE;
                                     double x1 = 1 - biasFunction(1 - relDist, 0.2);
-                                    double simplexMaxValue = simplex.getMaxValue();
+//                                    double simplexMaxValue = simplex.getMaxValue();
                                     if (cylNoise < 1) {
                                         mat = Material.WHITE_CONCRETE_POWDER;
                                     }
@@ -289,7 +289,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                                 float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
 
-                                double outShapeCylNoise = outShapeCyl.getValue(angle * 180 / Math.PI, 0);
+                                double outShapeCylNoise = outShapeCyl.get(angle * 180 / Math.PI, 0);
                                 outShapeCylNoise = biasFunction(outShapeCylNoise, 0.16);
                                 double outShapeCylNoiseMix = Utils.mix(0, (outShapeCylNoise + 1), CraterInfo.ridgeLerpFn(relDist));
 
@@ -313,7 +313,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     // Outside area
                                     mat = Material.STONE;
                                     double x1 = 1 - biasFunction(1 - relDist, 0.2);
-                                    double simplexMaxValue = simplex.getMaxValue();
+//                                    double simplexMaxValue = simplex.getMaxValue();
                                     if (outShapeCylNoiseMix < 1) {
                                         mat = Material.WHITE_CONCRETE_POWDER;
                                     }
@@ -325,7 +325,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 }
 
                                 if (relDist < CraterInfo.DOWN_POINT && ci.isXL) {
-                                    double acidCylNoise = acidCylinder.getValue(angle * 180 / Math.PI, 0);
+                                    double acidCylNoise = acidCylinder.get(angle * 180 / Math.PI, 0);
                                     double expectedR = acidCylNoise * 30;
                                     isAcidLakeBlock = true;
 
