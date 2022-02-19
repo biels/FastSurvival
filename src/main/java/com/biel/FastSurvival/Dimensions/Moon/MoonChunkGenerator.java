@@ -153,6 +153,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 double heightNoiseFactor = getHeightNoiseFactor(world, cx + x * 0.0625, cz + z * 0.0625, 1, hillHeightFactor); // Scaled by variance
                 double hillOffset = hillHeightFactor * 35;
                 double noiseOffset = heightNoiseFactor * 2;
+                double relativeAcidLevel = 0.32;
                 double height = baseline;
                 double offset = 0;
                 double xlOffset = 0;
@@ -163,6 +164,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 Cylinder acidCylinder = null;
                 Vector xlPoint = null;
                 Vector thisBlock = new Vector(cx * 16 + x, 0, cz * 16 + z);
+                double avgAcidLakeLevel = 0;
+                boolean isXLAcidLake = false;
+                double avgAcidLakeLevelCount = 0;
                 for (int ivnIndex = 0; ivnIndex < allIvns.size(); ivnIndex++) {
                     InfiniteVoronoiNoise ivn = allIvns.get(ivnIndex);
                     // For each ivn
@@ -189,10 +193,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                         // Specific to block
                         double distance = thisBlock.distance(point);
+// Crater
+                        double maxElevation = (isXL ? 60 : 9) * size + 1;
+                        double acidLakeLevel = (maxElevation) * relativeAcidLevel + baseline - 2;
 
                         if (ci.craterKind == CraterInfo.CraterKind.CRATER) {
-                            // Crater
-                            double maxElevation = (isXL ? 60 : 9) * size + 1;
+
                             // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
                             double relDist = distance / r;
 
@@ -267,8 +273,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 }
                             }
                         } else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
-                            // Acid Lake LAKE
-                            double maxElevation = (isXL ? 60 : 9) * size + 1;
+
+
                             // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
                             double relDist = distance / r;
 
@@ -309,6 +315,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     }
                                 }
 
+
                                 if (relDist > CraterInfo.UP_POINT && ci.isXL) {
                                     // Outside area
                                     mat = Material.STONE;
@@ -324,10 +331,15 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                                 }
 
-                                if (relDist < CraterInfo.DOWN_POINT && ci.isXL) {
+                                if (relDist < (CraterInfo.UP_POINT)) {
                                     double acidCylNoise = acidCylinder.get(angle * 180 / Math.PI, 0);
                                     double expectedR = acidCylNoise * 30;
-                                    isAcidLakeBlock = true;
+                                    if(isXL) isXLAcidLake = true;
+                                    if(!isXLAcidLake || isXL){
+                                        avgAcidLakeLevel += acidLakeLevel;
+                                        avgAcidLakeLevelCount += 1;
+                                    }
+
 
                                     // LLLDLDLD[LS] // L = Light green, D = Dark green, [LS] = Light source
 
@@ -352,12 +364,22 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //                    int yOffset = 0;
                     }
                 }
+                avgAcidLakeLevel = avgAcidLakeLevel / avgAcidLakeLevelCount;
+//                if (isAcidLakeBlock) {
+//                    noiseOffset /= 4;
+//                    offset /= 2;
+//                    offset += 10;
+//                }
                 // Add offsets
                 height += offset;
                 height += xlOffset;
                 height += cylOffset;
                 height += hillOffset;
                 height += noiseOffset;
+
+                int liquidDepth = acidLakeMaterials.size();
+                if(height < avgAcidLakeLevel - liquidDepth) height = avgAcidLakeLevel - liquidDepth;
+
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
                     chunk.setBlock(x, y, z, MoonUtils.getMoonInnerMaterial());
@@ -366,23 +388,25 @@ public class MoonChunkGenerator extends ChunkGenerator {
                     float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(xlPoint.clone()));
 
 
-                    if (isAcidLakeBlock) {
-                        int liquidLevel = (int) (height - 1);
-                        int liquidHeight = acidLakeMaterials.size();
-                        int liquidFloor = liquidLevel - liquidHeight;
-                        for (int y = liquidLevel + 1; y <= height; y++) {
-                            chunk.setBlock(x, y, z, Material.AIR);
-                        }
-                        for (int y = liquidFloor; y < liquidLevel; y++) {
-                            int acidHeight = liquidHeight - (y - liquidFloor);
-                            chunk.setBlock(x, y, z, acidLakeMaterials.get(acidHeight % acidLakeMaterials.size()));
-                        }
-                    }
-
-
                 }
+
                 for (int y = hardenedHeight; y < height; y++) {
                     chunk.setBlock(x, y, z, mat);
+                }
+
+                if (height < avgAcidLakeLevel) {
+
+                    int liquidLevel = (int) avgAcidLakeLevel;
+
+                    int liquidFloor = (int) Math.max(liquidLevel - liquidDepth, height);
+//                    for (int y = liquidLevel + 1; y <= height; y++) {
+//                        chunk.setBlock(x, y, z, Material.AIR);
+//                    }
+                    for (int y = liquidFloor; y < liquidLevel; y++) {
+                        // h = liquidLevel -> 0, h = liquidLevel - 1 -> -1
+                        int acidHeight = (int) (avgAcidLakeLevel - y); //liquidHeight - (y - liquidFloor);
+                        chunk.setBlock(x, y, z, acidLakeMaterials.get(acidHeight % acidLakeMaterials.size()));
+                    }
                 }
                 chunk.setBlock(x, 0, z, Material.BEDROCK);
             }
@@ -448,7 +472,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
-            if (ci.isXL && random1.nextInt(100) < 60) ci.craterKind = CraterKind.ACID_LAKE;
+            if ( random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
+
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
             ci.type = type;

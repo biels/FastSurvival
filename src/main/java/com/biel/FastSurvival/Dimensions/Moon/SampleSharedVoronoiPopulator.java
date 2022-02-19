@@ -74,7 +74,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 int fontSize = 17;
                 if(ci.isXL) fontSize = 20;
 //                if(ci.isXL) Utils.getLine(l.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
-//                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
+                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
 //            l.getBlock().setType(Material.LAPIS_BLOCK);
             }
 //            thisChunk.toLocation(world).getBlock().setType(Material.EMERALD_BLOCK);

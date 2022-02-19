@@ -2,6 +2,7 @@ package com.biel.FastSurvival.Dimensions.Moon;
 
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.*;
@@ -22,6 +23,9 @@ public class FlagPopulator extends BlockPopulator {
         int centerX = (source.getX() << 4) + random.nextInt(16);
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
         int centerY = world.getHighestBlockYAt(centerX, centerZ);
+        Location start = new Location(world, centerX, centerY, centerZ);
+        if(start.getBlock().getType() == Material.LIME_STAINED_GLASS)  return;
+
         BlockFace direction = Utils.getRandomFaceNSEW(random);
         Block top = null;
         for (int y = centerY; y < centerY + FLAG_HEIGHT; y++) {

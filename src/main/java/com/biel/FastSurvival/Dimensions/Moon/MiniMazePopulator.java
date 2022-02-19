@@ -26,6 +26,7 @@ public class MiniMazePopulator extends BlockPopulator {
         int centerZ = (source.getZ() << 4) + random.nextInt(16);
         int centerY = world.getHighestBlockYAt(centerX, centerZ) - 1;
         Location start = new Location(world, centerX, centerY, centerZ);
+        if(start.getBlock().getType() == Material.LIME_STAINED_GLASS)  return;
 //        Bukkit.broadcastMessage(start.toString());
 
         int sideLength = Utils.NombreEntre(6, 10) * 2;

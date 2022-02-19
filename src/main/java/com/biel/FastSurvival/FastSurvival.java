@@ -185,7 +185,7 @@ public final class FastSurvival extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("moon")) { // If the player typed /basic then do the following...
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                if (!(p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR)) {
                     p.sendMessage("You must be in creative to use this command. Build a teleporter to go there in survival.");
                     return true;
                 }
@@ -203,8 +203,8 @@ public final class FastSurvival extends JavaPlugin {
         if (cmd.getName().equalsIgnoreCase("sky")) { // If the player typed /basic then do the following...
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (!(p.getGameMode() == GameMode.CREATIVE)) {
-                    p.sendMessage("Has d'estar en creatiu per per aix�! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en superviv�ncia!");
+                if (!(p.getGameMode() == GameMode.CREATIVE || p.getGameMode() == GameMode.SPECTATOR)) {
+                    p.sendMessage("Has d'estar en creatiu per per això! Construeix un corrent d'aigua (Knock Up) per fer-ho legalment en supervivència!");
                     return true;
                 }
                 if (SkyUtils.IsInSky(p)) {

@@ -93,7 +93,7 @@ public class MoonUtils {
         loadMoonIfNecessary();
         Location moonLocation = getMoonLocation(p.getLocation(), 1);
         int highestBlockYAt = getMoon().getHighestBlockYAt(moonLocation.getBlockX(), moonLocation.getBlockZ());
-        moonLocation.setY(highestBlockYAt + 1);
+        moonLocation.setY(highestBlockYAt + 2);
         p.teleport(moonLocation);
 //        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
 
