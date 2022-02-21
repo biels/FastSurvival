@@ -472,7 +472,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
-            if ( random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
+            if (random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
 
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
