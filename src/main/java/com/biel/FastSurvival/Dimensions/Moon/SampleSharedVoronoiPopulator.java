@@ -48,8 +48,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 if(distance > ci.r) continue;
                 // We are inside the radius
                 double r = 8;
-                if(!ci.isXL) r = 9;
-                if(!Utils.Possibilitat(30)) continue;
+                if(!ci.isXL && ci.boilAmount < 0.5) continue;
                 // Generate acid lake bubbles using green stained glass panes
                 int yLevel = world.getHighestBlockYAt(ci.point.getBlockX(), ci.point.getBlockZ());
                 Vector cVec = thisChunk.clone();
@@ -58,11 +57,11 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                         Vector hVec = source.getBlock(x, 0, z).getLocation().toVector();
                         double d = hVec.distance(ci.point);
                         double dCenter = hVec.distance(cVec);
-                        if(dCenter > r) continue;
+                        if(ci.isXL && dCenter > r) continue;
                         if(d / ci.r > (MoonChunkGenerator.CraterInfo.DOWN_POINT + MoonChunkGenerator.CraterInfo.UP_POINT) / 2) continue;
-                        for (int y = yLevel - 5; y < yLevel + (12 + (ci.isXL ? 2 : 0)); y++) {
+                        for (int y = yLevel - 5; y < yLevel + (12 + (ci.isXL ? 0 : 0)); y++) {
 //                            Bukkit.broadcastMessage("B. Block: " + x + " " + y + " " + z + ' ' + (0.2 - (y/1000.0)));
-                            if (Math.random() < (0.19 - (y/1000.0))) {
+                            if (Math.random() < (0.19 - (y/1000.0) + (ci.boilAmount / 400.0))) {
                                 source.getBlock(x, y, z).setType(Material.GREEN_STAINED_GLASS_PANE);
 //                                Bukkit.broadcastMessage("Block: " + x + " " + y + " " + z);
 

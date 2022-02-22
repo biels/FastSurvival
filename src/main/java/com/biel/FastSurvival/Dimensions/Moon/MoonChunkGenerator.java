@@ -429,6 +429,9 @@ public class MoonChunkGenerator extends ChunkGenerator {
         double downPoint;
         double innerRDown;
 
+
+        double boilAmount;
+
         // In the center of the crater there is a structure (with spawners) that determines the kind of meteor
         //
 
@@ -473,7 +476,6 @@ public class MoonChunkGenerator extends ChunkGenerator {
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
             if (random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
-
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
             ci.type = type;
@@ -484,6 +486,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
             ci.innerRUp = r * UP_POINT; // Got visually from plot
             ci.innerRDown = r * DOWN_POINT; // Got visually from plot
 
+            if(ci.craterKind == CraterKind.ACID_LAKE)
+                ci.boilAmount = random1.nextInt(100) / 100.0;
             return ci;
         }
 
