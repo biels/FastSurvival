@@ -59,7 +59,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                         double dCenter = hVec.distance(cVec);
                         if(ci.isXL && dCenter > r) continue;
                         if(d / ci.r > (MoonChunkGenerator.CraterInfo.DOWN_POINT + MoonChunkGenerator.CraterInfo.UP_POINT) / 2) continue;
-                        for (int y = yLevel - 5; y < yLevel + (12 + (ci.isXL ? 0 : 0)); y++) {
+                        for (int y = yLevel - 5; y < yLevel + (12 + (ci.isXL ? -3 : 0)); y++) {
 //                            Bukkit.broadcastMessage("B. Block: " + x + " " + y + " " + z + ' ' + (0.2 - (y/1000.0)));
                             if (Math.random() < (0.19 - (y/1000.0) + (ci.boilAmount / 400.0))) {
                                 source.getBlock(x, y, z).setType(Material.GREEN_STAINED_GLASS_PANE);
