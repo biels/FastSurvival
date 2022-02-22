@@ -57,7 +57,7 @@ public class MoonListener implements Listener {
                     evt.setCancelled(true);
                 }
                 if (t == Material.TNT) {
-                    evt.setCancelled(true);
+                    evt.setCancelled(false);
                 }
                 if (t == Material.GLOWSTONE) {
                     evt.setCancelled(true);

@@ -480,14 +480,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
             int type = random1.nextInt(2);
             ci.type = type;
 
+            if(ci.craterKind == CraterKind.ACID_LAKE)
+                ci.boilAmount = random1.nextInt(100) / 100.0;
+
             double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (ci.isXL ? 0.6 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
 //            System.out.println("SC_BLOCK_WIDTH: " + ivn.SC_BLOCK_WIDTH);
             ci.r = r;
             ci.innerRUp = r * UP_POINT; // Got visually from plot
             ci.innerRDown = r * DOWN_POINT; // Got visually from plot
 
-            if(ci.craterKind == CraterKind.ACID_LAKE)
-                ci.boilAmount = random1.nextInt(100) / 100.0;
+
             return ci;
         }
 
@@ -570,6 +572,11 @@ public class MoonChunkGenerator extends ChunkGenerator {
         List<InfiniteVoronoiNoise> allIvns = getInfiniteVoronoiNoises(l.getWorld(), null);
 
 
+        if (cmd.equalsIgnoreCase("tpl")) {
+            cmd = "tp";
+            args = new String[]{"tp ","0", "offset"};
+        }
+        String[] finalArgs = args;
         if (cmd.equalsIgnoreCase("draw")) {
             int ivnIndexOnly = -1;
             if (args.length >= 2) ivnIndexOnly = Integer.parseInt(args[1]);
@@ -646,7 +653,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                     Vector scv = ivn.getSuperChunkFromLoc(vp.vector);
                     Vector start = ivn.getSuperChunkVector(scv.getBlockX(), scv.getBlockZ());
                     Vector offset = ivn.getSuperChunkPointOffset(scv.getBlockX(), scv.getBlockZ());
-                    if (args[2].equalsIgnoreCase("orig")) {
+                    if (finalArgs[2].equalsIgnoreCase("orig")) {
                         Location location = start.toLocation(p.getWorld());
                         location.setY(120);
                         p.teleport(location);
@@ -815,8 +822,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 new ClaySpiralPopulator(),
                 new ClayColorPopulator(),
                 new MiniMazePopulator(),
-                new RocketPopulator(),
-                new MoonBasePopulator()
+                new RocketPopulator()
+//                new MoonBasePopulator()
         );
     }
 
