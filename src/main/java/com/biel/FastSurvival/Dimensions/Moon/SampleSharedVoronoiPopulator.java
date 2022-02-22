@@ -45,6 +45,32 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
             Vector pointVec = thisPoint.vector.clone();
             double distance = pointVec.distance(thisChunk);
 
+            MoonChunkGenerator.CraterInfo ci = MoonChunkGenerator.CraterInfo.fromId(thisPoint.id, thisPoint.vector, ivn);
+            if (!ci.generated) continue;
+            if(ci.craterKind == MoonChunkGenerator.CraterInfo.CraterKind.ACID_LAKE) {
+                if(distance > ci.r) continue;
+                // We are inside the radius
+                double r = ci.r;
+                if(Utils.Possibilitat(30)) continue;
+                // Generate acid lake bubbles using green stained glass panes
+                int yLevel = world.getHighestBlockYAt(thisChunk.getBlockX() , thisChunk.getBlockZ());
+
+                for (int x = 0; x < 16; x++) {
+                    for (int z = 0; z < 16; z++) {
+                        Vector hVec = source.getBlock(x, 0, z).getLocation().toVector();
+                        double d = hVec.distance(ci.point);
+                        if(d > ci.r) continue;
+                        for (int y = yLevel - 5; y < (12 + (ci.isXL ? 2 : 0)); y++) {
+                            if (Math.random() < (0.2 - y/1000.0)) {
+                                source.getBlock(x, y, z).setType(Material.GREEN_STAINED_GLASS_PANE);
+                            }
+                        }
+                    }
+                }
+
+
+            };
+
             boolean inAABB = pointVec.isInAABB(
                     source.getBlock(0, 0, 0).getLocation().toVector(),
                     source.getBlock(15, 1, 15).getLocation().toVector()
@@ -54,8 +80,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                     pointVec.getBlockZ() / 16 == source.getZ();
 //
             if (inAABB) {
-                MoonChunkGenerator.CraterInfo ci = MoonChunkGenerator.CraterInfo.fromId(thisPoint.id, thisPoint.vector, ivn);
-                if (!ci.generated) continue;
+
                 if(ci.isXL)
                     System.out.println("In chunk: " + ci.id + " " + ci.r + " xl: " +  ci.isXL);
                 Location l = pointVec.toLocation(world);
@@ -74,7 +99,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 int fontSize = 17;
                 if(ci.isXL) fontSize = 20;
 //                if(ci.isXL) Utils.getLine(l.toVector(), up, 80).forEach(v -> v.toLocation(world).getBlock().setType(Material.LAPIS_BLOCK));
-                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
+//                FontRenderer.renderText(str, l, lateralAxis.multiply(1), up, fontSize, Material.DIAMOND_BLOCK);
 //            l.getBlock().setType(Material.LAPIS_BLOCK);
             }
 //            thisChunk.toLocation(world).getBlock().setType(Material.EMERALD_BLOCK);

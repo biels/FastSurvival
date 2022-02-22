@@ -1,5 +1,6 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -14,8 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 
 public class MoonListener implements Listener {
 
@@ -161,5 +165,21 @@ public class MoonListener implements Listener {
         }
     }
 
+    Integer moonLongTickTaskId = null;
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent evt) {
+        if (MoonUtils.IsMoon(evt.getWorld())) {
+            Bukkit.getScheduler().runTaskTimer(FastSurvival.getPlugin(), new MoonLongTick(), 0, 5 * 20);
+        }
+    }
 
+    @EventHandler
+    public void onWorldUnload(WorldUnloadEvent evt) {
+        if (MoonUtils.IsMoon(evt.getWorld())) {
+            if(moonLongTickTaskId != null) {
+                Bukkit.getScheduler().cancelTask(moonLongTickTaskId);
+            }
+        }
+    }
 }
+
