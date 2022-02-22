@@ -4,10 +4,7 @@ import com.biel.FastSurvival.Utils.FontRenderer;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise.VoronoiPoint;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -50,19 +47,25 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
             if(ci.craterKind == MoonChunkGenerator.CraterInfo.CraterKind.ACID_LAKE) {
                 if(distance > ci.r) continue;
                 // We are inside the radius
-                double r = ci.r;
-                if(Utils.Possibilitat(30)) continue;
+                double r = 8;
+                if(!ci.isXL) r = 9;
+                if(!Utils.Possibilitat(30)) continue;
                 // Generate acid lake bubbles using green stained glass panes
-                int yLevel = world.getHighestBlockYAt(thisChunk.getBlockX() , thisChunk.getBlockZ());
-
+                int yLevel = world.getHighestBlockYAt(ci.point.getBlockX(), ci.point.getBlockZ());
+                Vector cVec = thisChunk.clone();
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
                         Vector hVec = source.getBlock(x, 0, z).getLocation().toVector();
                         double d = hVec.distance(ci.point);
-                        if(d > ci.r) continue;
-                        for (int y = yLevel - 5; y < (12 + (ci.isXL ? 2 : 0)); y++) {
-                            if (Math.random() < (0.2 - y/1000.0)) {
+                        double dCenter = hVec.distance(cVec);
+                        if(dCenter > r) continue;
+                        if(d / ci.r > (MoonChunkGenerator.CraterInfo.DOWN_POINT + MoonChunkGenerator.CraterInfo.UP_POINT) / 2) continue;
+                        for (int y = yLevel - 5; y < yLevel + (12 + (ci.isXL ? 2 : 0)); y++) {
+//                            Bukkit.broadcastMessage("B. Block: " + x + " " + y + " " + z + ' ' + (0.2 - (y/1000.0)));
+                            if (Math.random() < (0.19 - (y/1000.0))) {
                                 source.getBlock(x, y, z).setType(Material.GREEN_STAINED_GLASS_PANE);
+//                                Bukkit.broadcastMessage("Block: " + x + " " + y + " " + z);
+
                             }
                         }
                     }

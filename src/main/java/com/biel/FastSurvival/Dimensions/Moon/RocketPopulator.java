@@ -21,7 +21,7 @@ public class RocketPopulator extends BlockPopulator {
 
     @Override
     public void populate(World world, Random random, Chunk source) {
-        if (!(random.nextInt(1200) <= 1)) {
+        if (!(random.nextInt(1250) <= 1)) {
             return;
         }
         int centerX = (source.getX() << 4) + random.nextInt(16);

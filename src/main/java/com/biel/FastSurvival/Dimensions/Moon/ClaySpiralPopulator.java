@@ -31,6 +31,7 @@ public class ClaySpiralPopulator extends BlockPopulator {
         if (radius < 6) number--;
         double constant = Math.sqrt(height) / radius;
         Material material = Utils.Possibilitat(50) ? Material.LIGHT_GRAY_CONCRETE : Material.WHITE_CONCRETE;
+        if(center.getBlock().getType() == Material.LIME_STAINED_GLASS) material = Material.LIME_STAINED_GLASS;
         for (int i = 0; i < number; i++) {
             populateSpiral(i * (360 / number) * toRadians, h -> radius, (int) height, 0.6, false, h -> 0.001, 1000, material, DyeColor.WHITE.getWoolData());
         }

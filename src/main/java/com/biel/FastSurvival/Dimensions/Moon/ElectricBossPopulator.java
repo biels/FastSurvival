@@ -28,7 +28,7 @@ public class ElectricBossPopulator extends BlockPopulator {
 
     public void populate(World world, Random random, Chunk source) {
         if (source.getX() % 5 != 0 || source.getZ() % 5 != 0) return;
-        if (random.nextInt(484 / 25) <= 1) { // 1 in every 14 square chnks (*25)
+        if (random.nextInt(485 / 25) <= 1) { // 1 in every 14 square chnks (*25)
 //            Bukkit.getServer().getLogger().info("Populated ElectricBossPopulator" );
 
             int BLOCKS_PER_LEVEL = 5;

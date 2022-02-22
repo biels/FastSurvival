@@ -19,7 +19,7 @@ public class MiniMazePopulator extends BlockPopulator {
 
     @Override
     public void populate(World world, Random random, Chunk source) {
-        if (!(random.nextInt(120) <= 1)) {
+        if (!(random.nextInt(121) <= 1)) {
             return;
         }
         int centerX = (source.getX() << 4) + random.nextInt(16);
