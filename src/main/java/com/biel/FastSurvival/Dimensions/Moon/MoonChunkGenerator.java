@@ -29,6 +29,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private NoiseGenerator generator;
     private NoiseGenerator slowGenerator;
     private NoiseGenerator ultraSlowGenerator;
+    private NoiseGenerator spookyGenerator;
 
     InfiniteVoronoiNoise xlIvn;
     List<InfiniteVoronoiNoise> smallIvns;
@@ -77,6 +78,14 @@ public class MoonChunkGenerator extends ChunkGenerator {
         return ultraSlowGenerator;
     }
 
+    private NoiseGenerator getSpookyGenerator(World world) {
+        if (spookyGenerator == null) {
+            spookyGenerator = new SimplexNoiseGenerator(world.getSeed() + 10);
+        }
+        return spookyGenerator;
+    }
+
+
     private double getHeightNoiseFactor(World world, double x, double y, double variance, double hillHeightFactor) {
         NoiseGenerator gen = getGenerator(world);
         NoiseGenerator varGen = getSlowGenerator(world);
@@ -103,6 +112,16 @@ public class MoonChunkGenerator extends ChunkGenerator {
         double slowResult = (slowGen.noise(x / 45, y / 45) - 0.5) * sigmoidHarshness;
         double slowAfterSigmoid = Utils.sigmoid(slowResult);
         return slowAfterSigmoid;
+    }
+
+    private double getSpookyFactor(World world, double x, double y) {
+        NoiseGenerator spookyGen = getSpookyGenerator(world);
+
+        int sigmoidHarshness = 35 / 3; // Hills are 35
+        int scale = 45 * 3; // Hills are 45
+        double spookyResult = (spookyGen.noise(x / scale, y / scale) - 0.5) * sigmoidHarshness;
+        double spookyAfterSigmoid = Utils.sigmoid(spookyResult);
+        return spookyAfterSigmoid;
     }
 
 
@@ -151,6 +170,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 double hillHeightFactor = getHillHeightFactor(world, cx + x * 0.0625, cz + z * 0.0625);
                 boolean isHill = hillHeightFactor > 0.6;
                 double heightNoiseFactor = getHeightNoiseFactor(world, cx + x * 0.0625, cz + z * 0.0625, 1, hillHeightFactor); // Scaled by variance
+//                double spookyFactor = getSpookyFactor(world, cx + x * 0.0625, cz + z * 0.0625); // Scaled by variance
                 double hillOffset = hillHeightFactor * 35;
                 double noiseOffset = heightNoiseFactor * 2;
                 double relativeAcidLevel = 0.32;
@@ -272,8 +292,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //                                matLocked = true;
                                 }
                             }
-                        }
-                        else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
+                        } else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
 
 
                             // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
@@ -377,6 +396,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     if (!ci2.generated) continue;
                                     if (distance1 > (ci.r * CraterInfo.UP_POINT) * 1.5) continue;
                                     // Get elevation difference
+                                    // FIXME Use the same coordinates * 0.0625
                                     double hillHeightFactor2 = getHillHeightFactor(world, point2.getBlockX(), point2.getBlockZ());
                                     double elevationDifference = hillHeightFactor2 - hillHeightFactor;
                                     if (Math.abs(elevationDifference) >= 0) {
@@ -513,7 +533,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
             if (!ci.isXL) chance = chance / SMALL_IVN_COUNT;
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
-            if (random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
+            // Checkerboard pattern for spooky areas
+            if((point.getX() / (16 * 20)) + (point.getZ() / (16 * 20)) % 2 == 0) {
+                if (random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
+            }
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
             ci.type = type;
