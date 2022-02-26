@@ -44,7 +44,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
     private InfiniteVoronoiNoise getXLIvn(World world, Random r) {
         if (xlIvn == null) {
             LongHashFunction xx = LongHashFunction.xx(r.nextLong());
-            xlIvn = new InfiniteVoronoiNoise(r, 65, xx.hashInt(0));
+            xlIvn = new InfiniteVoronoiNoise(0, r, 65, xx.hashInt(0));
             xlIvn.isXL = true;
         }
         return xlIvn;
@@ -57,7 +57,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
             for (int i = 0; i < SMALL_IVN_COUNT; i++) {
                 int i1 = r.nextInt(3);
 //                i1 = 0;
-                smallIvns.add(new InfiniteVoronoiNoise(r, i1 + 1, xx.hashInt(i + 1)));
+                smallIvns.add(new InfiniteVoronoiNoise(i + 1, r, i1 + 1, xx.hashInt(i + 1)));
             }
         }
         return smallIvns;
@@ -272,7 +272,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //                                matLocked = true;
                                 }
                             }
-                        } else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
+                        }
+                        else if (ci.craterKind == CraterInfo.CraterKind.ACID_LAKE) {
 
 
                             // double craterOffset = maxElevation - maxElevation * biasFunction((distance) / r, 0.6);
@@ -334,8 +335,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 if (relDist < (CraterInfo.UP_POINT)) {
                                     double acidCylNoise = acidCylinder.get(angle * 180 / Math.PI, 0);
                                     double expectedR = acidCylNoise * 30;
-                                    if(isXL) isXLAcidLake = true;
-                                    if(!isXLAcidLake || isXL){
+                                    if (isXL) isXLAcidLake = true;
+                                    if (!isXLAcidLake || isXL) {
                                         avgAcidLakeLevel += acidLakeLevel;
                                         avgAcidLakeLevelCount += 1;
                                     }
@@ -360,7 +361,43 @@ public class MoonChunkGenerator extends ChunkGenerator {
 // END LAKE
                         }
 
+                        // Cluster targets
+                        if (ci.isClusterTarget && false) {
+                            // Get nearby points with higher elevation and create a river to this point
+                            for (int ivnIndex2 = 0; ivnIndex2 < allIvns.size() / 3; ivnIndex2++) {
+                                InfiniteVoronoiNoise ivn2 = allIvns.get(ivnIndex2);
+                                // For each ivn
+                                List<VoronoiPoint> points2 = allPointsWithId.get(ivnIndex2);
+                                for (int pointIndex2 = 0; pointIndex2 < points2.size(); pointIndex2++) {
+                                    if (pointIndex2 == pointIndex) continue;
+                                    VoronoiPoint voronoiPoint2 = points.get(pointIndex2);
+                                    Vector point2 = voronoiPoint2.vector.clone();
+                                    double distance1 = point2.distance(point);
+                                    CraterInfo ci2 = CraterInfo.fromId(voronoiPoint2.id, voronoiPoint2.vector, ivn2);
+                                    if (!ci2.generated) continue;
+                                    if (distance1 > (ci.r * CraterInfo.UP_POINT) * 1.5) continue;
+                                    // Get elevation difference
+                                    double hillHeightFactor2 = getHillHeightFactor(world, point2.getBlockX(), point2.getBlockZ());
+                                    double elevationDifference = hillHeightFactor2 - hillHeightFactor;
+                                    if (Math.abs(elevationDifference) >= 0) {
+                                        // Create river
+                                        Vector here = new Vector(cx * 16 + x, 0, cz * 16 + z);
+                                        double distanceToLine = Utils.distanceFromPointToLine(here, point, point2);
+                                        if (distanceToLine < 2) {
+                                            int h = (int) (height + offset + hillOffset + xlOffset);
+                                            chunk.setBlock(x, h, z, Material.LIME_STAINED_GLASS);
+                                            chunk.setBlock(x, h - 1, z, Material.GLOWSTONE);
+                                            offset -= 3;
+                                        } else {
+                                            offset -= 2 / (distanceToLine + 1);
+                                        }
+                                    }
+                                }
 
+                            }
+
+
+                        }
 //                    int yOffset = 0;
                     }
                 }
@@ -378,7 +415,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 height += noiseOffset;
 
                 int liquidDepth = acidLakeMaterials.size();
-                if(height < avgAcidLakeLevel - liquidDepth) height = avgAcidLakeLevel - liquidDepth;
+                if (height < avgAcidLakeLevel - liquidDepth) height = avgAcidLakeLevel - liquidDepth;
 
                 int hardenedHeight = (int) (height - 15);
                 for (int y = 1; y < hardenedHeight; y++) {
@@ -431,6 +468,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 
         double boilAmount;
+        boolean isClusterTarget;
 
         // In the center of the crater there is a structure (with spawners) that determines the kind of meteor
         //
@@ -480,7 +518,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
             int type = random1.nextInt(2);
             ci.type = type;
 
-            if(ci.craterKind == CraterKind.ACID_LAKE)
+            ci.isClusterTarget = random1.nextInt(100) <= 50;
+            if (ci.craterKind == CraterKind.ACID_LAKE)
                 ci.boilAmount = random1.nextInt(100) / 100.0;
 
             double r = (ivn.SC_BLOCK_WIDTH / 2.0) * (ci.isXL ? 0.6 : 1) * size; // (biasFunction(random1.nextDouble(), 0.4)) *
@@ -574,7 +613,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         if (cmd.equalsIgnoreCase("tpl")) {
             cmd = "tp";
-            args = new String[]{"tp ","0", "offset"};
+            args = new String[]{"tp ", "0", "offset"};
         }
         String[] finalArgs = args;
         if (cmd.equalsIgnoreCase("draw")) {

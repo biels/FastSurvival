@@ -980,4 +980,13 @@ public class Utils {
         return current;
     }
 
+    public static double distanceFromPointToLine(Vector point, Vector lineStart, Vector lineEnd) {
+        Vector line = lineEnd.clone().subtract(lineStart);
+        Vector pointToLine = point.clone().subtract(lineStart);
+        double lineLength = line.length();
+        double lineDot = line.dot(pointToLine);
+        double distance = Math.abs(lineDot / lineLength);
+        return distance;
+    }
+
 }

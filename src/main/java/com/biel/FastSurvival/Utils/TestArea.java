@@ -475,7 +475,7 @@ public class TestArea {
         if (world.get() != null && world.get().getPlayers().size() == 0 || world.get() == null) {
             Bukkit.getServer().getWorlds().stream().filter(w -> w.getPlayers().size() > 0).findFirst().ifPresent(w -> world.set(w));
         }
-        if (world.get() != null) {
+        if (world.get() != null && DebugOptions.getTestArea(world.get()).getCenter() != null) {
             Bukkit.getScheduler().runTask(FastSurvival.getPlugin(), new Runnable() {
                 @Override
                 public void run() {

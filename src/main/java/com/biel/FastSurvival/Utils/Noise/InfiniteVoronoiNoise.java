@@ -9,6 +9,7 @@ import java.util.*;
 
 public class InfiniteVoronoiNoise {
     // Cached local state
+    public int id;
     Map<Long, List<Vector>> cachedScPointsWithIds;
     public Long seed;
     Random r;
@@ -23,7 +24,8 @@ public class InfiniteVoronoiNoise {
         xx = LongHashFunction.xx(seed);
     }
 
-    public InfiniteVoronoiNoise(Random r, int CHUNKS_IN_SC, long seed) {
+    public InfiniteVoronoiNoise(int id, Random r, int CHUNKS_IN_SC, long seed) {
+        this.id = id;
         this.r = r;
         this.CHUNKS_IN_SC = CHUNKS_IN_SC;
         this.SC_BLOCK_WIDTH = CHUNKS_IN_SC * 16;
@@ -33,6 +35,7 @@ public class InfiniteVoronoiNoise {
     public Vector getSuperChunkFromChunk(int cx, int cz) {
         return new Vector(cx / CHUNKS_IN_SC, 0, cz / CHUNKS_IN_SC);
     }
+
     public Vector getSuperChunkFromLoc(Vector v) {
         return getSuperChunkFromChunk(v.getBlockX() / 16, v.getBlockZ() / 16);
     }
@@ -57,6 +60,7 @@ public class InfiniteVoronoiNoise {
         Vector superChunkVec = this.getSuperChunkFromChunk(l.getBlockX() / 16, l.getBlockZ() / 16);
         return getNeighbourPointsWithId(superChunkVec.getBlockX(), superChunkVec.getBlockZ(), overscan);
     }
+
     @NotNull
     public List<VoronoiPoint> getNeighbourPointsWithId(int scx, int scz, int overscan) {
         List<VoronoiPoint> points = new ArrayList<>();
@@ -78,9 +82,10 @@ public class InfiniteVoronoiNoise {
         return points;
     }
 
-    public static class VoronoiPoint {
+    public class VoronoiPoint {
         public long id;
         public Vector vector;
+        public InfiniteVoronoiNoise ivn = InfiniteVoronoiNoise.this;
 
         public VoronoiPoint(long id, Vector vector) {
             this.id = id;
