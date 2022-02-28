@@ -186,6 +186,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                 Vector thisBlock = new Vector(cx * 16 + x, 0, cz * 16 + z);
                 double avgAcidLakeLevel = 0;
                 boolean isXLAcidLake = false;
+                boolean isPartOfNonAcidXL = false;
                 double avgAcidLakeLevelCount = 0;
                 for (int ivnIndex = 0; ivnIndex < allIvns.size(); ivnIndex++) {
                     InfiniteVoronoiNoise ivn = allIvns.get(ivnIndex);
@@ -265,6 +266,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
                                 }
 
+                                // Normal crater up to UP_POINT
+                                if (relDist < CraterInfo.UP_POINT) {
+                                    if (isXL) {
+                                        isPartOfNonAcidXL = true;
+                                    }
+                                }
                                 if (relDist < CraterInfo.DOWN_POINT && ci.isXL) {
                                     // Interior of crater
 
@@ -355,7 +362,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                     double acidCylNoise = acidCylinder.get(angle * 180 / Math.PI, 0);
                                     double expectedR = acidCylNoise * 30;
                                     if (isXL) isXLAcidLake = true;
-                                    if (!isXLAcidLake || isXL) {
+                                    if ((!isXLAcidLake || isXL) && !(!isXL && isPartOfNonAcidXL)) {
                                         avgAcidLakeLevel += acidLakeLevel;
                                         avgAcidLakeLevelCount += 1;
                                     }
@@ -446,7 +453,12 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 
                 }
+                if (isPartOfNonAcidXL){
+                    if(random.nextInt(2000) < 1) mat = Material.DIAMOND_ORE;
+                    if(random.nextInt(1800) < 1) mat = Material.IRON_ORE;
+                    if(random.nextInt(3000) < 1) mat = Material.GOLD_ORE;
 
+                }
                 for (int y = hardenedHeight; y < height; y++) {
                     chunk.setBlock(x, y, z, mat);
                 }
@@ -534,8 +546,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
             ci.generated = random1.nextInt(1000) < chance;
             if (!ci.generated) return ci;
             // Checkerboard pattern for spooky areas
-            if((point.getX() / (16 * 20)) + (point.getZ() / (16 * 20)) % 2 == 0) {
-                if (random1.nextInt(100) < 100) ci.craterKind = CraterKind.ACID_LAKE;
+            int chunksPerCellSide = 40;
+            if (((point.getBlockX() / (16 * chunksPerCellSide)) + (point.getBlockZ() / (16 * chunksPerCellSide))) % 2 == 0) {
+//                if (random1.nextInt(100) < 100)
+                ci.craterKind = CraterKind.ACID_LAKE;
             }
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);

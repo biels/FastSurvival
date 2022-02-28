@@ -49,7 +49,7 @@ public class SampleSharedVoronoiPopulator extends BlockPopulator {
                 // We are inside the radius
                 double r = 8;
                 if(!ci.isXL && ci.boilAmount < 0.5) continue;
-                if(ci.isXL && !Utils.Possibilitat(10)) continue;
+                if(ci.isXL && !Utils.Possibilitat(34)) continue;
                 // Generate acid lake bubbles using green stained glass panes
                 int yLevel = world.getHighestBlockYAt(ci.point.getBlockX(), ci.point.getBlockZ());
                 Vector cVec = thisChunk.clone();
