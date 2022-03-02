@@ -385,8 +385,37 @@ public class MoonChunkGenerator extends ChunkGenerator {
                                 }
                             }
 // END LAKE
+                        } else if (ci.craterKind == CraterInfo.CraterKind.CASTLE) {
+                            double relDist = distance / r;
+                            if (distance < r) {
+                                float angle = new Vector(0, 0, 1).angle(thisBlock.clone().subtract(point.clone()));
+                                var totalH = 100;
+                                var levelW = 5 * 3;
+                                var levelH = 8 * 3;
+                                var relLevelW = levelW * totalH / r;
+                                var relLevelH = levelH * totalH / r;
+//                                mat = Material.SAND;
+                                // y = 100 - floor(x * 100 / (100/5)) * (100/8) from 0 to 1
+                                // y = totalH - floor(x * totalH / relLevelW) * relLevelH from 0 to 1
+//                                var h = Math.floor(distance / levelW) * levelH;
+//                                var h = totalH - Math.floor(distance * totalH / relLevelW) * relLevelH;
+                                // + ((angle) / (2 * Math.PI))
+                                var h = totalH - Math.floor((distance) / (levelW)) * (levelH);
+                                var spikesH = 0;
+                                if (Math.floor(distance) % levelW == levelW - 1) {
+                                    h += 1;
+                                    mat = Material.WHITE_CONCRETE;
+                                    if (Math.round((angle * 3) / (2 * Math.PI) * distance) % 2 == 0) {
+                                        h += 2;
+                                    }
+                                }
+                                if (h < 0) h = 0;
+                                offset += h;
+                                double bias = 0.55;
+                                noiseOffset = Math.round(noiseOffset * this.biasFunction(relDist, bias));
+                                hillOffset *= this.biasFunction(relDist,bias);
+                            }
                         }
-
                         // Cluster targets
                         if (ci.isClusterTarget && false) {
                             // Get nearby points with higher elevation and create a river to this point
@@ -453,10 +482,10 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
 
                 }
-                if (isPartOfNonAcidXL){
-                    if(random.nextInt(2000) < 1) mat = Material.DIAMOND_ORE;
-                    if(random.nextInt(1800) < 1) mat = Material.IRON_ORE;
-                    if(random.nextInt(3000) < 1) mat = Material.GOLD_ORE;
+                if (isPartOfNonAcidXL) {
+                    if (random.nextInt(2000) < 1) mat = Material.DIAMOND_ORE;
+                    if (random.nextInt(1800) < 1) mat = Material.IRON_ORE;
+                    if (random.nextInt(3000) < 1) mat = Material.GOLD_ORE;
 
                 }
                 for (int y = hardenedHeight; y < height; y++) {
@@ -508,7 +537,8 @@ public class MoonChunkGenerator extends ChunkGenerator {
 
         static enum CraterKind {
             CRATER,
-            ACID_LAKE
+            ACID_LAKE,
+            CASTLE
 
         }
 
@@ -551,6 +581,7 @@ public class MoonChunkGenerator extends ChunkGenerator {
 //                if (random1.nextInt(100) < 100)
                 ci.craterKind = CraterKind.ACID_LAKE;
             }
+            if (ci.isXL && random1.nextInt(5) < 1) ci.craterKind = CraterKind.CASTLE;
             double size = 1; //(random1.nextDouble() + 0.5) / 2;
             int type = random1.nextInt(2);
             ci.type = type;
