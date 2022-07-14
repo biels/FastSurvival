@@ -1,17 +1,19 @@
 package com.biel.FastSurvival.Dimensions.Moon;
 
+import com.biel.FastSurvival.FastSurvival;
 import com.biel.FastSurvival.Utils.FontRenderer;
 import com.biel.FastSurvival.Utils.Hashing.LongHashFunction;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise;
 import com.biel.FastSurvival.Utils.Noise.InfiniteVoronoiNoise.VoronoiPoint;
 import com.biel.FastSurvival.Utils.Utils;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.material.MaterialData;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.bukkit.util.noise.NoiseGenerator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
@@ -153,6 +155,13 @@ public class MoonChunkGenerator extends ChunkGenerator {
     @Override
     public ChunkData generateChunkData(World world, Random random, int cx, int cz, BiomeGrid biome) {
         ChunkData chunk = createChunkData(world);
+
+//        long cseed = random.nextLong();
+//        long seed = world.getSeed() + cx * 4987142L + cx * 5947611L + cz * cz * 4392871L + cz * 389711L ^ 0x3ad8025fL;
+//        random.setSeed(seed);
+
+//        world.set(new NamespacedKey(FastSurvival.getPlugin(), "seed"), PersistentDataType.LONG, cseed);
+
         InfiniteVoronoiNoise xlIvn = getXLIvn(world, random);
         List<InfiniteVoronoiNoise> allIvns = getInfiniteVoronoiNoises(world, random);
         Vector startOfChunk = new Vector(cx * 16, 0, cz * 16);

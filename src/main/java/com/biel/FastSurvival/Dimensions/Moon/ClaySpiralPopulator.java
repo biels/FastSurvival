@@ -3,6 +3,7 @@ package com.biel.FastSurvival.Dimensions.Moon;
 import com.biel.FastSurvival.Dimensions.utils.Spiral;
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
+import org.bukkit.block.BlockFace;
 import org.bukkit.generator.BlockPopulator;
 
 import java.util.Random;
@@ -31,7 +32,8 @@ public class ClaySpiralPopulator extends BlockPopulator {
         if (radius < 6) number--;
         double constant = Math.sqrt(height) / radius;
         Material material = Utils.Possibilitat(50) ? Material.LIGHT_GRAY_CONCRETE : Material.WHITE_CONCRETE;
-        if(center.getBlock().getType() == Material.LIME_STAINED_GLASS) material = Material.LIME_STAINED_GLASS;
+        if(center.getBlock().getRelative(BlockFace.DOWN).isEmpty()) return;
+        if(center.getBlock().getRelative(BlockFace.DOWN).getType() == Material.LIME_STAINED_GLASS) material = Material.LIME_STAINED_GLASS;
         for (int i = 0; i < number; i++) {
             populateSpiral(i * (360 / number) * toRadians, h -> radius, (int) height, 0.6, false, h -> 0.001, 1000, material, DyeColor.WHITE.getWoolData());
         }
