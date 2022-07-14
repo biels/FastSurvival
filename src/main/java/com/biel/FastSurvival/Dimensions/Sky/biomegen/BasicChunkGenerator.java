@@ -111,7 +111,7 @@ public class BasicChunkGenerator extends ChunkGenerator {
 		case OCEAN: return Material.ICE;
 		case PLAINS: return Material.GOLD_BLOCK;
 			case SWAMP: return Material.LEGACY_MYCEL;
-			case TAIGA_HILLS: return Material.STONE;
+			case TAIGA: return Material.STONE;
 		default: return Material.SNOW_BLOCK;
 		}
 	}

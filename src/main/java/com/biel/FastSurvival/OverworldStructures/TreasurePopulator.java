@@ -39,7 +39,7 @@ public class TreasurePopulator extends BlockPopulator {
         int ycomp = world.getHighestBlockYAt(l1);
         Biome b = l1.getBlock().getBiome();
         Boolean snow = false;
-		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.STONE_SHORE || b == Biome.TAIGA) || b == Biome.ICE_SPIKES || b == Biome.FOREST){
+		if (!(b == Biome.PLAINS || b == Biome.FOREST || b == Biome.JUNGLE || b == Biome.SAVANNA || b == Biome.DESERT || b == Biome.STONY_SHORE || b == Biome.TAIGA) || b == Biome.ICE_SPIKES || b == Biome.FOREST){
         	return;
         }
 		if (b == Biome.SNOWY_TAIGA || b == Biome.ICE_SPIKES){
