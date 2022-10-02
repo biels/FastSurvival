@@ -10,6 +10,8 @@ import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.generator.LimitedRegion;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -987,6 +989,15 @@ public class Utils {
         double lineDot = line.dot(pointToLine);
         double distance = Math.abs(lineDot / lineLength);
         return distance;
+    }
+
+    public static int getHighestBlockYAt(WorldInfo worldInfo, LimitedRegion limitedRegion, int x, int z) {
+        // while (limitedRegion.getType(X, Y, Z) != Material.AIR) Y++;
+        int y = worldInfo.getMinHeight();
+        while (limitedRegion.getType(x, y, z) != Material.AIR) {
+            y++;
+        }
+        return y;
     }
 
 }
