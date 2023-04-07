@@ -147,10 +147,55 @@ public class MoonCraterPopulator extends BlockPopulator {
                 m = Material.OBSIDIAN;
                 c = 0;
             }
+            if (Utils.Possibilitat(1)) {
+                m = Material.LAPIS_ORE;
+                c = 0;
+            }
+            if (Utils.Possibilitat(1)) {
+                m = Material.GLOWSTONE;
+                c = 0;
+            }
+            if (Utils.Possibilitat(1, 200)) {
+                m = Material.GOLD_BLOCK;
+                c = 0;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.DIAMOND_BLOCK;
+                c = 55;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.EMERALD_BLOCK;
+                c = 55;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.IRON_BLOCK;
+                c = 55;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.LAPIS_BLOCK;
+                c = 55;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.REDSTONE_BLOCK;
+                c = 60;
+            }
+            if (Utils.Possibilitat(1, 300)) {
+                m = Material.QUARTZ_BLOCK;
+                c = 60;
+            }
+            if (Utils.Possibilitat(1, 1000)) {
+                m = Material.NETHERITE_BLOCK;
+                c = 75;
+            }
+            if (Utils.Possibilitat(1, 1000)) {
+                m = Material.ANCIENT_DEBRIS;
+                c = 55;
+            }
             if (Utils.Possibilitat(1, 200)) {
                 m = Material.COBBLESTONE;
                 c = 10;
             }
+
 
 
             center.setY(world.getHighestBlockYAt(centerX, centerZ) + radius / 10);

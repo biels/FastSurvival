@@ -133,6 +133,8 @@ public class MoonMagicTreePopulator extends BlockPopulator {
 			}
 
 
+
+
 		}
 	}
 	public void generateTopTree(Location center, int height, int radius){

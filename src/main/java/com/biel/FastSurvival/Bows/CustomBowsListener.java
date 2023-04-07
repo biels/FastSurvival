@@ -117,7 +117,6 @@ public class CustomBowsListener implements Listener {
                 world.playSound(pLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 4 * f, 1);
                 break;
             case EXPLOSIVE:
-                world.playSound(pLoc, Sound.ENTITY_GENERIC_EXPLODE, 5 * f, 2);
                 break;
             case MAGNETIC:
                 world.playSound(pLoc, Sound.ENTITY_IRON_GOLEM_HURT, 5 * f, 1.4F);
@@ -139,13 +138,16 @@ public class CustomBowsListener implements Listener {
             case ELECTRIC:
                 break;
             case SKY_EXPLOSIVE:
+                // robot technology sound
                 break;
             case SKY_JET:
+                // sound
+                world.playSound(pLoc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 7 * f, 1f + 0.3f * f);
                 makeSnowJet(arr, p, type, f);
                 break;
             case MULTI:
                 multiShotVector(arr, p, type, f);
-                p.getWorld().playSound(p.getLocation(), Sound.ITEM_CROSSBOW_SHOOT, 0.8f, 1.1F);
+                p.getWorld().playSound(p.getLocation(), Sound.ITEM_CROSSBOW_SHOOT, 0.6f + 0.2f * f, 1f + 0.2f * f);
                 break;
             default:
                 break;
@@ -209,12 +211,18 @@ public class CustomBowsListener implements Listener {
             arrow.setMetadata("Force", new FixedMetadataValue(FastSurvival.getPlugin(), f));
             arrow.setTicksLived(20 * 4 + 10);
             arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+            arrow.setCritical(true);
+            arrow.setKnockbackStrength(1);
+            arrow.setSilent(true);
         }
         arr.remove();
     }
 
     public void makeSkyExplosiveEffect(Arrow arr, LivingEntity p, BowType type, float f, LivingEntity hitEntity) {
         Location center = p.getLocation().toVector().add(new Vector(0, 1, 0)).toLocation(p.getWorld());
+        // play sound of arming a device
+        p.getWorld().playSound(center, Sound.BLOCK_PISTON_EXTEND, 1f, 1.1f);
+
         double toRadians = Math.PI / 180;
         float radius = 6.5f;
         Vector direction = p.getLocation().getDirection();
@@ -325,7 +333,7 @@ public class CustomBowsListener implements Listener {
 
             @Override
             public void run() {
-//                if (hasBeenOnGround || count > 500) cancel();
+                if (count > 700) cancel();
                 switch (step) {
                     case 0:
                         // Create trail
@@ -349,6 +357,11 @@ public class CustomBowsListener implements Listener {
                         }
                         break;
                     case 1:
+                        if(!p.isValid() || p.isDead() || p.getWorld() != arr.getWorld()) {
+                            cancel();
+                            return;
+                        }
+
                         // Transport player
                         Vector arcNormal = normal.getCrossProduct(arr.getVelocity()).normalize().multiply(-1.8);
                         Location target = snowLocs.get(teleportingIndex).clone().add(arcNormal);
@@ -449,6 +462,8 @@ public class CustomBowsListener implements Listener {
                 p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 4, (int) (28 * f));
                 break;
             case EXPLOSIVE:
+                // Charge the entity with explosive power
+//                arr.setMetadata("ExplosivePower", new FixedMetadataValue(FastSurvival.getPlugin(), f));
 
                 //arr.remove();
                 break;
@@ -673,27 +688,33 @@ public class CustomBowsListener implements Listener {
                     dmg = 1D;
                     evt.setDamage(1D);
                     MetadataValue metadataAcc = Utils.getMetadata(damaged, "ExplAcc");
-                    float ExplAcc;
-                    if (metadataAcc != null) {
-                        ExplAcc = metadataAcc.asFloat();
+                    float explAcc;
+                    if (metadataAcc == null) {
+                        explAcc = 0;
                     } else {
-                        ExplAcc = 0F;
+                        explAcc = metadataAcc.asFloat();
+                    }
+                    explAcc = (float) (explAcc + 0.9 + (0.5 * f));
+                    if(explAcc > 3.2){
+                        // explode
+                        world.createExplosion(damaged.getLocation(), explAcc);
+                        explAcc = 0;
+                    } else {
+                        world.playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.0F + (f / 2));
+                        // particles showing explosion is charging (smoke, etc)
+                        world.spawnParticle(Particle.SMOKE_LARGE, damaged.getLocation(), 10, 0.5, 0.5, 0.5, 0.1);
+                        world.spawnParticle(Particle.SMOKE_NORMAL, damaged.getLocation(), 10, 0.5, 0.5, 0.5, 0.1);
+                        world.spawnParticle(Particle.FLAME, damaged.getLocation(), 10, 0.5, 0.5, 0.5, 0.1);
                     }
 
-
-                    ExplAcc = (float) (ExplAcc + (1.5 * f));
-                    damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), ExplAcc));
-                    world.playEffect(l, Effect.SMOKE, 4, (int) (28 * f));
-                    world.playSound(damaged.getLocation(), Sound.ENTITY_CREEPER_DEATH, 7 * f, 1.4F);
-
-                    //world.createExplosion(damaged.getLocation(), fExplosion);
+                    damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), explAcc));
                 }
                 break;
             case MAGNETIC:
                 damaged.setVelocity(new Vector(0, 0, 0));
                 Vector vM = Utils.CrearVector(damaged.getLocation(), damager.getLocation());
                 //vM.normalize();
-                vM.multiply(0.8);
+                vM.multiply(0.7);
                 vM.multiply(f);
                 Location newLoc = damaged.getLocation().clone().add(vM);
                 if (newLoc.getBlock().getType().isSolid()) {
@@ -704,6 +725,12 @@ public class CustomBowsListener implements Listener {
             case TORCH:
                 damaged.setFireTicks((int) (20 * 5 * f));
                 dmg = dmg / 3;
+                // set fire to the ground
+                Location loc = damaged.getLocation();
+                Block block1 = loc.getBlock();
+                if(block1.getType() == Material.AIR && Utils.Possibilitat(10)){
+                    block1.setType(Material.FIRE);
+                }
                 break;
             case BOUNCY:
                 if (true) {
@@ -819,6 +846,10 @@ public class CustomBowsListener implements Listener {
                 }
             case WATER:
                 dmg = dmg / 5;
+                // remove fire from damaged
+                if (damaged.getFireTicks() > 0) {
+                    damaged.setFireTicks(0);
+                }
                 break;
             case WITHER:
                 dmg = dmg / 6;
@@ -831,8 +862,13 @@ public class CustomBowsListener implements Listener {
                     if (f >= 0.9 && Utils.Possibilitat(40)) {
                         lvl = 1;
                     }
+                    // heal damager
+                    damaged.setMetadata("WitherSource", new FixedMetadataValue(FastSurvival.getPlugin(), damager.getEntityId()));
+                    // get damager from id even if it is not a player
+
+
                     damaged.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, t, lvl, false));
-                    damager.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, t, 0, false));
+//                    damager.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, t, 0, false));
                 }
                 break;
             case ELECTRIC:
@@ -881,6 +917,24 @@ public class CustomBowsListener implements Listener {
         if (lastDamageCause == null) {
             return;
         }
+        // if is wither effect
+        if (evt.getCause() == DamageCause.WITHER) {
+            if (damaged.hasMetadata("WitherSource")) {
+                MetadataValue metadata = Utils.getMetadata(damaged, "WitherSource");
+                if (metadata == null) {
+                    return;
+                }
+                int id = metadata.asInt();
+                Entity entity = w.getEntities().stream().filter(e -> e.getEntityId() == id).findFirst().orElse(null);
+                if (entity == null) return;
+                if (entity instanceof LivingEntity) {
+                    Utils.healDamageable((LivingEntity) entity, evt.getDamage() * 1.1);
+                    if(damaged.getPotionEffect(PotionEffectType.WITHER).getDuration() <= 20){
+                        damaged.removeMetadata("WitherSource", FastSurvival.getPlugin());
+                    }
+                }
+            }
+        }
         if (!(lastDamageCause.getEntity() instanceof LivingEntity)) {
             return;
         }
@@ -898,7 +952,11 @@ public class CustomBowsListener implements Listener {
         }
         //if (evt.getDamage() <= 5){return;}
         if (evt.getCause() == DamageCause.ENTITY_EXPLOSION || evt.getCause() == DamageCause.BLOCK_EXPLOSION) {
-            evt.setDamage(evt.getDamage() * 0.6);
+            // if entity has metadata ExplAcc reduce damage taken
+            if (damaged.hasMetadata("ExplAcc")) {
+                evt.setDamage(evt.getDamage() * 0.4);
+                return;
+            }
             return;
         }
         //Bukkit.broadcastMessage(evt.getCause().name());
@@ -906,8 +964,14 @@ public class CustomBowsListener implements Listener {
         if (ExplAcc == 0F) {
             return;
         }
-        w.createExplosion(damaged.getEyeLocation().toVector().toLocation(w), ExplAcc);
-        damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), 0F));
+        // if cause is not explosive bow
+        // get projectile
+
+        if (evt.getCause() != DamageCause.PROJECTILE) {
+            w.createExplosion(damaged.getEyeLocation().toVector().toLocation(w), ExplAcc);
+            damaged.setMetadata("ExplAcc", new FixedMetadataValue(FastSurvival.getPlugin(), 0F));
+        }
+
 
     }
 

@@ -66,7 +66,7 @@ public class FlagPopulator extends BlockPopulator {
                 CreatureSpawner spawner = (CreatureSpawner) signBlock.getState();
                 //spawner.setDelay(20 * 3);
 
-                spawner.setSpawnedType(EntityType.ZOMBIE);;
+                spawner.setSpawnedType(EntityType.ZOMBIE);
                 spawner.update();
             }else{
                 signBlock.setType(Material.REDSTONE_LAMP);

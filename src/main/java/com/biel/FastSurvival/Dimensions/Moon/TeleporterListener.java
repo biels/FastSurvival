@@ -65,8 +65,8 @@ public class TeleporterListener implements Listener {
             if (face == face.WALL) {
                 blockFace = facing.getOppositeFace();
             } else {
-            	if (face == face.CEILING) blockFace = blockFace.UP;
-            	if (face == face.FLOOR) blockFace = blockFace.DOWN;
+            	if (face == face.CEILING) blockFace = BlockFace.UP;
+            	if (face == face.FLOOR) blockFace = BlockFace.DOWN;
             }
             redstone = b.getRelative(blockFace);
             if (redstone.getType() == Material.REDSTONE_BLOCK) {
@@ -189,6 +189,15 @@ public class TeleporterListener implements Listener {
         }
         if (nFence == 1) {
             e = e + 60;
+        }
+        if (nFence == 2) {
+            e = e + 30;
+        }
+        if (nFence == 3) {
+            e = e + 20;
+        }
+        if (gBlock != 0) {
+            e = e + 100;
         }
         return e;
     }

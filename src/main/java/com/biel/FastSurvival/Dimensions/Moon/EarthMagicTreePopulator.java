@@ -186,6 +186,9 @@ public class EarthMagicTreePopulator extends BlockPopulator {
 			//Set
 			Block blk = l.getBlock();
 			blk.setType(Material.BIRCH_LOG);
+			if(Utils.Possibilitat(5) && blk.getRelative(BlockFace.UP).getType() == Material.AIR){
+				blk.getRelative(BlockFace.UP).setType(Material.BIRCH_LEAVES);
+			}
 			//blk.setData(getWoodData(), false);
 			//Advance or lateral
 			Vector ndir = dir.clone().normalize();

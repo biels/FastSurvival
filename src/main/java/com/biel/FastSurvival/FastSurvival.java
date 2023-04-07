@@ -695,6 +695,17 @@ public final class FastSurvival extends JavaPlugin {
             }
             return true;
         } //If this has happened the function will return true.
+        if (cmd.getName().equalsIgnoreCase("moonportal")) {
+            if (sender instanceof Player) {
+                Player p = (Player) sender;
+                if (!(p.getGameMode() == GameMode.CREATIVE)) {
+                    p.sendMessage("You must be in creative to use this command.");
+                    return true;
+                }
+                SampleTeleporter.generate(p.getLocation());
+            }
+            return true;
+        }
         // If this hasn't happened the a value of false will be returned.
         return false;
     }

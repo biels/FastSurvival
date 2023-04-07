@@ -42,6 +42,8 @@ public class MoonListener implements Listener {
                 Material t = p.getInventory().getItemInMainHand().getType();
                 if (t == Material.WATER_BUCKET) {
                     r.setType(Material.SNOW_BLOCK);
+                    // play a sound
+                    p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 0.5f);
                     evt.setCancelled(true);
                 }
                 if (t == Material.LAVA_BUCKET) {
@@ -50,10 +52,13 @@ public class MoonListener implements Listener {
                     } else {
                         r.setType(Material.OBSIDIAN);
                     }
+                    // play a sound
+                    p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 0.7f);
 
                     evt.setCancelled(true);
                 }
                 if (t == Material.FLINT_AND_STEEL) {
+                    p.playSound(p.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 0.5f);
                     evt.setCancelled(true);
                 }
                 if (t == Material.TNT) {
@@ -104,6 +109,9 @@ public class MoonListener implements Listener {
         if (MoonUtils.IsInMoon(p)) {
             event.setCancelled(true);
             loc.getWorld().createExplosion(loc.getX(), loc.getY(), loc.getZ(), 1, false, true);
+            p.sendMessage("You can't sleep in the moon!");
+            // play a sound
+            p.playSound(p.getLocation(), Sound.BLOCK_GLASS_BREAK, 1, 0.5f);
         }
 
     }

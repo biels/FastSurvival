@@ -32,6 +32,13 @@ public class MoonLongTick implements Runnable {
     public void tickPlayer(Player p) {
         if(p.getLocation().add(0, -1, 0).getBlock().getType() == Material.LIME_STAINED_GLASS) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 6 * 20, 0, false, false));
+            // if player has poison applied, play a sound that looks like a heartbeat
+            if (p.hasPotionEffect(PotionEffectType.POISON)) {
+                p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.5f, 0.5f);
+                // play a visual effect on the feet of the player that looks like poison effect
+                p.spawnParticle(Particle.SPELL_WITCH, p.getLocation().add(0, -0.5, 0), 1, 0, 0, 0, 0);
+            }
+
         }
     }
 

@@ -2,7 +2,10 @@ package com.biel.FastSurvival.Dimensions.Moon;
 
 import com.biel.FastSurvival.Utils.Utils;
 import org.bukkit.*;
+import org.bukkit.block.Chest;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -138,6 +141,63 @@ public class MoonBasePopulator extends BlockPopulator {
                         }
                         sphereLoc.getBlock().setType(bubbleMaterial);
                     });
+            Utils.getCylBlocks(bubbleLoc.clone().add(0, 0, 0), ((int) bubbleRadius) - 1, 1, true)
+                    .forEach(cylBlock -> cylBlock.setType(Material.LIME_STAINED_GLASS));
+            // Decorate the bubble with furnitures (furnances, chests, etc.)
+            Utils.getCylBlocks(bubbleLoc.clone().add(0, 1, 0), ((int) bubbleRadius) - 1, 1, true)
+                    .forEach(cylBlock -> {
+                        if (cylBlock.getY() == bubbleLoc.getBlockY() + 1) {
+                            if (cylBlock.getX() == bubbleLoc.getBlockX() && cylBlock.getZ() == bubbleLoc.getBlockZ()) {
+                                cylBlock.setType(Material.FURNACE);
+                                return;
+                            }
+                            if (cylBlock.getX() == bubbleLoc.getBlockX() + 1 && cylBlock.getZ() == bubbleLoc.getBlockZ()) {
+                                cylBlock.setType(Material.CHEST);
+                                // Fill the chest with random items
+                                Chest chest = (Chest) cylBlock.getState();
+                                Inventory inv = chest.getInventory();
+                                inv.addItem(new ItemStack(Material.DIAMOND, 1));
+                                inv.addItem(new ItemStack(Material.IRON_INGOT, 1));
+                                inv.addItem(new ItemStack(Material.GOLD_INGOT, 1));
+                                return;
+                            }
+                            if (cylBlock.getX() == bubbleLoc.getBlockX() - 1 && cylBlock.getZ() == bubbleLoc.getBlockZ()) {
+                                cylBlock.setType(Material.CHEST);
+                                // Fill the chest wiith food
+                                Chest chest = (Chest) cylBlock.getState();
+                                Inventory inv = chest.getInventory();
+                                inv.addItem(new ItemStack(Material.COOKED_BEEF, 1));
+                                inv.addItem(new ItemStack(Material.COOKED_CHICKEN, 1));
+                                inv.addItem(new ItemStack(Material.COOKED_COD, 1));
+                                return;
+                            }
+                            if (cylBlock.getX() == bubbleLoc.getBlockX() && cylBlock.getZ() == bubbleLoc.getBlockZ() + 1) {
+                                cylBlock.setType(Material.CHEST);
+                                // Fill the chest with tools
+                                Chest chest = (Chest) cylBlock.getState();
+                                Inventory inv = chest.getInventory();
+                                if (Utils.Possibilitat(50)) {
+                                    inv.addItem(new ItemStack(Material.DIAMOND_PICKAXE, 1));
+                                } else {
+                                    inv.addItem(new ItemStack(Material.IRON_PICKAXE, 1));
+                                }
+                                return;
+                            }
+                            if (cylBlock.getX() == bubbleLoc.getBlockX() && cylBlock.getZ() == bubbleLoc.getBlockZ() - 1) {
+                                cylBlock.setType(Material.CHEST);
+                                // Fill the chest with special items
+                                Chest chest = (Chest) cylBlock.getState();
+                                Inventory inv = chest.getInventory();
+                                if (Utils.Possibilitat(50)) {
+                                    inv.addItem(new ItemStack(Material.DIAMOND, 1));
+                                } else {
+                                    inv.addItem(new ItemStack(Material.IRON_INGOT, 1));
+                                }
+                                return;
+                            }
+                        }
+                    });
+
         });
     }
 

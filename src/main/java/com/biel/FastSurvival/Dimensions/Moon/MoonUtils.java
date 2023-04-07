@@ -59,7 +59,7 @@ public class MoonUtils {
     }
 
     public static ItemStack getSpaceGlass() {
-        return Utils.setItemNameAndLore(new ItemStack(Material.GLASS), ChatColor.AQUA + "Glass bubble", ChatColor.WHITE + "Allows entities to breath in the moon");
+        return Utils.setItemNameAndLore(new ItemStack(Material.GLASS), ChatColor.AQUA + "Glass bubble", ChatColor.WHITE + "Allows entities to breathe in the moon");
     }
 
     public static void spaceGlassRecipe() {
@@ -101,7 +101,6 @@ public class MoonUtils {
     }
     public static void giveMoonPotionEffects(Player p){
         p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
-
 
     }
     public static void clearMoonPotionEffects(Player p){

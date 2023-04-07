@@ -99,6 +99,7 @@ public class RocketPopulator extends BlockPopulator {
             List<Block> chestRingBlocks = Utils.getCylBlocks(floorCenter.clone().add(0, 1, 0), floorRadius - 1, 1, false, up);
             int chestRingIndex = random.nextInt(chestRingBlocks.size() - 1) + 1;
             int lampIndex = random.nextInt(chestRingBlocks.size() - 1) + 1;
+            int extraElementIndex = random.nextInt(chestRingBlocks.size() - 1) + 1;
             Block lampBlock = chestRingBlocks.get(lampIndex);
             lampBlock.setType(Material.SEA_LANTERN);
 
@@ -116,9 +117,19 @@ public class RocketPopulator extends BlockPopulator {
                 furnanceBlock.setType(applianceMat);
 
             }
+            // Add a brewing stand on the ring blocks
+            if (Utils.Possibilitat(20)) {
+                Block brewingStandBlock = chestRingBlocks.get(extraElementIndex);
+                if (brewingStandBlock.getRelative(0, -1, 0).getType().isSolid()) {
+                    brewingStandBlock.setType(Material.BREWING_STAND);
+                }
+            }
 
 
             floorCenter.getBlock().setType(Material.CRAFTING_TABLE);
+
+
+
 
 
             // Bukkit.broadcastMessage("centers: " + i);
@@ -131,15 +142,20 @@ public class RocketPopulator extends BlockPopulator {
 
         if (Utils.Possibilitat(8)){i.add(BowRecipeGenerator.getRandomBow(false));}
         if (Utils.Possibilitat(4)){i.add(BowRecipeGenerator.getRandomBow(false));}
-        if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_WOOD_SWORD, 1));}
         if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.DIAMOND_HELMET, 1));}
         if (Utils.Possibilitat(60)){i.add(new ItemStack(Material.IRON_HELMET, 1));}
         if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.IRON_SWORD, 1));}
-        if (Utils.Possibilitat(30)){i.add(new ItemStack(Material.LEGACY_IRON_SPADE, 1));}
         if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.ARROW, 1));}
         if (Utils.Possibilitat(40)){i.add(new ItemStack(Material.FLINT_AND_STEEL, 1));}
         if (Utils.Possibilitat(10)){i.add(new ItemStack(Material.IRON_DOOR, 1));}
         if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_CHESTPLATE, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_LEGGINGS, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_BOOTS, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_HELMET, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_SWORD, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_PICKAXE, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_AXE, 1));}
+        if (Utils.Possibilitat(20)){i.add(new ItemStack(Material.IRON_SHOVEL, 1));}
         if (Utils.Possibilitat(50)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
         if (Utils.Possibilitat(25)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
         if (Utils.Possibilitat(15)){i.add(new ItemStack(Material.TNT, Utils.NombreEntre(1,  6)));}
@@ -147,6 +163,10 @@ public class RocketPopulator extends BlockPopulator {
         if (Utils.Possibilitat(38)){i.add(Utils.getRandomPotion());}
         if (Utils.Possibilitat(35)){i.add(Utils.getRandomPotion());}
         if (Utils.Possibilitat(1)){new ItemStack(SpecialItemsUtils.getRandomSpecialItem(3));}
+
+        if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.DIAMOND, 1));}
+        if (Utils.Possibilitat(1)){i.add(new ItemStack(Material.DIAMOND, 1));}
+
 
         return i;
     }

@@ -51,9 +51,15 @@ public class ClaySpiralPopulator extends BlockPopulator {
                 .map(vector -> center.clone().add(vector))
                 .map(Location::getBlock)
                 .forEach(block -> {
-                    block.setType(material);
-                    //block.setMetadata("spiral", );
-                    //block.setData(data);
+                    Material m = material;
+                    if(m == Material.LIME_STAINED_GLASS){
+                        if(Utils.Possibilitat(50)){
+                            m = Material.LIME_CONCRETE;
+                        }
+                    }
+                    if (block.getType() == Material.AIR) {
+                        block.setType(m);
+                    }
                 });
     }
 
